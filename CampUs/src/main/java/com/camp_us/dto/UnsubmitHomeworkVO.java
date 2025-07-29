@@ -6,13 +6,11 @@ public class UnsubmitHomeworkVO {
 	
 	private String hw_no; // 과제번호
 	private String hw_name; // 과제명
-	private Date hw_startdate; // 시작일
 	private Date hw_enddate; // 마감일
-	private String hw_desc; // 과제 설명
-	private int dDay; // d-day
-	private String professorName; // 교수명
+	private String lec_name; // 강의명
+	private int d_day; // d-day
+	private String mem_name; // 교수명
 	private String stu_id; //학생명
-	
 	public String getHw_no() {
 		return hw_no;
 	}
@@ -25,35 +23,29 @@ public class UnsubmitHomeworkVO {
 	public void setHw_name(String hw_name) {
 		this.hw_name = hw_name;
 	}
-	public Date getHw_startdate() {
-		return hw_startdate;
-	}
-	public void setHw_startdate(Date hw_startdate) {
-		this.hw_startdate = hw_startdate;
-	}
 	public Date getHw_enddate() {
 		return hw_enddate;
 	}
 	public void setHw_enddate(Date hw_enddate) {
 		this.hw_enddate = hw_enddate;
 	}
-	public String getHw_desc() {
-		return hw_desc;
+	public String getLec_name() {
+		return lec_name;
 	}
-	public void setHw_desc(String hw_desc) {
-		this.hw_desc = hw_desc;
+	public void setLec_name(String lec_name) {
+		this.lec_name = lec_name;
 	}
-	public int getdDay() {
-		return dDay;
+	public int getD_day() {
+		return d_day;
 	}
-	public void setdDay(int dDay) {
-		this.dDay = dDay;
+	public void setD_day(int d_day) {
+		this.d_day = d_day;
 	}
-	public String getProfessorName() {
-		return professorName;
+	public String getMem_name() {
+		return mem_name;
 	}
-	public void setProfessorName(String professorName) {
-		this.professorName = professorName;
+	public void setMem_name(String professorName) {
+		this.mem_name = professorName;
 	}
 	public String getStu_id() {
 		return stu_id;
@@ -61,5 +53,6 @@ public class UnsubmitHomeworkVO {
 	public void setStu_id(String stu_id) {
 		this.stu_id = stu_id;
 	}
+	
 	
 }

@@ -1,8 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <%@ include file="/WEB-INF/views/module/header.jsp"%>
+<style>
+#homeworkGrid .jsgrid-header-cell {
+	background-color: #ebebeb;
+	border-bottom: 1px solid #b5b5b5;
+}
+
+.jsgrid-alt-row,.jsgrid-row{
+	width : 100%;
+	height : 41px !important;
+}
+
+.dday{
+	width : 10%;
+}
+</style>
 
 <body>
 	<div class="card-body" style="margin-bottom: -20px">
@@ -14,7 +30,8 @@
 				style="display: block; font-size: 16pt; font-weight: bold; color: #2EC4B6; margin-bottom: 10px;">미제출
 				과제</span>
 		</div>
-		<div id="homeworkGrid" style="border: 1px solid #b5b5b5; border-top: 3px solid #2EC4B6;">
+		<div id="homeworkGrid"
+			style="border: 1px solid #b5b5b5; border-top: 3px solid #2EC4B6;">
 			<div class="jsgrid"
 				style="position: relative; height: 100%; width: 100%;">
 				<div class="jsgrid-header" style="border-bottom: 1px solid #b5b5b5;">
@@ -345,42 +362,63 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<!-- jQuery -->
-<script src="<%=request.getContextPath() %>/resources/bootstrap/plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="<%=request.getContextPath() %>/resources/bootstrap/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- jsGrid -->
-<script src="<%=request.getContextPath() %>/resources/bootstrap/plugins/jsgrid/demos/db.js"></script>
-<script src="<%=request.getContextPath() %>/resources/bootstrap/plugins/jsgrid/jsgrid.min.js"></script>
-<!-- AdminLTE App -->
-<script src="<%=request.getContextPath() %>/resources/bootstrap/dist/js/adminlte.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="<%=request.getContextPath() %>/resources/bootstrap/dist/js/demo.js"></script>
-<!-- Page specific script -->
+	<script
+		src="<%=request.getContextPath()%>/resources/bootstrap/plugins/jquery/jquery.min.js"></script>
+	<!-- Bootstrap 4 -->
+	<%-- 	<script src="<%=request.getContextPath() %>/resources/bootstrap/plugins/bootstrap/js/bootstrap.bundle.min.js"></script> --%>
+	<!-- jsGrid -->
+	<%-- 	<script src="<%=request.getContextPath() %>/resources/bootstrap/plugins/jsgrid/demos/db.js"></script> --%>
+	<script
+		src="<%=request.getContextPath()%>/resources/bootstrap/plugins/jsgrid/jsgrid.min.js"></script>
+	<!-- AdminLTE App -->
+	<%-- 	<script src="<%=request.getContextPath() %>/resources/bootstrap/dist/js/adminlte.min.js"></script> --%>
+	<!-- AdminLTE for demo purposes -->
+	<%-- 	<script src="<%=request.getContextPath() %>/resources/bootstrap/dist/js/demo.js"></script> --%>
+	<!-- Page specific script -->
+	<script>
+	var homeworkList = [
+		<c:forEach var="hw" items="${unsubmitList}" varStatus="status">
+			<c:if test="${hw.d_day >= 0}">
+				{
+					d_day: "${hw.d_day == 0 ? 'D-day' : 'D-' += hw.d_day}",
+					hw_enddate: "<fmt:formatDate value='${hw.hw_enddate}' pattern='yyyy-MM-dd HH:mm' />",
+					hw_name: "${hw.hw_name}",
+			        lec_name: "${hw.lec_name}",
+			        mem_name:"${hw.mem_name}"
+				}<c:if test="${!status.last}">,</c:if>
+			</c:if>
+			if(${hw.d_day} == "D-day"){
+				
+			}
+		</c:forEach>
+	];
+</script>
 <script>
   $(function () {
     $("#homeworkGrid").jsGrid({
-        height: "auto", // 20% 대신 자동 높이 조절을 권장
+        height: "210px", // 20% 대신 자동 높이 조절을 권장
         width: "100%",
 
         sorting: true,
-        paging: true,
-        pageSize: 3, // 한 페이지당 10개 항목으로 제한
-        pageButtonCount: 10, // 페이지 버튼 개수 (선택사항)
-
-        data: db.clients,
+        paging: false,
+    
+        data: homeworkList,
 
         fields: [
-            { name: "Name", type: "text", width: 150 },
-            { name: "Age", type: "number", width: 50 },
-            { name: "Address", type: "text", width: 200 },
-            { name: "Country", type: "select", items: db.countries, valueField: "Id", textField: "Name" },
-            { name: "Married", type: "checkbox", title: "Is Married" }
-        ]
-    });
+            { name: "d_day", title: "D-day", type: "text", width: 50, align: "center" },
+            { name: "hw_enddate", title: "마감일", type: "text", width: 80, align: "center" },
+            { name: "hw_name", title: "과제명", type: "text", width: 100, align: "center" },
+            { name: "lec_name", title: "과목명", type: "text", width: 80, align: "center" },
+            { name: "mem_name", title: "교수명", type: "text", width: 50, align: "center" }
+          ]
+          
+
+     });     
   });
 </script>
+
 	<%@ include file="/WEB-INF/views/module/footer.jsp"%>
 </body>
 </html>

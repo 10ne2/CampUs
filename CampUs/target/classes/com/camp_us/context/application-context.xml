@@ -7,6 +7,15 @@
 	      class="com.camp_us.dao.MemberDAOImpl"
 	      c:session-ref="sqlSession"
 	      />
+	<bean id="unsubmitHomeworkDAO"
+		  class="com.camp_us.dao.UnsubmitHomeworkDAOImpl"
+		  c:session-ref="sqlSession"
+	      />
+	
+	<bean id="unsubmitHomeworkService"
+		  class="com.camp_us.service.UnsubmitHomeworkServiceImpl"
+		  c:unsubmithomeworkDAO-ref="unsubmitHomeworkDAO"
+		  />      
 	<bean id="memberService"
 	      class="com.camp_us.service.MemberServiceImpl"
 	      c:memberDAO-ref="memberDAO"
