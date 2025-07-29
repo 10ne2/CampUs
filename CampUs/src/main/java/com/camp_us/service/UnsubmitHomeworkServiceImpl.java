@@ -1,6 +1,8 @@
 package com.camp_us.service;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import com.camp_us.dao.UnsubmitHomeworkDAO;
@@ -16,7 +18,19 @@ public class UnsubmitHomeworkServiceImpl implements UnsubmitHomeworkService{
 
 	@Override
 	public List<UnsubmitHomeworkVO> getUnsubmitHomeworkList(String stu_id) throws SQLException {
-		return unsubmithomeworkDAO.selectUnsubmitHomework(stu_id);
+		List<UnsubmitHomeworkVO> list = unsubmithomeworkDAO.selectUnsubmitHomework(stu_id);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
+		for(UnsubmitHomeworkVO hw : list) {
+			Date endDate = hw.getHw_enddate();
+			if(endDate != null) {
+				hw.setHw_enddateStr(sdf.format(endDate));
+			}
+		}
+		
+		return list;
 	}
+	
 
 }

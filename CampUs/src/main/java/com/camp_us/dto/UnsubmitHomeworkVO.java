@@ -6,6 +6,7 @@ public class UnsubmitHomeworkVO {
 	
 	private String hw_name; // 과제명
 	private Date hw_enddate; // 마감일
+	private String hw_enddateStr;
 	private String lec_name; // 강의명
 	private int d_day; // d-day
 	private String mem_name; // 교수명
@@ -22,6 +23,12 @@ public class UnsubmitHomeworkVO {
 	public void setHw_enddate(Date hw_enddate) {
 		this.hw_enddate = hw_enddate;
 	}
+	public String getHw_enddateStr() {
+		return hw_enddateStr;
+	}
+	public void setHw_enddateStr(String hw_enddateStr) {
+		this.hw_enddateStr = hw_enddateStr;
+	}
 	public String getLec_name() {
 		return lec_name;
 	}
@@ -37,9 +44,10 @@ public class UnsubmitHomeworkVO {
 	public String getMem_name() {
 		return mem_name;
 	}
-	public void setMem_name(String professorName) {
-		this.mem_name = professorName;
+	public void setMem_name(String mem_name) {
+		this.mem_name = mem_name;
 	}
+	
 	
 	
 }

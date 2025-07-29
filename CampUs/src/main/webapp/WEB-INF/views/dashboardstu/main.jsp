@@ -5,19 +5,12 @@
 
 <%@ include file="/WEB-INF/views/module/header.jsp"%>
 <style>
-#homeworkGrid .jsgrid-header-cell {
-	background-color: #ebebeb;
-	border-bottom: 1px solid #b5b5b5;
-}
+.scroll-table-wrapper-w {
+    max-height: 165px;      /* 테이블 최대 높이 */
+    overflow-y: auto;       /* 세로 스크롤 */
+    border: 1px solid #ccc; /* 선택: 테두리 */
+  }
 
-.jsgrid-alt-row,.jsgrid-row{
-	width : 100%;
-	height : 41px !important;
-}
-
-.dday{
-	width : 10%;
-}
 </style>
 
 <body>
@@ -45,26 +38,26 @@
 								style="width: 20%; background-color: #ebebeb;">마감시간</th>
 							<th
 								class="jsgrid-header-cell jsgrid-align-center jsgrid-header-sortable"
-								style="width: 20%; background-color: #ebebeb;">과목명</th>
+								style="width: 40%; background-color: #ebebeb;">과목명</th>
 							<th
 								class="jsgrid-header-cell jsgrid-align-center jsgrid-header-sortable"
-								style="width: 10%; background-color: #ebebeb;">교수명</th>
+								style="width: 20%; background-color: #ebebeb;">교수명</th>
 							<th
 								class="jsgrid-header-cell jsgrid-align-center jsgrid-header-sortable"
-								style="width: 40%; background-color: #ebebeb;">과제명</th>
+								style="width: 10%; background-color: #ebebeb;">과제명</th>
 						</tr>
 					</table>
 				</div>
-				<div class="jsgrid-body" style="height: 100%;">
+				<div class="jsgrid-body scroll-table-wrapper-w" style="height: 300px;">
 					<table class="jsgrid-table">
-						<tbody style="width:100%; height: 180px;">
+						<tbody>
 							<c:forEach var="hw" items="${unsubmitList}">
-							<tr class="jsgrid-row">
-								<td id="dday" class="jsgrid-cell jsgrid-align-center" style="width: 10%;">D-${hw.d_day}</td>
-								<td class="jsgrid-cell jsgrid-align-center" style="width: 20%;">${hw.hw_enddate}</td>
-								<td class="jsgrid-cell jsgrid-align-center" style="width: 20%;">${hw.hw_name}</td>
-								<td class="jsgrid-cell jsgrid-align-center" style="width: 10%;">${hw.lec_name}</td>
-								<td class="jsgrid-cell jsgrid-align-center" style="width: 40%;">${hw.mem_name}</td>
+							<tr class="unsubmit jsgrid-row" style="width:100%; height: 100%;">
+								<td class="dday jsgrid-cell jsgrid-align-center" style="width: 10%;">D-${hw.d_day}</td>
+								<td class="enddate jsgrid-cell jsgrid-align-center" style="width: 20%;">${hw.hw_enddateStr}</td>
+								<td class="jsgrid-cell jsgrid-align-center" style="width: 40%;">${hw.hw_name}</td>
+								<td class="jsgrid-cell jsgrid-align-center" style="width: 20%;">${hw.lec_name}</td>
+								<td class="jsgrid-cell jsgrid-align-center" style="width: 10%;">${hw.mem_name}</td>
 							</tr>
 							</c:forEach>
 						</tbody>
@@ -330,12 +323,25 @@
 		</div>
 	</div>
 <script>
-	$(function(){
-		if($("#dday").text().trim() === "D-0"){
-			$("#dday").text("D-day");
-		}
-	});
+	document.querySelectorAll(".dday").forEach(td => {
+    const text = td.textContent.trim();
+    if (text === "D-0") {
+      td.textContent = "D-Day";
+    }
+  });
 </script>
+
+<script>	
+	document.querySelectorAll(".dday").forEach(td => {
+	      const text = td.textContent.trim();
+	      
+	      if (text === "D-Day") {
+	        const tr = td.closest("tr.unsubmit");
+	        if (tr) {
+	          tr.style.backgroundColor = "#ffefef"; // 원하는 색상으로 지정
+	        }
+	      }
+    </script>
 
 
 	<%@ include file="/WEB-INF/views/module/footer.jsp"%>
