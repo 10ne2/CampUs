@@ -363,61 +363,7 @@
 		</div>
 	</div>
 
-	<!-- jQuery -->
-	<script
-		src="<%=request.getContextPath()%>/resources/bootstrap/plugins/jquery/jquery.min.js"></script>
-	<!-- Bootstrap 4 -->
-	<%-- 	<script src="<%=request.getContextPath() %>/resources/bootstrap/plugins/bootstrap/js/bootstrap.bundle.min.js"></script> --%>
-	<!-- jsGrid -->
-	<%-- 	<script src="<%=request.getContextPath() %>/resources/bootstrap/plugins/jsgrid/demos/db.js"></script> --%>
-	<script
-		src="<%=request.getContextPath()%>/resources/bootstrap/plugins/jsgrid/jsgrid.min.js"></script>
-	<!-- AdminLTE App -->
-	<%-- 	<script src="<%=request.getContextPath() %>/resources/bootstrap/dist/js/adminlte.min.js"></script> --%>
-	<!-- AdminLTE for demo purposes -->
-	<%-- 	<script src="<%=request.getContextPath() %>/resources/bootstrap/dist/js/demo.js"></script> --%>
-	<!-- Page specific script -->
-	<script>
-	var homeworkList = [
-		<c:forEach var="hw" items="${unsubmitList}" varStatus="status">
-			<c:if test="${hw.d_day >= 0}">
-				{
-					d_day: "${hw.d_day == 0 ? 'D-day' : 'D-' += hw.d_day}",
-					hw_enddate: "<fmt:formatDate value='${hw.hw_enddate}' pattern='yyyy-MM-dd HH:mm' />",
-					hw_name: "${hw.hw_name}",
-			        lec_name: "${hw.lec_name}",
-			        mem_name:"${hw.mem_name}"
-				}<c:if test="${!status.last}">,</c:if>
-			</c:if>
-			if(${hw.d_day} == "D-day"){
-				
-			}
-		</c:forEach>
-	];
-</script>
-<script>
-  $(function () {
-    $("#homeworkGrid").jsGrid({
-        height: "210px", // 20% 대신 자동 높이 조절을 권장
-        width: "100%",
 
-        sorting: true,
-        paging: false,
-    
-        data: homeworkList,
-
-        fields: [
-            { name: "d_day", title: "D-day", type: "text", width: 50, align: "center" },
-            { name: "hw_enddate", title: "마감일", type: "text", width: 80, align: "center" },
-            { name: "hw_name", title: "과제명", type: "text", width: 100, align: "center" },
-            { name: "lec_name", title: "과목명", type: "text", width: 80, align: "center" },
-            { name: "mem_name", title: "교수명", type: "text", width: 50, align: "center" }
-          ]
-          
-
-     });     
-  });
-</script>
 
 	<%@ include file="/WEB-INF/views/module/footer.jsp"%>
 </body>

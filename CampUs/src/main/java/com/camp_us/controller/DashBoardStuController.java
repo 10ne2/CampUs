@@ -19,9 +19,9 @@ public class DashBoardStuController {
 	private UnsubmitHomeworkService unsubmitHomeworkService;
 	
 	@GetMapping("/main")
-	public void main(/* HttpSession session, */String stu_id, Model model) throws Exception {
-		List<UnsubmitHomeworkVO> unsubmithwList = unsubmitHomeworkService.getUnsubmitHomeworkList(stu_id);
-		/* String stu_id = "S20170102" */
+	public void main(/* HttpSession session, */UnsubmitHomeworkVO unsubmitHomework, Model model) throws Exception {
+		List<UnsubmitHomeworkVO> unsubmithwList = unsubmitHomeworkService.getUnsubmitHomeworkList(unsubmitHomework);
+		String stu_id = "S20170102"
 		/*(String) session.getAttribute("stu_id")*/;
 		
 		/*
