@@ -2,6 +2,8 @@ package com.camp_us.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,16 +21,18 @@ public class DashBoardStuController {
 	private UnsubmitHomeworkService unsubmitHomeworkService;
 	
 	@GetMapping("/main")
-	public void main(/* HttpSession session, */UnsubmitHomeworkVO unsubmitHomework, Model model) throws Exception {
-		List<UnsubmitHomeworkVO> unsubmithwList = unsubmitHomeworkService.getUnsubmitHomeworkList(unsubmitHomework);
-		String stu_id = "S20170102"
-		/*(String) session.getAttribute("stu_id")*/;
+	public String main(HttpSession session, Model model) throws Exception {
+		String stu_id = "S20170102";
+		List<UnsubmitHomeworkVO> unsubmithwList = unsubmitHomeworkService.getUnsubmitHomeworkList(stu_id);
+		/*(String) session.getAttribute("stu_id")*/
 		
 		/*
 		 * if(stu_id == null) { return "redirect:/login"; }
 		 */
 		
 		model.addAttribute("unsubmitList", unsubmithwList);
+		
+		return "dashboardstu/main";
 	}
 	
 }

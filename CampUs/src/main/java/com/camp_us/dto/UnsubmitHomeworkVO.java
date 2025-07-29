@@ -4,19 +4,12 @@ import java.util.Date;
 
 public class UnsubmitHomeworkVO {
 	
-	private String hw_no; // 과제번호
 	private String hw_name; // 과제명
 	private Date hw_enddate; // 마감일
 	private String lec_name; // 강의명
 	private int d_day; // d-day
 	private String mem_name; // 교수명
-	private String stu_id; //학생명
-	public String getHw_no() {
-		return hw_no;
-	}
-	public void setHw_no(String hw_no) {
-		this.hw_no = hw_no;
-	}
+	
 	public String getHw_name() {
 		return hw_name;
 	}
@@ -46,12 +39,6 @@ public class UnsubmitHomeworkVO {
 	}
 	public void setMem_name(String professorName) {
 		this.mem_name = professorName;
-	}
-	public String getStu_id() {
-		return stu_id;
-	}
-	public void setStu_id(String stu_id) {
-		this.stu_id = stu_id;
 	}
 	
 	

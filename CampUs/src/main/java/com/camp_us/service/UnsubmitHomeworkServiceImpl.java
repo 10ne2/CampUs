@@ -15,8 +15,8 @@ public class UnsubmitHomeworkServiceImpl implements UnsubmitHomeworkService{
 	}
 
 	@Override
-	public List<UnsubmitHomeworkVO> getUnsubmitHomeworkList(UnsubmitHomeworkVO unsubmitHomework) throws SQLException {
-		return unsubmithomeworkDAO.selectUnsubmitHomework(unsubmitHomework);
+	public List<UnsubmitHomeworkVO> getUnsubmitHomeworkList(String stu_id) throws SQLException {
+		return unsubmithomeworkDAO.selectUnsubmitHomework(stu_id);
 	}
 
 }

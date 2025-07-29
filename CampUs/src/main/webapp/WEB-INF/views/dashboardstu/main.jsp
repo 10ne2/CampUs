@@ -57,53 +57,20 @@
 				</div>
 				<div class="jsgrid-body" style="height: 100%;">
 					<table class="jsgrid-table">
-						<tbody>
+						<tbody style="width:100%; height: 180px;">
+							<c:forEach var="hw" items="${unsubmitList}">
 							<tr class="jsgrid-row">
-								<td class="jsgrid-cell jsgrid-align-center dday"
-									style="width: 10%;">D-day</td>
-								<td class="jsgrid-cell jsgrid-align-center" style="width: 20%;">57</td>
-								<td class="jsgrid-cell jsgrid-align-center" style="width: 20%;">8655
-									Arcu. Road</td>
-								<td class="jsgrid-cell jsgrid-align-center" style="width: 10%;">France</td>
-								<td class="jsgrid-cell jsgrid-align-center" style="width: 40%;"></td>
+								<td id="dday" class="jsgrid-cell jsgrid-align-center" style="width: 10%;">D-${hw.d_day}</td>
+								<td class="jsgrid-cell jsgrid-align-center" style="width: 20%;">${hw.hw_enddate}</td>
+								<td class="jsgrid-cell jsgrid-align-center" style="width: 20%;">${hw.hw_name}</td>
+								<td class="jsgrid-cell jsgrid-align-center" style="width: 10%;">${hw.lec_name}</td>
+								<td class="jsgrid-cell jsgrid-align-center" style="width: 40%;">${hw.mem_name}</td>
 							</tr>
-							<tr class="jsgrid-alt-row">
-								<td class="jsgrid-cell jsgrid-align-center dday"
-									style="width: 10%;">Randall Reeves</td>
-								<td class="jsgrid-cell jsgrid-align-center" style="width: 20%;">44</td>
-								<td class="jsgrid-cell jsgrid-align-center" style="width: 20%;">1819</td>
-								<td class="jsgrid-cell jsgrid-align-center" style="width: 10%;">United
-									Kingdom</td>
-								<td class="jsgrid-cell jsgrid-align-center" style="width: 40%;"></td>
-							</tr>
-							<tr class="jsgrid-row">
-								<td class="jsgrid-cell jsgrid-align-center dday"
-									style="width: 10%;">Ramona Benton</td>
-								<td class="jsgrid-cell jsgrid-align-center" style="width: 20%;">43</td>
-								<td class="jsgrid-cell jsgrid-align-center" style="width: 20%;">Ap
-									#614-689</td>
-								<td class="jsgrid-cell jsgrid-align-center" style="width: 10%;">Brazil</td>
-								<td class="jsgrid-cell jsgrid-align-center" style="width: 40%;"></td>
-							</tr>
-							<tr class="jsgrid-alt-row">
-								<td class="jsgrid-cell jsgrid-align-center dday"
-									style="width: 10%;">Price Watkins</td>
-								<td class="jsgrid-cell jsgrid-align-center" style="width: 20%;">35</td>
-								<td class="jsgrid-cell jsgrid-align-center" style="width: 20%;">832-7810
-									Nunc Rd.</td>
-								<td class="jsgrid-cell jsgrid-align-center" style="width: 10%;">France</td>
-								<td class="jsgrid-cell jsgrid-align-center" style="width: 40%;"></td>
-							</tr>
-
+							</c:forEach>
 						</tbody>
 					</table>
 				</div>
 			</div>
-			<!-- 		<div class="jsgrid-load-shader"
-			style="display: none; position: absolute; inset: 0px; z-index: 1000;"></div>
-		<div class="jsgrid-load-panel"
-			style="display: none; position: absolute; top: 50%; left: 50%; z-index: 1000;">Please,
-			wait...</div> -->
 		</div>
 	</div>
 	<div class="card-body"
@@ -172,7 +139,7 @@
 							<tr class="jsgrid-header-row">
 								<th
 									class="jsgrid-header-cell jsgrid-align-center jsgrid-header-sortable"
-									style="width: 10%; background-color: #ebebeb;"></th>
+									style="width: 10%; background-color: #ebebeb;"> </th>
 								<th
 									class="jsgrid-header-cell jsgrid-align-center jsgrid-header-sortable"
 									style="width: 20%; background-color: #ebebeb;">과목명</th>
@@ -191,8 +158,8 @@
 					<table class="jsgrid-table">
 						<tbody>
 							<tr class="jsgrid-row">
-								<td class="jsgrid-cell jsgrid-align-center" style="width: 10%;">Rebecca</td>
-								<td class="jsgrid-cell jsgrid-align-center" style="width: 20%;">57</td>
+								<td class="jsgrid-cell jsgrid-align-center" style="width: 10%;"></td>
+								<td class="jsgrid-cell jsgrid-align-center" style="width: 20%;">S{}</td>
 								<td class="jsgrid-cell jsgrid-align-center" style="width: 40%;">8655
 									Arcu. Road</td>
 								<td class="jsgrid-cell jsgrid-align-center" style="width: 10%;">8655</td>
@@ -362,7 +329,13 @@
 			</div>
 		</div>
 	</div>
-
+<script>
+	$(function(){
+		if($("#dday").text().trim() === "D-0"){
+			$("#dday").text("D-day");
+		}
+	});
+</script>
 
 
 	<%@ include file="/WEB-INF/views/module/footer.jsp"%>
