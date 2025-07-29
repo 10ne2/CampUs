@@ -9,14 +9,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/background")
 public class TestController {
-	
+
 	@GetMapping("")
 	public void background(@ModelAttribute("color") String color) {
 	}
 
-    @GetMapping("/{color}")
-    public String backgroundPath(@ModelAttribute("color")
-                                 @PathVariable("color") String color) {
-        return "background"; // background.jsp
-    }
+	@GetMapping("/{color}")
+	public String backgroundPath(@ModelAttribute("color") @PathVariable("color") String color) {
+		return "background";
+	}
 }

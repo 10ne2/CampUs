@@ -48,7 +48,7 @@
 						</tr>
 					</table>
 				</div>
-				<div class="jsgrid-body scroll-table-wrapper-w" style="height: 300px;">
+				<div class="jsgrid-body scroll-table-wrapper" style="height: 300px;">
 					<table class="jsgrid-table">
 						<tbody>
 							<c:forEach var="hw" items="${unsubmitList}">
