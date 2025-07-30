@@ -2,10 +2,12 @@ package com.camp_us.service;
 
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import com.camp_us.dao.OtherDashStuDAO;
 import com.camp_us.dto.OtherDashStuVO;
+import com.camp_us.dto.UnsubmitHomeworkVO;
 
 public class OtherDashStuServiceImpl implements OtherDashStuService{
 	
@@ -22,13 +24,11 @@ public class OtherDashStuServiceImpl implements OtherDashStuService{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		
 		for (OtherDashStuVO vo : list) {
-	        if (vo.getCfRegDate() != null) {
-	            // Date → String 변환
-	            String formattedDate = sdf.format(vo.getCfRegDate());
-	            vo.setRegDateStr(formattedDate); // cfRegDateStr: String 타입 필드 추가
-	        }
-	    }
-		
+			Date regDate = vo.getRegDate();
+			if(regDate != null) {
+				vo.setRegDateStr(sdf.format(regDate));
+			}
+		}
 		return list;
 	}
 
