@@ -79,12 +79,13 @@
 				<div class="jsgrid-body" style="height: 100%;">
 					<table class="jsgrid-table">
 						<tbody>
+							<c:forEach var="hw" items="${comingleclist}">
 							<tr class="jsgrid-row">
-								<td class="jsgrid-cell jsgrid-align-center" style="width: 20%;">Rebecca</td>
-								<td class="jsgrid-cell jsgrid-align-center" style="width: 50%;">57</td>
-								<td class="jsgrid-cell jsgrid-align-center" style="width: 30%;">8655
-									Arcu. Road</td>
+								<td class="jsgrid-cell jsgrid-align-center" style="width: 20%;">D-${hw.d_day}</td>
+								<td class="jsgrid-cell jsgrid-align-center" style="width: 50%;">${hw.lecs_name }</td>
+								<td class="jsgrid-cell jsgrid-align-center" style="width: 30%;">${hw.mem_name }</td>
 							</tr>
+							</c:forEach>
 							<tr class="jsgrid-alt-row">
 								<td class="jsgrid-cell jsgrid-align-center" style="width: 20%;">Randall
 									Reeves</td>

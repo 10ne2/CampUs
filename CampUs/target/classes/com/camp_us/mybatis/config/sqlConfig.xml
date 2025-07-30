@@ -12,9 +12,10 @@
 		<typeAlias type="com.camp_us.dto.MenuVO" alias="menu"/>
 		<typeAlias type="com.camp_us.dto.LecClassVO" alias="lec_class"/>
 		<typeAlias type="com.camp_us.dto.UnsubmitHomeworkVO" alias="unsubmithw"/>
+		<typeAlias type="com.camp_us.dto.ComingLecVO" alias="cominglec"/>
 	</typeAliases>
 </configuration>
-
+ 
 
 
 

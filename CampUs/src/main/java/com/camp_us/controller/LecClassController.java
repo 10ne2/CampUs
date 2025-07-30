@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.camp_us.dto.ComingLecVO;
 import com.camp_us.dto.LecClassVO;
 import com.camp_us.dto.UnsubmitHomeworkVO;
+import com.camp_us.service.ComingLecService;
 import com.camp_us.service.LecClassService;
 import com.camp_us.service.UnsubmitHomeworkService;
 
@@ -27,19 +29,18 @@ public class LecClassController {
     
     @Autowired
     private UnsubmitHomeworkService unsubmitHomeworkService;
+    
+    @Autowired
+	private ComingLecService comingLecService;
+    
     @GetMapping("/main")
 	public String main(HttpSession session, Model model) throws Exception {
 		String stu_id = "S20170102";
 		List<UnsubmitHomeworkVO> unsubmithwList = unsubmitHomeworkService.getUnsubmitHomeworkList(stu_id);
-		/*(String) session.getAttribute("stu_id")*/
-		
-		/*
-		 * if(stu_id == null) { return "redirect:/login"; }
-		 */
-		
 		model.addAttribute("unsubmitList", unsubmithwList);
 		
-		
+		List<ComingLecVO> comingleclist = comingLecService.getComingLecList(stu_id);
+		model.addAttribute("comingleclist", comingleclist);
 		
 		return "lecture/main";
 	}

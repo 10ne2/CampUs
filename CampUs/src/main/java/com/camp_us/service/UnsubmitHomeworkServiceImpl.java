@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Iterator;
 
 import com.camp_us.dao.UnsubmitHomeworkDAO;
 import com.camp_us.dto.UnsubmitHomeworkVO;
@@ -21,12 +22,18 @@ public class UnsubmitHomeworkServiceImpl implements UnsubmitHomeworkService{
 		List<UnsubmitHomeworkVO> list = unsubmithomeworkDAO.selectUnsubmitHomework(stu_id);
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date today = new Date();
 		
-		for(UnsubmitHomeworkVO hw : list) {
+		Iterator<UnsubmitHomeworkVO> it = list.iterator();
+		while (it.hasNext()) {
+			UnsubmitHomeworkVO hw = it.next();
 			Date endDate = hw.getHw_enddate();
-			if(endDate != null) {
-				hw.setHw_enddateStr(sdf.format(endDate));
+			
+			if(endDate == null || endDate.before(today)) {
+				it.remove();
+				continue;
 			}
+			hw.setHw_enddateStr(sdf.format(endDate));
 		}
 		
 		return list;
