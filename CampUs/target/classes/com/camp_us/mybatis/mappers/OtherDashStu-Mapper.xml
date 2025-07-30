@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="OtherDashStu-Mapper">
+	<select id="selectNoticeList" parameterType="String"
+		resultType="otherdashstu">
+		select
+			lc.lec_name as subjectName,
+			ln.lecnotice_name as title,
+			a.mem_name as professorName,
+			ln.lecnotice_date as regDate,
+			nvl2(lnv.viewed_at,'','NEW') as isNew
+		from lec_notice ln
+
+		join lec_class lc on lc.lec_id = ln.lec_id
+		join professor p on lc.lec_profes = p.profes_id
+		join account a on p.mem_id = a.mem_id
+		join lecture_list ll on lc.lec_id = ll.lec_id
+		LEFT JOIN lec_notice_view lnv
+			ON ln.lecnotice_id = lnv.lecnotice_id
+			AND lnv.lecs_id = ll.lecs_id
+
+		where ll.stu_id = #{stu_id}
+		order by regDate
+	</select>
+	
+	<select id="selectFileList" parameterType="String" resultType="otherdashstu">
+		select
+		lc.lec_name as subjectName,
+		    cf.cf_name as cfTitle,
+		    a.mem_name as professorName,
+		    cf.cf_date as cfRegDate,
+		    nvl2(cfv.cf_viewed,'','NEW') as cfIsNew
+		from class_file cf
+
+		join lec_class lc on lc.lec_id = cf.lec_id
+		join professor p on lc.lec_profes = p.profes_id
+		join account a on p.mem_id = a.mem_id
+		join lecture_list ll on lc.lec_id = ll.lec_id
+		LEFT JOIN class_file_view cfv 
+		       ON cf.cf_no = cfv.cf_no
+		      AND cfv.lecs_id = ll.lecs_id
+
+		where ll.stu_id = #{stu_id}
+		order by cfRegDate
+	</select>
+	
+	<select id="selectAttendenceList" parameterType="String" resultType="otherdashstu">
+		SELECT
+		    lc.lec_name AS subjectName,         
+		    a.mem_name AS professorName,        
+		    lc.class_date AS classDate,         
+		    NVL(att.a_detail, '미출석') AS attendanceStatus
+		FROM (
+		    SELECT
+		        lec_id,
+		        lec_name,
+		        lec_profes,
+		        lec_date,
+		        TRUNC(SYSDATE, 'IW') + MOD(lec_day + 5, 7) AS class_date
+		    FROM lec_class
+		) lc
+		JOIN lecture_list ll ON lc.lec_id = ll.lec_id
+		JOIN professor p ON lc.lec_profes = p.profes_id
+		JOIN account a ON p.mem_id = a.mem_id
+		LEFT JOIN attendance att
+		    ON att.lecs_id = ll.lecs_id
+		   AND TRUNC(att.att_date) = lc.class_date 
+		WHERE ll.stu_id = #{stu_id}
+		  AND lc.class_date >= lc.lec_date   
+		  AND lc.class_date BETWEEN TRUNC(SYSDATE, 'IW') AND TRUNC(SYSDATE, 'IW') + 6
+		ORDER BY lc.class_date
+	</select>
+
+</mapper>
+
+
+
+
+

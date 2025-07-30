@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.camp_us.dto.ComingLecVO;
 import com.camp_us.dto.LecClassVO;
+import com.camp_us.dto.OtherDashStuVO;
 import com.camp_us.dto.UnsubmitHomeworkVO;
 import com.camp_us.service.ComingLecService;
 import com.camp_us.service.LecClassService;
+import com.camp_us.service.OtherDashStuService;
 import com.camp_us.service.UnsubmitHomeworkService;
 
 @Controller
@@ -33,6 +35,9 @@ public class LecClassController {
     @Autowired
 	private ComingLecService comingLecService;
     
+    @Autowired
+	private OtherDashStuService otherDashStuService;
+    
     @GetMapping("/main")
 	public String main(HttpSession session, Model model) throws Exception {
 		String stu_id = "S20170102";
@@ -41,6 +46,15 @@ public class LecClassController {
 		
 		List<ComingLecVO> comingleclist = comingLecService.getComingLecList(stu_id);
 		model.addAttribute("comingleclist", comingleclist);
+		
+		List<OtherDashStuVO> noticeList = otherDashStuService.getNoticeList(stu_id);
+		model.addAttribute("noticeList", noticeList);
+		
+		List<OtherDashStuVO> fileList = otherDashStuService.getFileList(stu_id);
+		model.addAttribute("fileList", fileList);
+		
+		List<OtherDashStuVO> attendenceList = otherDashStuService.getAttendenceList(stu_id);
+		model.addAttribute("attendenceList", attendenceList);
 		
 		return "lecture/main";
 	}

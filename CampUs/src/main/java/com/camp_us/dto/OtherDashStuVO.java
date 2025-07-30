@@ -2,11 +2,12 @@ package com.camp_us.dto;
 
 import java.util.Date;
 
-public class OtherDashStu {
+public class OtherDashStuVO {
 	private String subjectName;
 	private String title;
 	private String professorName;
 	private Date regDate;
+	private String regDateStr;
 	private String inNew;
 	private String cfTitle;
 	private Date cfRegDate;
@@ -37,6 +38,12 @@ public class OtherDashStu {
 	}
 	public void setRegDate(Date regDate) {
 		this.regDate = regDate;
+	}
+	public String getRegDateStr() {
+		return regDateStr;
+	}
+	public void setRegDateStr(String regDateStr) {
+		this.regDateStr = regDateStr;
 	}
 	public String getInNew() {
 		return inNew;

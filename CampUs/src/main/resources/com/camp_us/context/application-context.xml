@@ -28,8 +28,16 @@
 		  class="com.camp_us.dao.ComingLecDAOImpl"
 		  c:session-ref="sqlSession"     
 	      />
+	<bean id="otherDashStuDAO"
+		  class="com.camp_us.dao.OtherDashStuDAOImpl"
+		  c:session-ref="sqlSession"     
+	      />      
 	      
 	      
+	<bean id="otherDashStuService"
+		  class="com.camp_us.service.OtherDashStuServiceImpl"
+		  c:otherDashStuDAO-ref="otherDashStuDAO"
+		  />     
 	<bean id="comingLecService"
 		  class="com.camp_us.service.ComingLecServiceImpl"
 		  c:comingLecDAO-ref="comingLecDAO"
