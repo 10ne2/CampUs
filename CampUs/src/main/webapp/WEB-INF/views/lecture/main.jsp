@@ -273,13 +273,22 @@
 	});
 </script>
 
-<script>
-  document.querySelectorAll(".atten").forEach(td => {
-    const text = Number(td.textContent.trim());
 
-    if (text === 0) {
-      td.innerHTML = '<img src="<%= request.getContextPath() %>/resources/images/circle_red.png" style="width:18px; margin-top:-6px">';
-    }
+<script>
+  const statusMap = {
+    0: {src: "<%=request.getContextPath() %>/resources/images/circle_grey.png"},
+    1: {src: "<%=request.getContextPath() %>/resources/images/circle_red.png"},
+    2: {src: "<%=request.getContextPath() %>/resources/images/circle_yellow.png"},
+    3: {src: "<%=request.getContextPath() %>/resources/images/circle_green.png"}
+  };
+
+  document.querySelectorAll(".atten").forEach(td => {
+    const status = Number(td.textContent.trim());
+    const info = statusMap[status];
+
+    if (info) {
+        td.innerHTML = `<img src="${info}" style="height: 20px;">`;
+      } 
   });
 </script>
 
