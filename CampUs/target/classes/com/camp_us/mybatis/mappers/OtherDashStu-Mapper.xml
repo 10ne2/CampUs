@@ -22,7 +22,7 @@
 			AND lnv.lecs_id = ll.lecs_id
 
 		where ll.stu_id = #{stu_id}
-		order by regDate
+		order by isNew, regDate 
 	</select>
 	
 	<select id="selectFileList" parameterType="String" resultType="otherdashstu">
@@ -43,7 +43,7 @@
 		      AND cfv.lecs_id = ll.lecs_id
 
 		where ll.stu_id = #{stu_id}
-		order by cfRegDate
+		order by cfIsNew, cfRegDate
 	</select>
 	
 	<select id="selectAttendenceList" parameterType="String" resultType="otherdashstu">
@@ -51,7 +51,7 @@
 		    lc.lec_name AS subjectName,         
 		    a.mem_name AS professorName,        
 		    lc.class_date AS classDate,         
-		    NVL(att.a_detail, '미출석') AS attendanceStatus
+		    NVL(att.a_detail, 0) AS attendanceStatus
 		FROM (
 		    SELECT
 		        lec_id,

@@ -8,14 +8,14 @@ public class OtherDashStuVO {
 	private String professorName;
 	private Date regDate;
 	private String regDateStr;
-	private String inNew;
+	private String isNew;
 	private String cfTitle;
 	private Date cfRegDate;
 	private String cfRegDateStr;
 	private String cfIsNew;
 	private Date classDate;
 	private String classDateStr;
-	private String attendanceStatus="미제출";
+	private int attendanceStatus;
 	public String getSubjectName() {
 		return subjectName;
 	}
@@ -46,11 +46,11 @@ public class OtherDashStuVO {
 	public void setRegDateStr(String regDateStr) {
 		this.regDateStr = regDateStr;
 	}
-	public String getInNew() {
-		return inNew;
+	public String getIsNew() {
+		return isNew;
 	}
-	public void setInNew(String inNew) {
-		this.inNew = inNew;
+	public void setIsNew(String isNew) {
+		this.isNew = isNew;
 	}
 	public String getCfTitle() {
 		return cfTitle;
@@ -88,12 +88,13 @@ public class OtherDashStuVO {
 	public void setClassDateStr(String classDateStr) {
 		this.classDateStr = classDateStr;
 	}
-	public String getAttendanceStatus() {
+	public int getAttendanceStatus() {
 		return attendanceStatus;
 	}
-	public void setAttendanceStatus(String attendanceStatus) {
+	public void setAttendanceStatus(int attendanceStatus) {
 		this.attendanceStatus = attendanceStatus;
 	}
+	
 	
 	
 }
