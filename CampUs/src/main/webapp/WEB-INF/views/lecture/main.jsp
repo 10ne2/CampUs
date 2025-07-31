@@ -129,7 +129,8 @@
 							</tr>
 						</table>
 					</div>
-					<table class="jsgrid-table">
+					<div class="jsgrid-body" style="height: 164px;">
+					<table class="jsgrid-table" >
 						<tbody>
 							<c:forEach var="no" items="${noticeList}">
 								<tr class="jsgrid-row">
@@ -137,11 +138,12 @@
 									<td class="jsgrid-cell jsgrid-align-center" style="width: 20%;">${no.subjectName}</td>
 									<td class="jsgrid-cell jsgrid-align-center" style="width: 40%;">${no.title }</td>
 									<td class="jsgrid-cell jsgrid-align-center" style="width: 10%;">${no.professorName }</td>
-									<td class="jsgrid-cell jsgrid-align-center" style="width: 20%;">${no.regDate }</td>
+									<td class="jsgrid-cell jsgrid-align-center" style="width: 20%;">${no.regDateStr }</td>
 								</tr>
 							</c:forEach>
 						</tbody>
 					</table>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -170,10 +172,10 @@
 						<tbody>
 							<c:forEach var="att" items="${attendenceList}">
 								<tr class="jsgrid-row">
-									<td class="jsgrid-cell jsgrid-align-center" style="width: 20%;">${att.classDate }</td>
-									<td class="jsgrid-cell jsgrid-align-center" style="width: 50%;">${att.subjectName }</td>
-									<td class="jsgrid-cell jsgrid-align-center" style="width: 50%;">${att.professorName }</td>
-									<td class="jsgrid-cell jsgrid-align-center" style="width: 30%;">${att.attendanceStatus }</td>
+									<td class="jsgrid-cell jsgrid-align-center" style="width: 25%;">${att.classDateStr }</td>
+									<td class="jsgrid-cell jsgrid-align-center" style="width: 35%;">${att.subjectName }</td>
+									<td class="jsgrid-cell jsgrid-align-center" style="width: 20%;">${att.professorName }</td>
+									<td class="jsgrid-cell jsgrid-align-center" style="width: 20%;">${att.attendanceStatus }</td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -219,7 +221,7 @@
 									<td class="jsgrid-cell jsgrid-align-center" style="width: 20%;">${fl.subjectName }</td>
 									<td class="jsgrid-cell jsgrid-align-center" style="width: 40%;">${fl.cfTitle }</td>
 									<td class="jsgrid-cell jsgrid-align-center" style="width: 10%;">${fl.professorName }</td>
-									<td class="jsgrid-cell jsgrid-align-center" style="width: 20%;">${fl.cfRegDate }</td>
+									<td class="jsgrid-cell jsgrid-align-center" style="width: 20%;">${fl.cfRegDateStr }</td>
 								</tr>
 							</c:forEach>
 						</tbody>

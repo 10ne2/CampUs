@@ -11,10 +11,11 @@ public class OtherDashStuVO {
 	private String inNew;
 	private String cfTitle;
 	private Date cfRegDate;
+	private String cfRegDateStr;
 	private String cfIsNew;
 	private Date classDate;
+	private String classDateStr;
 	private String attendanceStatus="미제출";
-	
 	public String getSubjectName() {
 		return subjectName;
 	}
@@ -63,6 +64,12 @@ public class OtherDashStuVO {
 	public void setCfRegDate(Date cfRegDate) {
 		this.cfRegDate = cfRegDate;
 	}
+	public String getCfRegDateStr() {
+		return cfRegDateStr;
+	}
+	public void setCfRegDateStr(String cfRegDateStr) {
+		this.cfRegDateStr = cfRegDateStr;
+	}
 	public String getCfIsNew() {
 		return cfIsNew;
 	}
@@ -74,6 +81,12 @@ public class OtherDashStuVO {
 	}
 	public void setClassDate(Date classDate) {
 		this.classDate = classDate;
+	}
+	public String getClassDateStr() {
+		return classDateStr;
+	}
+	public void setClassDateStr(String classDateStr) {
+		this.classDateStr = classDateStr;
 	}
 	public String getAttendanceStatus() {
 		return attendanceStatus;

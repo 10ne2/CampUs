@@ -9,8 +9,8 @@ import com.camp_us.dao.OtherDashStuDAO;
 import com.camp_us.dto.OtherDashStuVO;
 import com.camp_us.dto.UnsubmitHomeworkVO;
 
-public class OtherDashStuServiceImpl implements OtherDashStuService{
-	
+public class OtherDashStuServiceImpl implements OtherDashStuService {
+
 	private OtherDashStuDAO otherDashStuDAO;
 
 	public OtherDashStuServiceImpl(OtherDashStuDAO otherDashStuDAO) {
@@ -20,12 +20,12 @@ public class OtherDashStuServiceImpl implements OtherDashStuService{
 	@Override
 	public List<OtherDashStuVO> getNoticeList(String stu_id) throws SQLException {
 		List<OtherDashStuVO> list = otherDashStuDAO.selectNoticeList(stu_id);
-		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
 		for (OtherDashStuVO vo : list) {
 			Date regDate = vo.getRegDate();
-			if(regDate != null) {
+			if (regDate != null) {
 				vo.setRegDateStr(sdf.format(regDate));
 			}
 		}
@@ -34,12 +34,32 @@ public class OtherDashStuServiceImpl implements OtherDashStuService{
 
 	@Override
 	public List<OtherDashStuVO> getFileList(String stu_id) throws SQLException {
-		return otherDashStuDAO.selectFileList(stu_id);
+		List<OtherDashStuVO> list = otherDashStuDAO.selectFileList(stu_id);
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+		for (OtherDashStuVO cf : list) {
+			Date cfregDate = cf.getCfRegDate();
+			if (cfregDate != null) {
+				cf.setCfRegDateStr(sdf.format(cfregDate));
+			}
+		}
+		return list;
 	}
 
 	@Override
 	public List<OtherDashStuVO> getAttendenceList(String stu_id) throws SQLException {
-		return otherDashStuDAO.selectAttendenceList(stu_id);
+		List<OtherDashStuVO> list = otherDashStuDAO.selectAttendenceList(stu_id);
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+		for (OtherDashStuVO cd : list) {
+			Date classDate = cd.getClassDate();
+			if (classDate != null) {
+				cd.setClassDateStr(sdf.format(classDate));
+			}
+		}
+		return list;
 	}
 
 }
