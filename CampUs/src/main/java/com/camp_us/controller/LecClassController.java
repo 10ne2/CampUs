@@ -56,6 +56,9 @@ public class LecClassController {
 		List<OtherDashStuVO> attendenceList = otherDashStuService.getAttendenceList(stu_id);
 		model.addAttribute("attendenceList", attendenceList);
 		
+		List<OtherDashStuVO> attendencePercent = otherDashStuService.getAttendencePercent(stu_id);
+		model.addAttribute("attendencePercent", attendencePercent);
+		
 		return "lecture/main";
 	}
 

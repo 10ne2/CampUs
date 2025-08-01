@@ -12,4 +12,6 @@ public interface OtherDashStuDAO {
 	List<OtherDashStuVO> selectFileList(String stu_id)throws SQLException;
 	
 	List<OtherDashStuVO> selectAttendenceList(String stu_id)throws SQLException;
+	
+	List<OtherDashStuVO> selectAttendencePercent(String stu_id)throws SQLException;
 }

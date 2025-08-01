@@ -11,4 +11,6 @@ public interface OtherDashStuService {
 	List<OtherDashStuVO> getFileList(String stu_id) throws SQLException;
 	
 	List<OtherDashStuVO> getAttendenceList(String stu_id) throws SQLException;
+	
+	List<OtherDashStuVO> getAttendencePercent(String stu_id) throws SQLException;
 }

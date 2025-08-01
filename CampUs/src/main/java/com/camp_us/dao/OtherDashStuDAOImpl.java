@@ -29,4 +29,9 @@ public class OtherDashStuDAOImpl implements OtherDashStuDAO{
 		return session.selectList("OtherDashStu-Mapper.selectAttendenceList", stu_id);
 	}
 
+	@Override
+	public List<OtherDashStuVO> selectAttendencePercent(String stu_id) throws SQLException {
+		return session.selectList("OtherDashStu-Mapper.selectAttendencePercent", stu_id);
+	}
+
 }

@@ -5,7 +5,11 @@
 <mapper namespace="OtherDashStu-Mapper">
 	<select id="selectNoticeList" parameterType="String"
 		resultType="otherdashstu">
-		select
+		<![CDATA[select *
+		from(
+			select
+			lc.lec_id as lcId,
+			ln.lecnotice_id as noticeId,
 			lc.lec_name as subjectName,
 			ln.lecnotice_name as title,
 			a.mem_name as professorName,
@@ -22,12 +26,17 @@
 			AND lnv.lecs_id = ll.lecs_id
 
 		where ll.stu_id = #{stu_id}
-		order by isNew, regDate 
+		order by isNew, regDate
+		)
+		WHERE ROWNUM <= 4
+  		]]>
 	</select>
 	
 	<select id="selectFileList" parameterType="String" resultType="otherdashstu">
-		select
-		lc.lec_name as subjectName,
+		<![CDATA[select *
+		from
+		(select
+			lc.lec_name as subjectName,
 		    cf.cf_name as cfTitle,
 		    a.mem_name as professorName,
 		    cf.cf_date as cfRegDate,
@@ -44,34 +53,36 @@
 
 		where ll.stu_id = #{stu_id}
 		order by cfIsNew, cfRegDate
+		)
+		WHERE ROWNUM <= 4
+  		]]>
 	</select>
 	
 	<select id="selectAttendenceList" parameterType="String" resultType="otherdashstu">
 		SELECT
-		    lc.lec_name AS subjectName,         
-		    a.mem_name AS professorName,        
-		    lc.class_date AS classDate,         
-		    NVL(att.a_detail, 0) AS attendanceStatus
-		FROM (
-		    SELECT
-		        lec_id,
-		        lec_name,
-		        lec_profes,
-		        lec_date,
-		        TRUNC(SYSDATE, 'IW') + MOD(lec_day + 5, 7) AS class_date
-		    FROM lec_class
-		) lc
-		JOIN lecture_list ll ON lc.lec_id = ll.lec_id
-		JOIN professor p ON lc.lec_profes = p.profes_id
-		JOIN account a ON p.mem_id = a.mem_id
-		LEFT JOIN attendance att
-		    ON att.lecs_id = ll.lecs_id
-		   AND TRUNC(att.att_date) = lc.class_date 
-		WHERE ll.stu_id = #{stu_id}
-		  AND lc.class_date >= lc.lec_date   
-		  AND lc.class_date BETWEEN TRUNC(SYSDATE, 'IW') AND TRUNC(SYSDATE, 'IW') + 6
-		ORDER BY lc.class_date
+		    subjectName,         
+		    professorName,        
+		    classDate,         
+		    attendanceStatus
+		FROM vw_atten_list 
+		WHERE stu_id = #{stu_id}
+		  AND classdate >= lec_date   
+		  AND classdate BETWEEN TRUNC(SYSDATE, 'IW') AND TRUNC(SYSDATE, 'IW') + 6
+		ORDER BY classdate
 	</select>
+	
+	<select id="selectAttendencePercent" parameterType="String" resultType="otherdashstu">
+		SELECT
+		  ROUND(100.0 * SUM(CASE WHEN attendanceStatus = 1 THEN 1 ELSE 0 END) / COUNT(*), 2) AS rate_no,
+		  ROUND(100.0 * SUM(CASE WHEN attendanceStatus = 2 THEN 1 ELSE 0 END) / COUNT(*), 2) AS rate_late,
+		  ROUND(100.0 * SUM(CASE WHEN attendanceStatus = 3 THEN 1 ELSE 0 END) / COUNT(*), 2) AS rate_ok,
+		  ROUND(100.0 * SUM(CASE WHEN attendanceStatus = 0 THEN 1 ELSE 0 END) / COUNT(*), 2) AS rate_none
+		FROM vw_atten_list 
+		WHERE stu_id = #{stu_id}
+		  AND classdate >= lec_date   
+		  AND classdate BETWEEN TRUNC(SYSDATE, 'IW') AND TRUNC(SYSDATE, 'IW') + 6
+	</select>
+	
 
 </mapper>
 

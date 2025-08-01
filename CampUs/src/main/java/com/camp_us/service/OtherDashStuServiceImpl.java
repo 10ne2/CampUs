@@ -62,4 +62,9 @@ public class OtherDashStuServiceImpl implements OtherDashStuService {
 		return list;
 	}
 
+	@Override
+	public List<OtherDashStuVO> getAttendencePercent(String stu_id) throws SQLException {
+		return otherDashStuDAO.selectAttendencePercent(stu_id);
+	}
+
 }
