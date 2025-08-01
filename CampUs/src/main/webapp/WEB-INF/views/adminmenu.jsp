@@ -283,8 +283,7 @@
 <script src="<%=request.getContextPath() %>/resources/bootstrap/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->
 <script src="<%=request.getContextPath() %>/resources/bootstrap/dist/js/adminlte.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="<%=request.getContextPath() %>/resources/bootstrap/dist/js/demo.js"></script>
+
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="<%=request.getContextPath() %>/resources/bootstrap/dist/js/pages/dashboard.js"></script>
 </body>

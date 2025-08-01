@@ -20,7 +20,7 @@
 			</div>
 			<div style="border: 1px solid #b5b5b5; border-top: 3px solid #2EC4B6;">
 				<div style="position: relative; height: 100%; width: 100%;">
-					<div style="border-bottom: 1px solid #b5b5b5;">
+					<div class="jsgrid-header-scrollbar"style="border-bottom: 1px solid #b5b5b5;">
 						<table class="jsgrid-table" style="width: 100%;">
 							<tr class="jsgrid-header-row ">
 								<th
