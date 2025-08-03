@@ -16,13 +16,24 @@ public class MemberDAOImpl implements MemberDAO{
 		this.session = session;
 	}
 
+
 	@Override
-	public List<MemberVO> selectMemberList() throws SQLException {
-		
-		return session.selectList("Member-Mapper.selectMemberList");
+	public MemberVO getMemberById(String mem_id) throws SQLException {
+		return session.selectOne("Member-Mapper.selectMemberByID",mem_id);
 	}
 
 
+	@Override
+	public String selectAuthoritiesById(String mem_id) {
+		return session.selectOne("Member-Mapper.selectAuthoritiesById",mem_id);
+	}
+
+
+	@Override
+	public void insertLastLogin(MemberVO vo) throws Exception {
+		session.insert("Member-Mapper.updateLastLogin",vo);	
+	}
+	
 	@Override
 	public MemberVO selectMemberById(String mem_id) throws SQLException {
 		return session.selectOne("Member-Mapper.selectMemberByID",mem_id);
@@ -46,11 +57,6 @@ public class MemberDAOImpl implements MemberDAO{
 	}
 
 	@Override
-	public List<String> selectAuthoritiesById(String mem_id) throws SQLException {
-		return session.selectList("Member-Mapper.selectAuthoritiesById",mem_id);
-	}
-
-	@Override
 	public void insertAuthorities(String mem_id, int mem_auth) throws SQLException {
 		Map<String,Object> paramMap = new HashMap<String,Object>();
 		paramMap.put("mem_id",mem_id);
@@ -63,4 +69,13 @@ public class MemberDAOImpl implements MemberDAO{
 		session.delete("Member-Mapper.deleteAllAuthorityById",id);	
 	}
 
+
+	@Override
+	public List<MemberVO> selectMemberList() throws SQLException {
+		
+		return session.selectList("Member-Mapper.selectMemberList");
+	}
+
+	
+	
 }

@@ -85,13 +85,15 @@
       <button type="button" class="btn btn-block btn-info btn-flat mt-1" style="background-color:#79aaa4;border: none; width:100px;height:40px; border-radius:5px;">로그아웃</button>
       <li>
       <div class="row ml-4 mr-4">
-      mimi
+      학번: ${member.mem_id }
       </div>
-      <div class="row ml-4 mr-4">mimi</div>
+      <div class="row ml-4 mr-4">
+      이름: ${member.mem_name }
+      </div>
       </li>
       <li>
       <div class="image" style="cursor:pointer;" onclick="OpenWindow('mypage','글등록',800,700);">
-          <img src="<%=request.getContextPath() %>/member/getPicture?id=20170101" class="img-circle img-md" alt="User Image" style="width:45px; height:45px; object-fit:cover;">
+          <img src="<%=request.getContextPath() %>/member/getPicture?id=mimi" class="img-circle img-md" alt="User Image" style="width:45px; height:45px; object-fit:cover;">
         </div>
       </li>
     </ul>
@@ -99,7 +101,7 @@
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-white-primary evolution-1" style="border:1px solid #dedede;">
+  <aside class="main-sidebar sidebar-white-primary" style="border:1px solid #dedede;background-color:#f5f5f5;">
     <!-- Brand Logo -->
    <a href="" class="brand-link">
   <img src="<%=request.getContextPath() %>/resources/bootstrap/dist/img/Camp_usLogo.png"
@@ -113,8 +115,8 @@
 
 
       <!-- Sidebar Menu -->
-      <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+      <nav class="mt-2" >
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="true">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
     <li class="nav-item">
@@ -137,16 +139,16 @@
             <div class="row">
             <div class="col-sm-2">
             </div>
-            <div class="col-sm-8">
+            <div class="col-sm-9">
             <div class="form-group">
-                        <select class="custom-select my-border" onchange="onLectureChange(this)" >
-                          <option>전공을 선택하세요.</option>
-                          <option value="1">인문사회학</option>
-                          <option value="2">혁신기초</option>
-                          <option value="3">자연과학</option>
-                          <option value="4">데이터 과학·인공지능</option>
-                          <option value="5">비즈니스 혁신</option>
-                        </select>
+                       <select class="custom-select my-border" onchange="onLectureChange(this)">
+  <option value="">전공을 선택하세요.</option>
+  <c:forEach var="stu_lec" items="${lectureList}">
+    <option value="${stu_lec.lec_id}">${stu_lec.lec_name}</option>
+    <c:out value="${lectureList}" />
+    
+</c:forEach>
+</select>
                       </div>
                       </div>
                       </div>
@@ -168,12 +170,14 @@
                   <p>&nbsp;&nbsp;&nbsp;실시간 강의</p>
                 </a>
               </li>
+              
               <li class="nav-item" data-url="">
                 <a href="" class="nav-link">
                   <i class="far nav-icon"></i>
                   <p>&nbsp;&nbsp;&nbsp;온라인 강의</p>
                 </a>
               </li>
+             
               <li class="nav-item" data-url="">
                 <a href="" class="nav-link">
                   <i class="far nav-icon"></i>
@@ -203,14 +207,14 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item" data-url="">
-                <a href="./index.html" class="nav-link">
+              <li class="nav-item" data-url="<%=request.getContextPath() %>/project/list?stu_id=1">
+                <a href="#" class="nav-link">
                   <i class="far nav-icon"></i>
                   <p>&nbsp;&nbsp;&nbsp;팀 목록</p>
                 </a>
               </li>
               <li class="nav-item" data-url="">
-                <a href="./index2.html" class="nav-link">
+                <a href="#" class="nav-link">
                   <i class="far fas nav-icon"></i>
                   <p>&nbsp;&nbsp;&nbsp;로드맵</p>
                 </a>
@@ -219,7 +223,7 @@
           </li>
           
           <li class="nav-item" data-url="">
-            <a href="pages/widgets.html" class="nav-link">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas post-img-icon"></i>
               <p class="fas">&nbsp;
                 게시판
@@ -244,13 +248,13 @@
             </a>
             <ul class="nav nav-treeview" data-url="">
               <li class="nav-item">
-                <a href="./index.html" class="nav-link">
+                <a href="#" class="nav-link">
                   <i class="far nav-icon"></i>
                   <p>&nbsp;&nbsp;&nbsp;공지사항</p>
                 </a>
               </li>
               <li class="nav-item" data-url="">
-                <a href="./index2.html" class="nav-link">
+                <a href="#" class="nav-link">
                   <i class="far nav-icon"></i>
                   <p>&nbsp;&nbsp;&nbsp;질의응답</p>
                 </a>
@@ -357,14 +361,35 @@ $(".person-info").css({
 	"height":"30px",
 	"border-radius":"10px"
 });
-document.querySelectorAll('.nav-item').forEach(menu => {
-	  menu.addEventListener('click', function (e) {
-	    e.preventDefault(); // <a> 링크 기본 동작 무조건 방지
-	    const url = this.getAttribute('data-url');
-	    if (url) parent.mainFrame.location.href = url;
+
+document.querySelectorAll('.nav-item > a').forEach(link => {
+	  link.addEventListener('click', function (e) {
+	    e.preventDefault();
+	    const url = this.closest('.nav-item').getAttribute('data-url');
+	    if (url) {
+	      location.hash = url;               // 주소창 해시(#) 변경
+	      document.getElementById('mainFrame').src = url;  // iframe src 변경
+	    }
 	  });
 	});
-
+window.addEventListener('DOMContentLoaded', () => {
+	  const hash = location.hash.substring(1); // # 뗀 나머지
+	  if (hash) {
+	    document.getElementById('mainFrame').src = hash;
+	  } else {
+	    // 기본 페이지 지정 (원하는 초기 URL)
+	    document.getElementById('mainFrame').src = '<%=request.getContextPath()%>/lecture/main';
+	  }
+	});
+function goSyllabus() {
+	  if (!selectedLecId) {
+	    alert("전공을 먼저 선택하세요.");
+	    return;
+	  }
+	  const syllabusUrl = '<%=request.getContextPath()%>/lecture/syllabus?lec_id=' + encodeURIComponent(selectedLecId);
+	  location.hash = syllabusUrl;    // 해시 변경
+	  document.getElementById("mainFrame").src = syllabusUrl;
+	}
 </script>
 </body>
 </html>

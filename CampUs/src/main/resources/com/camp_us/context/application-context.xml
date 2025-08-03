@@ -32,8 +32,18 @@
 		  class="com.camp_us.dao.OtherDashStuDAOImpl"
 		  c:session-ref="sqlSession"     
 	      />      
-	      
-	      
+	<bean id="stuLecDAO"
+		  class="com.camp_us.dao.StuLecDAOImpl"
+		  c:session-ref="sqlSession"
+		  />
+		  
+		  
+		  
+		        
+	<bean id="stuLecService"
+		  class="com.camp_us.service.StuLecServiceImpl"
+		  c:stuLecDAO-ref="stuLecDAO"
+		  />      
 	<bean id="otherDashStuService"
 		  class="com.camp_us.service.OtherDashStuServiceImpl"
 		  c:otherDashStuDAO-ref="otherDashStuDAO"
