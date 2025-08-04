@@ -173,9 +173,15 @@ i{}
 .nav-link:hover .psad-img-icon {
   background-image: url('<%=request.getContextPath() %>/resources/bootstrap/dist/img/psad_hv.png');
 }
+*{
+	color:#212121;
+}
 .nav-link:hover p {
   color: #2ec4b6;
   font-weight: bold;
+}
+.nav-link:hover .fa-angle-left {
+  color: #2ec4b6;  /* 원하는 색상으로 변경 */
 }
 .brand-link {
   display: flex;
@@ -214,8 +220,74 @@ i{}
   background-size: 100% 100%;
   vertical-align: middle;
 }
+.main-sidebar {
+  overflow-x: hidden;
+  box-sizing: border-box; /* 혹은 필요에 따라 유지 */
+}
+.far.fa-minical {
+  background-image: url('<%=request.getContextPath() %>/resources/bootstrap/dist/img/minical.png'); /* 이미지 경로 */
+  background-size: contain;
+  background-repeat: no-repeat;
+  display: inline-block;
+  width: 22px;
+  height: 15px;
+    vertical-align: middle;
+  background-position: center center;
+}
+.fas.fa-cpsearch {
+  background-image: url('<%=request.getContextPath() %>/resources/bootstrap/dist/img/search.png'); /* 이미지 경로 */
+  background-size: contain;
+  background-repeat: no-repeat;
+  display: inline-block;
+  width: 80px;
+  height: 30px;
+    vertical-align: middle;
+  background-position: center center;
+}
+.custom-btn {
+  border: 1px solid #2ec4b6;
+  color: #2ec4b6;
+  font-weight: bold;
+  font-size: 16px;
+  background-color: transparent;
+  transition: all 0.2s ease;
+  border-radius: 0px;
+}
+
+.custom-btn:hover {
+  background-color: #2ec4b6;
+  color: #ffffff;
+}
+input[type="text"]:focus {
+  border: 2px solid #2ec4b6 !important;  /* 원하는 색상으로 변경 */
+  outline: none !important;  /* 기본 파란 테두리 제거 */
+  box-shadow: none !important; /* Bootstrap에서 자동 추가되는 그림자 제거 */
+}
+textarea:focus {
+  border: 2px solid #2ec4b6 !important;  /* 원하는 색상으로 변경 */
+  outline: none !important;  /* 기본 파란 테두리 제거 */
+  box-shadow: none !important; /* Bootstrap에서 자동 추가되는 그림자 제거 */
+}
+  .custom-textarea:focus {
+    border-color: #2ec4b6;
+    box-shadow: none;
+  }
+  .tempusdominus-widget {
+  z-index: 1060 !important;
+}
+ body.modal-open {
+    overflow-y: scroll !important; /* 스크롤바 항상 보이도록 */
+    padding-right: 0 !important;
+  }
+  html, body {
+    overflow-x: hidden;
+  }
+  body {
+  width: 100vw;
+  overflow-x: hidden;
+}
 </style>
+<script src="<%=request.getContextPath() %>/resources/js/common.js"></script>
 <decorator:head />
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
-

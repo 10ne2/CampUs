@@ -82,7 +82,7 @@
 				<div id="예정된 강의" class="jsgrid"
 					style="position: relative; height: 100%; width: 100%; border: 1px solid #b5b5b5; border-top: 3px solid #2EC4B6;">
 					<div style="height: 206px; overflow-y: auto;">
-						<table class="jsgrid-table scroll-table-wrapper-wc">
+						<table class="jsgrid-table">
 							<tbody>
 								<c:if test="${empty comingleclist }">
 									<tr>
@@ -179,28 +179,35 @@
 				</div>
 				<div class="progress progress-sm"
 					style="height: 30px; margin-bottom: 10px; border-radius: 15px">
-					<c:forEach var="pr" items="${attendencePercent}">
-						<div class="progress-bar"
-							style="width: ${pr.rate_ok }%; height: 100%; background-color: #2EC4B6">
-							<span
-								style="display: block; width: 100%; height: 5%; text-align: center; font-size: 17px; color: #212121;">${pr.rate_ok }%</span>
-						</div>
-						<div class="progress-bar"
-							style="width: ${pr.rate_late }%; height: 100%; background-color: #FFE99A;">
-							<span
-								style="display: block; width: 100%; height: 5%; text-align: center; font-size: 17px; color: #212121;">${pr.rate_late }%</span>
-						</div>
-						<div class="progress-bar"
-							style="width: ${pr.rate_no }%; height: 100%; background-color: #EF7C7C">
-							<span
-								style="display: block; width: 100%; height: 5%; text-align: center; font-size: 17px; color: #212121;">${pr.rate_no }%</span>
-						</div>
-						<div class="progress-bar"
-							style="width: ${pr.rate_none }%; height: 100%; background-color: #CDCDCD">
-							<span
-								style="display: block; width: 100%; height: 5%; text-align: center; font-size: 17px; color: #212121;">${pr.rate_none }%</span>
-						</div>
-					</c:forEach>
+					<c:if test="${empty attendenceList }">
+						<tr>
+							<td colspan="5" class="text-center" style="font-size: 30px; font-weight: bold; color: #e0e0e0; line-height: 130px"></td>
+						</tr>
+					</c:if>
+					<c:if test="${not empty attendenceList }">
+						<c:forEach var="pr" items="${attendencePercent}">
+							<div class="progress-bar"
+								style="width: ${pr.rate_ok }%; height: 100%; background-color: #2EC4B6">
+								<span
+									style="display: block; width: 100%; height: 5%; text-align: center; font-size: 17px; color: #212121;">${pr.rate_ok }%</span>
+							</div>
+							<div class="progress-bar"
+								style="width: ${pr.rate_late }%; height: 100%; background-color: #FFE99A;">
+								<span
+									style="display: block; width: 100%; height: 5%; text-align: center; font-size: 17px; color: #212121;">${pr.rate_late }%</span>
+							</div>
+							<div class="progress-bar"
+								style="width: ${pr.rate_no }%; height: 100%; background-color: #EF7C7C">
+								<span
+									style="display: block; width: 100%; height: 5%; text-align: center; font-size: 17px; color: #212121;">${pr.rate_no }%</span>
+							</div>
+							<div class="progress-bar"
+								style="width: ${pr.rate_none }%; height: 100%; background-color: #CDCDCD">
+								<span
+									style="display: block; width: 100%; height: 5%; text-align: center; font-size: 17px; color: #212121;">${pr.rate_none }%</span>
+							</div>
+						</c:forEach>
+					</c:if>
 				</div>
 				<div id="금주의 출결" class="jsgrid"
 					style="position: relative; height: 100%; width: 100%; border: 1px solid #b5b5b5; border-top: 3px solid #2EC4B6;">

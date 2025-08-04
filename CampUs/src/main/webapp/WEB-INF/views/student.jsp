@@ -23,77 +23,30 @@
   
        
       <!-- Messages Dropdown Menu -->
-      <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="dropdown" onclick="OpenWindow('mail','글등록',1600,920);">
           <span class="custom-icon-message"></span>
           <span class="badge badge-danger navbar-badge">3D</span>
         </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <a href="#" class="dropdown-item">
-            <!-- Message Start -->
-            <div class="media">
-              <img src="dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                  Brad Diesel
-                  <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-                </h3>
-                <p class="text-sm">Call me whenever you can...</p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-              </div>
-            </div>
-            <!-- Message End -->
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <!-- Message Start -->
-            <div class="media">
-              <img src="dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                  John Pierce
-                  <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
-                </h3>
-                <p class="text-sm">I got your message bro</p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-              </div>
-            </div>
-            <!-- Message End -->
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <!-- Message Start -->
-            <div class="media">
-              <img src="dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                  Nora Silvester
-                  <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
-                </h3>
-                <p class="text-sm">The subject goes here</p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-              </div>
-            </div>
-            <!-- Message End -->
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-        </div>
       </li>
-      <!-- Notifications Dropdown Menu -->
+     <!-- Notifications Dropdown Menu -->
       <div class="ml-2"></div>
-      <button type="button" class="btn btn-block btn-info btn-flat mt-1" style="background-color:#79aaa4;border: none; width:100px;height:40px; border-radius:5px;">로그아웃</button>
+       <li>
+      <form action="${pageContext.request.contextPath}/logout" method="post">
+      <button type="submit" class="btn btn-block btn-info btn-flat mt-1" style="background-color:#79aaa4;border: none; width:100px;height:40px; border-radius:5px;">로그아웃</button>
+       </form>
+       </li>
       <li>
       <div class="row ml-4 mr-4">
-      학번: ${member.mem_id }
+      학번: ${loginUser.mem_id }
       </div>
       <div class="row ml-4 mr-4">
-      이름: ${member.mem_name }
+      이름: ${loginUser.mem_name }
       </div>
       </li>
       <li>
       <div class="image" style="cursor:pointer;" onclick="OpenWindow('mypage','글등록',800,700);">
-          <img src="<%=request.getContextPath() %>/member/getPicture?id=mimi" class="img-circle img-md" alt="User Image" style="width:45px; height:45px; object-fit:cover;">
+          <img src="<%=request.getContextPath() %>/member/getPicture?id=${loginUser.mem_id}" class="img-circle img-md" alt="User Image" style="width:45px; height:45px; object-fit:cover;">
         </div>
       </li>
     </ul>
@@ -109,7 +62,7 @@
        class="brand-image custom-logo" />
 </a>
 
-
+<!-- 디버깅용 -->
 
       <!-- SidebarSearch Form -->
 
@@ -313,8 +266,8 @@
       return;
     }
 
-    const syllabusUrl = '<%=request.getContextPath()%>/lecture/syllabus?lec_id=' + encodeURIComponent(selectedLecId);
-    document.getElementById("mainFrame").src = syllabusUrl;
+    const listUrl = '<%=request.getContextPath()%>/lecture/list?lec_id=' + encodeURIComponent(selectedLecId);
+    document.getElementById("mainFrame").src = listUrl;
   }
 </script>
 <!-- commons.js -->
@@ -386,10 +339,18 @@ function goSyllabus() {
 	    alert("전공을 먼저 선택하세요.");
 	    return;
 	  }
-	  const syllabusUrl = '<%=request.getContextPath()%>/lecture/syllabus?lec_id=' + encodeURIComponent(selectedLecId);
-	  location.hash = syllabusUrl;    // 해시 변경
-	  document.getElementById("mainFrame").src = syllabusUrl;
+	  const listUrl = '<%=request.getContextPath()%>/lecture/list?lec_id=' + encodeURIComponent(selectedLecId);
+	  location.hash = listUrl;    // 해시 변경
+	  document.getElementById("mainFrame").src = listUrl;
 	}
+</script>
+<script>
+$(document).on('show.bs.modal', '.modal', function () {
+	  $('body').css('padding-right', '0px');
+	});
+	$(document).on('hidden.bs.modal', '.modal', function () {
+	  $('body').css('padding-right', '');
+	});
 </script>
 </body>
 </html>

@@ -19,4 +19,9 @@ public class UnsubmitHomeworkDAOImpl implements UnsubmitHomeworkDAO {
 		return session.selectList("UnsubmitHomework-Mapper.selectUnsubmitHomework", stu_id);
 	}
 
+	@Override
+	public UnsubmitHomeworkVO selectStuIdbyMemId(String mem_id) throws SQLException {
+		return session.selectOne("UnsubmitHomework-Mapper.selectStuIdbyMemId", mem_id);
+	}
+
 }

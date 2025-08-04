@@ -38,6 +38,11 @@ public class UnsubmitHomeworkServiceImpl implements UnsubmitHomeworkService{
 		
 		return list;
 	}
+
+	@Override
+	public UnsubmitHomeworkVO getStuIdbyMemId(String mem_id) throws SQLException {
+		return unsubmithomeworkDAO.selectStuIdbyMemId(mem_id);
+	}
 	
 
 }

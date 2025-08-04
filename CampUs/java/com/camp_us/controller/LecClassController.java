@@ -3,6 +3,7 @@ package com.camp_us.controller;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.camp_us.dto.ComingLecVO;
 import com.camp_us.dto.LecClassVO;
+import com.camp_us.dto.MemberVO;
 import com.camp_us.dto.OtherDashStuVO;
 import com.camp_us.dto.UnsubmitHomeworkVO;
 import com.camp_us.service.ComingLecService;
@@ -40,7 +42,16 @@ public class LecClassController {
     
     @GetMapping("/main")
 	public String main(HttpSession session, Model model) throws Exception {
-		String stu_id = "S20170102";
+    	
+    	MemberVO member = (MemberVO) session.getAttribute("loginUser");
+        if (member == null) {
+            return "redirect:/login";
+        }
+        
+        UnsubmitHomeworkVO vo = unsubmitHomeworkService.getStuIdbyMemId(member.getMem_id());
+        String stu_id = vo.getStu_id();
+
+		
 		List<UnsubmitHomeworkVO> unsubmithwList = unsubmitHomeworkService.getUnsubmitHomeworkList(stu_id);
 		model.addAttribute("unsubmitList", unsubmithwList);
 		

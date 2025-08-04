@@ -10,6 +10,8 @@ public class UnsubmitHomeworkVO {
 	private String lec_name; // 강의명
 	private int d_day; // d-day
 	private String mem_name; // 교수명
+	private String stu_id;
+	private String mem_id;
 	
 	public String getHw_name() {
 		return hw_name;
@@ -47,7 +49,18 @@ public class UnsubmitHomeworkVO {
 	public void setMem_name(String mem_name) {
 		this.mem_name = mem_name;
 	}
-	
+	public String getStu_id() {
+		return stu_id;
+	}
+	public void setStu_id(String stu_id) {
+		this.stu_id = stu_id;
+	}
+	public String getMem_id() {
+		return mem_id;
+	}
+	public void setMem_id(String mem_id) {
+		this.mem_id = mem_id;
+	}
 	
 	
 }

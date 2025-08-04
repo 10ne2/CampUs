@@ -7,4 +7,6 @@ import com.camp_us.dto.UnsubmitHomeworkVO;
 
 public interface UnsubmitHomeworkService {
 	List<UnsubmitHomeworkVO> getUnsubmitHomeworkList(String stu_id) throws SQLException;
+	
+	UnsubmitHomeworkVO getStuIdbyMemId(String mem_id)throws SQLException;
 }
