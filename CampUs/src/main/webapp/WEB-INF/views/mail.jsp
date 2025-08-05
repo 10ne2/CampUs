@@ -38,12 +38,7 @@
 	margin-bottom: 10px
 }
 .mailbox-subjectc {
-  overflow: hidden;
-  text-overflow: ellipsis;
   width: 230px;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
 }
 .card-primaryc {
   border-top: 3px solid #2EC4B6;
@@ -69,6 +64,13 @@
   border-color: #2EC4B6;
   opacity: 0.65;
 }
+.table-hover tbody tr:hover {
+  background-color: #EAF5F4 !important; /* 민트색 배경 예시 */
+  cursor: pointer; /* 커서 손가락으로 */
+}
+.selected  {
+  background-color: #EAF5F4 !important; /* 민트색 배경 예시 */
+}
 </style>
 
 
@@ -76,17 +78,17 @@
 <div style="height: 900px; padding: 15px;">
 	<div>
 		<span
-			style="display: block; font-size: 20pt; font-weight: bold; margin-bottom: 18px;">
+			style="display: block; font-size: 20pt; font-weight: bold; margin-bottom: 18px; margin-left: 5px">
 			메일</span>
 	</div>
-	<div class="row"">
-		<div class="col-md-2">
-			<a href="compose.html" class="btnw btn-primary btn-block mb-3">메일
+	<div class="row">
+		<div class="col-md-2" style="width:250px">
+			<a class="btnw btn-primary btn-block mb-3" style="width:width:250px" onclick="mailWrite()">메일
 				작성</a>
-			<div class="cardc" style="width: 100%; height: 70px">
+			<div class="cardc" style="width: width:250px; height: 70px">
 				<div class="" style="width: 100%">
 					<div
-						style="width: 100%; display: flex; text-align: center; flex-direction: row; justify-content: center; gap:20px;">
+						style="width: 250px; display: flex; text-align: center; flex-direction: row; justify-content: center; gap:20px;">
 						<div style="width: 50px; height: 70px; list-style: none;">
 							<span
 								style="display: block; text-align: center; font-size: 25px; color: #22A99C; font-weight: bold;">12</span>
@@ -109,11 +111,11 @@
 			</div>
 			<div class="card">
 
-				<div class="card-body p-0">
-					<ul class="nav nav-pills flex-column" style="height: 668px">
+				<div class="card-body p-0" style="width:250px !important">
+					<ul class="nav nav-pills flex-column" style="width:250px; height: 668px">
 						<li class="nav-item" style="height: 50px"><a href="#"
 							class="d-flex align-items-center nav-link"
-							style="height: 100%; gap: 20px; line-height: 50px"> <i
+							style="width: 250px; height: 100%; gap: 20px; line-height: 50px"> <i
 								class="fas fa-inbox" style=""></i> <span style="display: block;">전체
 									메일함</span>
 						</a></li>
@@ -140,7 +142,7 @@
 			<!-- /.card -->
 		</div>
 		<!-- /.col -->
-		<div class="col-md-3">
+		<div class="col-md-3 mailList" style="display:block">
 			<div class="card card-outline card-primaryc">
 				<div class="card-header">
 					<h3 class="card-title">목록</h3>
@@ -161,7 +163,7 @@
 					<div class="mailbox-controls">
 						<!-- Check all button -->
 						<button type="button"
-							class="btn btn-default btn-sm checkbox-toggle">
+							class="btn btn-default btn-sm checkbox-toggle" onclick="all_click()">
 							<i class="far fa-square"></i>
 						</button>
 						<div class="btn-group">
@@ -169,7 +171,7 @@
 								<i class="far fa-trash-alt"></i>
 							</button>
 							<button type="button" class="btn btn-default btn-sm">
-								<i class="fas fa-share"></i>
+								<i class="fas fa-reply"></i>
 							</button>
 						</div>
 						<!-- /.btn-group -->
@@ -179,35 +181,104 @@
 						<!-- /.float-right -->
 					</div>
 					<div class="table-responsive mailbox-messages"
-						style="height: 680px; overflow-y: auto;">
-						<table class="table table-hover table-striped">
+						style="height: 660px; overflow-y: auto;">
+						<table class="table table-hover">
 							<tbody>
-								<tr style="width: 100%; height: 110px; display: flex; flex-direction: column;">
-									<td style="width: 360px; height: 60px;">
+								<tr style="width: 100%;  display: flex; flex-direction: column;">
+									<td style="width: 100%; height: 60px;">
 										<div style="width:100%; display: flex; flex-direction: row;">
 											<div class="icheck-primary" style="weight:20%">
 												<input type="checkbox" value="" id="check1"> <label
 													for="check1"></label>
 											</div>
 											<div class="" style="width:200px; display:flex; flex-direction: row;">
-												<a style="line-height:30px; margin-left:30px;">김원희</a>
+												<a style="line-height:30px; margin-left:20px;">김원희</a>
 												<a style="line-height:30px; margin-left:15px; font-size:14px; color: #999">20190101</a>
 											</div >
 											<div class="mailbox-date" style=" margin-left: auto; line-height:30px; font-size:12px; color: #bbb">오후 5:30</div>
 										</div>
 									</td>
-									<td style="height: 100px; border:none; display: flex; flex-direction: row; margin-top:-25px">
-										<div class="mailbox-subjectc" style=" margin-left:70px; overflow: hidden; text-overflow: ellipsis;">
+									<td style="height: 100%; border:none; display: flex; flex-direction: row; margin-top:-25px">
+										<div class="mailbox-subjectc" style=" margin-left:60px; overflow: hidden; text-overflow: ellipsis;">
 											<a style="font-size:14px; color: #999">[보낸편지함]</a>
 											<a style="font-size:14px;">전자정부 풀스택 503호 1조(시스아웃) ERD 및 화면정의서 제출합니다.</a>
 										</div>
-										<div class="mailbox-star" style="margin: 10px 0 0 20px; ">
-											<a href="#">
-												<i class="fas fa-star text-warning"></i>
-											</a>
+										<div class="mailbox-star" style="margin-left: auto; margin-top:10px ">
+											<img id="starImg" src="<%=request.getContextPath()%>/resources/images/imp.png" style="width:20px; cursor:pointer" onclick="starClick()"/>
 										</div>
 									</td>
-									
+								</tr>
+								<tr style="width: 100%;  display: flex; flex-direction: column;">
+									<td style="width: 100%; height: 60px;">
+										<div style="width:100%; display: flex; flex-direction: row;">
+											<div class="icheck-primary" style="weight:20%">
+												<input type="checkbox" value="" id="check2"> <label
+													for="check2"></label>
+											</div>
+											<div class="" style="width:200px; display:flex; flex-direction: row;">
+												<a style="line-height:30px; margin-left:20px;">김원희</a>
+												<a style="line-height:30px; margin-left:15px; font-size:14px; color: #999">20190101</a>
+											</div >
+											<div class="mailbox-date" style=" margin-left: auto; line-height:30px; font-size:12px; color: #bbb">오후 5:30</div>
+										</div>
+									</td>
+									<td style="height: 100%; border:none; display: flex; flex-direction: row; margin-top:-25px">
+										<div class="mailbox-subjectc" style=" margin-left:60px; overflow: hidden; text-overflow: ellipsis;">
+											<a style="font-size:14px; color: #999">[보낸편지함]</a>
+											<a style="font-size:14px;">전자정부 풀스택 503호 1조(시스아웃) ERD 및 화면정의서 제출합니다.</a>
+										</div>
+										<div class="mailbox-star" style="margin: 10px 0 0 25px; ">
+											<img class="star" src="<%=request.getContextPath()%>/resources/images/imp.png" style="width:20px; cursor:pointer; "/>
+										</div>
+									</td>
+								</tr>
+								<tr style="width: 100%;  display: flex; flex-direction: column;">
+									<td style="width: 100%; height: 60px;">
+										<div style="width:100%; display: flex; flex-direction: row;">
+											<div class="icheck-primary" style="weight:20%">
+												<input type="checkbox" value="" id="check3"> <label
+													for="check3"></label>
+											</div>
+											<div class="" style="width:200px; display:flex; flex-direction: row;">
+												<a style="line-height:30px; margin-left:20px;">김원희</a>
+												<a style="line-height:30px; margin-left:15px; font-size:14px; color: #999">20190101</a>
+											</div >
+											<div class="mailbox-date" style=" margin-left: auto; line-height:30px; font-size:12px; color: #bbb">오후 5:30</div>
+										</div>
+									</td>
+									<td style="height: 100%; border:none; display: flex; flex-direction: row; margin-top:-25px">
+										<div class="mailbox-subjectc" style=" margin-left:60px; overflow: hidden; text-overflow: ellipsis;">
+											<a style="font-size:14px; color: #999">[보낸편지함]</a>
+											<a style="font-size:14px;">전자정부 풀스택 503호 1조(시스아웃) ERD 및 화면정의서 제출합니다.</a>
+										</div>
+										<div class="mailbox-star" style="margin: 10px 0 0 25px; ">
+											<img class="star" src="<%=request.getContextPath()%>/resources/images/imp.png" style="width:20px; cursor:pointer"/>
+										</div>
+									</td>
+								</tr>
+								<tr style="width: 100%;  display: flex; flex-direction: column;">
+									<td style="width: 100%; height: 60px;">
+										<div style="width:100%; display: flex; flex-direction: row;">
+											<div class="icheck-primary" style="weight:20%">
+												<input type="checkbox" value="" id="check4"> <label
+													for="check4"></label>
+											</div>
+											<div class="" style="width:200px; display:flex; flex-direction: row;">
+												<a style="line-height:30px; margin-left:20px;">김원희</a>
+												<a style="line-height:30px; margin-left:15px; font-size:14px; color: #999">20190101</a>
+											</div >
+											<div class="mailbox-date" style=" margin-left: auto; line-height:30px; font-size:12px; color: #bbb">오후 5:30</div>
+										</div>
+									</td>
+									<td style="height: 100%; border:none; display: flex; flex-direction: row; margin-top:-25px">
+										<div class="mailbox-subjectc" style=" margin-left:60px; overflow: hidden; text-overflow: ellipsis;">
+											<a style="font-size:14px; color: #999">[보낸편지함]</a>
+											<a style="font-size:14px;">전자정부 풀스택 503호 1조(시스아웃) ERD 및 화면정의서 제출합니다.</a>
+										</div>
+										<div class="mailbox-star" style="margin: 10px 0 0 25px; ">
+											<img class="star" src="<%=request.getContextPath()%>/resources/images/imp.png" style="width:20px; cursor:pointer"/>
+										</div>
+									</td>
 								</tr>
 							</tbody>
 						</table>
@@ -216,46 +287,46 @@
 					<!-- /.mail-box-messages -->
 				</div>
 				<!-- /.card-body -->
+				<div class="card-footer">
+						<!-- pagination.jsp -->
+							<div <%-- style="display:${not empty noticeList ? 'visible':'none' }; --%>">
+								<%@ include file="/WEB-INF/views/module/pagination.jsp" %>	
+							</div>	    			
+	    				</div>	
 			</div>
 			<!-- /.card -->
 		</div>
 		<!-- /.col -->
-		<div class="col-md-7">
+		<div class="col-md-7 mailDetail" style="display:block">
 			<div class="card card-primaryc card-outline"
 				style="height: 810px; overflow-y: auto;">
 				<!-- /.card-header -->
-				<div class="card-body p-0">
-					<div class="mailbox-read-info">
-						<h5>Message Subject Is Placed Here</h5>
-						<h6>
-							From: support@adminlte.io <span
-								class="mailbox-read-time float-right">15 Feb. 2015 11:03
-								PM</span>
-						</h6>
-					</div>
-					<!-- /.mailbox-read-info -->
-					<div class="mailbox-controls with-border text-center">
-						<div class="btn-group">
-							<button type="button" class="btn btn-default btn-sm"
-								data-container="body" title="Delete">
-								<i class="far fa-trash-alt"></i>
-							</button>
-							<button type="button" class="btn btn-default btn-sm"
-								data-container="body" title="Reply">
-								<i class="fas fa-reply"></i>
-							</button>
-							<button type="button" class="btn btn-default btn-sm"
-								data-container="body" title="Forward">
-								<i class="fas fa-share"></i>
-							</button>
+				<div class="card-body p-0" >
+					<div class="mailbox-read-info" style="padding:15px">
+						<div style="display: flex; flex-direction: row;">
+							<h5 style="margin-bottom:15px">전자정부 풀스택 503호 1조(시스아웃) ERD 및 화면정의서 제출합니다.</h5>
+							<span class="mailbox-read-time float-right" style="display:block; width: 200px; margin-top:12px; margin-left:auto; text-align:right;">2025년 7월 19일 오후 3:07</span>
 						</div>
-						<!-- /.btn-group -->
-						<button type="button" class="btn btn-default btn-sm" title="Print">
-							<i class="fas fa-print"></i>
-						</button>
+						<div style="display: flex; flex-direction: row;">
+							<span style="width: 80px; display:block; line-height: 28px">받는 사람</span>
+							<div style=" height: 30px; background-color: #DFFCF9; border-radius:15px; display: flex; flex-direction: row;">
+								<span style="display:block; margin-left:15px; line-height: 28px">김원희</span>
+								<span style="display:block; margin-left:15px; line-height: 28px; margin-right:15px">&lt;rla9513@naver.com&gt;</span>
+							</div>
+							<div style="margin-left:auto;">
+								<button type="button" class="btn btn-default btn-sm"
+									data-container="body" title="Reply">
+									<i class="fas fa-reply"></i>
+								</button>
+								<button type="button" class="btn btn-default btn-sm"
+									data-container="body" title="Delete">
+									<i class="far fa-trash-alt"></i>
+								</button>
+							</div>
+						</div>
 					</div>
 					<!-- /.mailbox-controls -->
-					<div class="mailbox-read-message">
+					<div class="mailbox-read-message" style="padding:15px">
 						<p>Hello John,</p>
 
 						<p>Keffiyeh blog actually fashion axe vegan, irony biodiesel.
@@ -276,74 +347,141 @@
 					<!-- /.mailbox-read-message -->
 				</div>
 				<!-- /.card-body -->
-				<div class="card-footer bg-white">
-					<ul class="mailbox-attachments d-flex align-items-stretch clearfix">
-						<li><span class="mailbox-attachment-icon"><i
-								class="far fa-file-pdf"></i></span>
-
-							<div class="mailbox-attachment-info">
-								<a href="#" class="mailbox-attachment-name"><i
-									class="fas fa-paperclip"></i> Sep2014-report.pdf</a> <span
-									class="mailbox-attachment-size clearfix mt-1"> <span>1,245
-										KB</span> <a href="#" class="btn btn-default btn-sm float-right"><i
-										class="fas fa-cloud-download-alt"></i></a>
-								</span>
-							</div></li>
-						<li><span class="mailbox-attachment-icon"><i
-								class="far fa-file-word"></i></span>
-
-							<div class="mailbox-attachment-info">
-								<a href="#" class="mailbox-attachment-name"><i
-									class="fas fa-paperclip"></i> App Description.docx</a> <span
-									class="mailbox-attachment-size clearfix mt-1"> <span>1,245
-										KB</span> <a href="#" class="btn btn-default btn-sm float-right"><i
-										class="fas fa-cloud-download-alt"></i></a>
-								</span>
-							</div></li>
-						<li><span class="mailbox-attachment-icon has-img"><img
-								src="../../dist/img/photo1.png" alt="Attachment"></span>
-
-							<div class="mailbox-attachment-info">
-								<a href="#" class="mailbox-attachment-name"><i
-									class="fas fa-camera"></i> photo1.png</a> <span
-									class="mailbox-attachment-size clearfix mt-1"> <span>2.67
-										MB</span> <a href="#" class="btn btn-default btn-sm float-right"><i
-										class="fas fa-cloud-download-alt"></i></a>
-								</span>
-							</div></li>
-						<li><span class="mailbox-attachment-icon has-img"><img
-								src="../../dist/img/photo2.png" alt="Attachment"></span>
-
-							<div class="mailbox-attachment-info">
-								<a href="#" class="mailbox-attachment-name"><i
-									class="fas fa-camera"></i> photo2.png</a> <span
-									class="mailbox-attachment-size clearfix mt-1"> <span>1.9
-										MB</span> <a href="#" class="btn btn-default btn-sm float-right"><i
-										class="fas fa-cloud-download-alt"></i></a>
-								</span>
-							</div></li>
-					</ul>
+				<div class="card-footer bg-white" style="margin-bottom: 10px; display: flex; flex-direction: row;">
+					<a href="#" download class="btn btn-default">
+					    <i class="fas fa-paperclip"></i> Attachment
+					</a>
+                  	<span style="display: block; margin-left: 10px; line-height: 38px">1,234 KB</span>
 				</div>
-				<!-- /.card-footer -->
-				<div class="card-footer">
-					<div class="float-right">
-						<button type="button" class="btn btn-default">
-							<i class="fas fa-reply"></i> Reply
-						</button>
-						<button type="button" class="btn btn-default">
-							<i class="fas fa-share"></i> Forward
-						</button>
-					</div>
-					<button type="button" class="btn btn-default">
-						<i class="far fa-trash-alt"></i> Delete
-					</button>
-					<button type="button" class="btn btn-default">
-						<i class="fas fa-print"></i> Print
-					</button>
+				
 				</div>
 				<!-- /.card-footer -->
 			</div>
 			<!-- /.card -->
+			<div class="col-md-10 mailWriteForm " style="margin-left:auto; display:none;" >
+	            <div class="card card-primaryc card-outline" style="height: 810px;">
+	              <div class="card-header" style="height:50px">
+	                <span class="card-title" style="font-weight:700;">메일 보내기</span>
+	                <div class="float-right">
+	                  <button type="reset" class="btn btn-default" style="height: 35px; margin-top:-5px; line-height: 5px" onclick="closeWrite()"><i class="fas fa-times"></i>창닫기</button>
+	                  <button type="submit" class="btn btn-primary" style="height: 33px; margin-top:-5px; line-height: 5px; background-color:#2EC4B6; border: 1px solid #2EC4B6"><i class="far fa-envelope"></i> Send</button>
+	                </div>
+	              </div>
+	              <!-- /.card-header -->
+	              <div class="card-body">
+	                <div class="form-group" style="display: flex; flex-direction: row;">
+	                  <span style="display:block; width:8%; line-height:32px">받는 사람</span>
+	                  <input class="form-control" placeholder="받는 사람을 입력해주세요.">
+	                </div>
+	                <div class="form-group" style="display: flex; flex-direction: row;">
+	                  <span style="display:block; width:8%; line-height:32px">제목</span>
+	                  <input class="form-control" placeholder="제목을 입력해주세요.">
+	                </div>
+	                <div class="form-group" >
+	                  <textarea class="form-control" style="height: 500px"> </textarea>
+	                </div>
+	                <div class="form-group" style="display: flex-direction: row;">
+	                  <div class="btn btn-default btn-file">
+	                    <i class="fas fa-paperclip"></i> 파일 선택
+	                    <input type="file" name="attachment">
+	                  </div>
+	                  <p class="help-block" style="margin-left:15px; margin-top:13px; line-height: 10px">Max. 32MB</p>
+	                </div>
+	              </div>
+	              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
 		</div>
 	</div>
 </div>
+
+<script>
+	function all_click(){
+		const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+		const btn = document.querySelector('.checkbox-toggle i');
+		
+		let allCheck = true;
+		
+		checkboxes.forEach(cb =>{
+			if(!cb.checked){
+				allCheck = false;
+			}
+		});
+		
+		checkboxes.forEach(cb => {
+			cb.checked = !allCheck;
+		});
+		
+		if (!allChecked) {
+	        btn.classList.remove('fa-square');
+	        btn.classList.add('fa-check-square');
+	    } else {
+	        btn.classList.remove('fa-check-square');
+	        btn.classList.add('fa-square');
+	    }
+	}
+	
+	function mailWrite() {
+		  // 기존 화면 숨기기
+		  document.querySelectorAll('.mailList, .mailDetail').forEach(el => {
+		    el.style.display = 'none';
+		  });
+
+		  // 작성 화면 보이기
+		  document.querySelectorAll('.mailWriteForm').forEach(el => {
+		    el.style.display = 'block';
+
+		    // 주소에 write=true 추가
+		    const url = new URL(window.location);
+		    url.searchParams.set('write', 'true');
+		    history.pushState({}, '', url);
+		  });
+		}
+	
+	function closeWrite() {
+	    // 작성 폼 숨기고
+	    document.querySelectorAll('.mailWriteForm').forEach(el => {
+	      el.style.display = 'none';
+	    });
+
+	    // 기존 화면 다시 보이게
+	    document.querySelectorAll('.mailList, .mailDetail').forEach(el => {
+	      el.style.display = 'block';
+	    });
+
+	    // URL에서 write 파라미터 제거
+	    const url = new URL(window.location);
+	    url.searchParams.delete('write');
+	    history.pushState({}, '', url);
+	  }
+
+</script>
+<script>
+	function starClick(){
+		const img = document.querySelector('#starImg');
+		
+		const srcOn = "<%=request.getContextPath()%>/resources/images/imp.png";
+	    const srcOff = "<%=request.getContextPath()%>/resources/images/imp_act.png";
+	    
+	    img.src = img.src.includes(srcOn) ? srcOff : srcOn;
+	    
+	}
+</script>
+<script>
+	document.querySelectorAll(".table-hover tbody tr").forEach(row => {
+		row.addEventListener("click",function(){
+			document.querySelectorAll(".table-hover tbody tr").forEach(r => {
+			
+			r.classList.remove("selected");
+			const cb = r.querySelector("input[type='checkbox']");
+		      if (cb) cb.checked = false;
+			});
+			
+	        this.classList.add("selected");
+	        const checkbox = this.querySelector("input[type='checkbox']");
+	        if (checkbox) checkbox.checked = true;
+	        
+		});
+	});
+</script>
