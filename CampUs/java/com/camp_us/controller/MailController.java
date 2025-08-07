@@ -43,20 +43,10 @@ public class MailController {
             }
         }
         model.addAttribute("unreadCount", unreadCount);
-	        
+        
 		return "/mail";
 	}
 	
-	@GetMapping("/{mailId}")
-	public String detail(Model model, HttpSession session) throws Exception{
-		MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
-		String memId = loginUser.getMem_id();
-		
-		MailVO mailDetail = mailService.detail(memId);
-		model.addAttribute("md", mailDetail);
-		
-		return "/mail";
-	}
 	
 	
 }
