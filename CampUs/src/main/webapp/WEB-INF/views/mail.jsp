@@ -1,5 +1,10 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <style>
 .btnw {
 	padding: 10px 16px;
@@ -71,8 +76,33 @@
 .selected  {
   background-color: #EAF5F4 !important; /* 민트색 배경 예시 */
 }
+.mailR{
+	background-color: transparent;
+	
+}
+.mailR:hover{
+	background-color: #EAF5F4;
+	overflow: hidden;
+	font-weight: bold;
+}
+.mailR.active{
+	background-color: #EAF5F4;
+	font-weight: bold;
+}
+.mailT{
+	background-color: transparent;
+}
+.mailT:hover span{
+	font-weight:bold;
+	overflow: hidden;
+	color: #22A99C;
+}
+.mailT.active{
+	font-weight:bold;
+	overflow: hidden;
+	color: #22A99C;
+}
 </style>
-
 
 
 <div style="height: 900px; padding: 15px;">
@@ -88,52 +118,48 @@
 			<div class="cardc" style="width: width:250px; height: 70px">
 				<div class="" style="width: 100%">
 					<div
-						style="width: 250px; display: flex; text-align: center; flex-direction: row; justify-content: center; gap:20px;">
-						<div style="width: 50px; height: 70px; list-style: none;">
-							<span
-								style="display: block; text-align: center; font-size: 25px; color: #22A99C; font-weight: bold;">12</span>
+						style="width: 250px; display: flex; text-align: center; flex-direction: row; justify-content: center; gap:0px;">
+						<button id="btnUnread" type="button" class="mailT" style="width: 100px; height: 70px; list-style: none; border:none;">
+							<span style="display: block; text-align: center; font-size: 25px; color: #22A99C; font-weight: bold;">${unreadCount }</span>
 							<span style="display: block; text-align: center; font-size: 15px">안읽음</span>
-						</div>
-						<div
-							style="width: 50px; height: 70px; text-align: center; list-style: none; margin-top: 5px">
-							<img src="<%=request.getContextPath()%>/resources/images/imp.png"
-								style="width: 30px; margin: 0 0 5px -1px"></img> <span
-								style="display: block; font-size: 15px">중요</span>
-						</div>
-						<div
-							style="width: 50px; height: 70px; text-align: center; list-style: none; margin-top: 5px">
-							<img src="<%=request.getContextPath()%>/resources/images/att.png"
-								style="width: 30px; margin: 0 0 5px -1px"></img> <span
-								style="display: block; font-size: 15px">첨부</span>
-						</div>
+						</button>
+						<button id="btnStar" type="button" class="mailT" style="width: 100px; height: 70px; text-align: center; list-style: none; border:none; margin-top:4px">
+							<img id="imgStar" src="<%=request.getContextPath()%>/resources/images/imp.png" style="width: 30px; margin: 0 0 5px -1px"></img>
+								<span style="display: block; font-size: 15px">중요</span>
+						</button>
+						<button id="btnAtt" type="button" class="mailT" style="width: 100px; height: 70px; text-align: center; list-style: none; border:none; margin-top:4px">
+							<img id="imgAtt" src="<%=request.getContextPath()%>/resources/images/att.png" style="width: 30px; margin: 0 0 5px -1px"></img>
+								<span style="display: block; font-size: 15px">첨부</span>
+						</button>
 					</div>
 				</div>
 			</div>
 			<div class="card">
 
 				<div class="card-body p-0" style="width:250px !important">
-					<ul class="nav nav-pills flex-column" style="width:250px; height: 668px">
-						<li class="nav-item" style="height: 50px"><a href="#"
-							class="d-flex align-items-center nav-link"
-							style="width: 250px; height: 100%; gap: 20px; line-height: 50px"> <i
-								class="fas fa-inbox" style=""></i> <span style="display: block;">전체
-									메일함</span>
-						</a></li>
-						<li class="nav-item" style="height: 50px"><a href="#"
-							class="d-flex align-items-center nav-link"
-							style="height: 100%; gap: 20px; line-height: 50px"> <i
-								class="far fa-envelope" style=""></i> <span
-								style="display: block;">받은 메일함</span> <span
-								class="badgec bg-primaryc"
-								style="display: block; margin-left: auto;">12</span>
-						</a></li>
-						<li class="nav-item"
-							style="height: 50px; border-bottom: 1px solid #ddd;"><a
-							href="#" class="d-flex align-items-center nav-link"
-							style="height: 100%; gap: 24px; line-height: 50px"> <i
-								class="far fa-file-alt" style=""></i> <span
-								style="display: block;">보낸 메일함</span>
-						</a>
+					<ul class="nav flex-column" style="width:250px; height: 668px;">
+						<li class="" style="height: 50px; ">
+							<button id="btnAll" type="button" class="d-flex align-items-center mailR"
+							style="width: 100%; height: 100%; gap: 20px; line-height: 50px; border:none; padding:15px; overflow:hidden">
+								<i class="fas fa-inbox" style=""></i>
+								<span style="display: block;">전체 메일함</span>
+							</button>
+						</li>
+						<li class="nav-item" style="height: 50px">
+							<button id="btnRecv" type="button" class="d-flex align-items-center mailR"
+							style="width: 100%; height: 100%; gap: 20px; line-height: 50px; border:none; padding:15px">
+								<i class="far fa-envelope" style=""></i>
+								<span style="display: block;">받은 메일함</span>
+								<span class="badgec bg-primaryc" style="width:auto;display: block; margin-left: auto; padding: 0 5px 0 5px">${unreadCount}</span>
+							</button>
+						</li>
+						<li class="nav-item" style="height: 50px; border-bottom: 1px solid #ddd;">
+							<button id="btnSent" type="button" class="d-flex align-items-center mailR"
+							style="width: 100%; height: 100%; gap: 24px; line-height: 50px; border:none; padding:15px">
+							<i class="far fa-file-alt" style="margin-left:2px"></i>
+							<span style="display: block;margin-left:-2px">보낸 메일함</span>
+							</button>
+						</li>
 					</ul>
 				</div>
 				<!-- /.card-body -->
@@ -148,9 +174,9 @@
 					<h3 class="card-title">목록</h3>
 					<div class="card-tools">
 						<div class="input-group input-group-sm">
-							<input type="text" class="form-control" placeholder="검색어를 입력해주세요.">
+							<input type="text" class="form-control" placeholder="검색어를 입력해주세요." value="${pageMaker.keyword }">
 							<div class="input-group-append">
-								<div class="btn btn-primaryc" style="">
+								<div class="btn btn-primaryc" onclick="serch_list(1)">
 									<img src="<%=request.getContextPath()%>/resources/images/search.png" style="width: 15px; margin-bottom: 3px">
 								</div>
 							</div>
@@ -182,104 +208,53 @@
 					</div>
 					<div class="table-responsive mailbox-messages"
 						style="height: 660px; overflow-y: auto;">
-						<table class="table table-hover">
+						<table class="mailTable table table-hover">
 							<tbody>
-								<tr style="width: 100%;  display: flex; flex-direction: column;">
-									<td style="width: 100%; height: 60px;">
+								<c:if test="${empty mailList }">
+									<tr>
+						   	   			<td colspan="5" class="text-center" >메일이 없습니다.</td>
+						   	   		</tr>
+							   </c:if>
+							   <c:if test="${not empty mailList }">
+							   	<c:forEach items="${mailList }" var="mail">
+								<tr style="width: 100%;  display: flex; flex-direction: column;" data-sender="${mail.mail_sender}" data-receiver="${mail.mail_receiver}"
+									data-unread="${mail.mail_receiver == loginUser.mem_id and (mail.mail_read == '0')}">
+									<td style="width: 100%; min-height: 60px; display: flex; flex-direction: column;">
 										<div style="width:100%; display: flex; flex-direction: row;">
-											<div class="icheck-primary" style="weight:20%">
-												<input type="checkbox" value="" id="check1"> <label
-													for="check1"></label>
+											<div class="icheck-primary" style="width:48px">
+												<input type="checkbox" value="${mail.mail_id}" id="check_${mail.mail_id}"> <label
+													for="check_${mail.mail_id}"></label>
 											</div>
-											<div class="" style="width:200px; display:flex; flex-direction: row;">
-												<a style="line-height:30px; margin-left:20px;">김원희</a>
-												<a style="line-height:30px; margin-left:15px; font-size:14px; color: #999">20190101</a>
+											<div class="" style="">
+												<img id="readImg" src="<%=request.getContextPath()%>/resources/images/${mail.mail_read == 0 ? 'nread' : 'read'}.png" style="width:20px; cursor:pointer"/>
+											</div>
+											<div class="" style="width:150px; display:flex; flex-direction: row; margin-left:10px">
+												<a style="line-height:30px;">
+													${mail.mail_sender == sessionScope.loginUser.mem_id ? mail.receiver_name : mail.sender_name}
+												</a>
+												<a style="line-height:30px; margin-left:15px; font-size:14px; color: #999">
+													${mail.mail_sender == sessionScope.loginUser.mem_id ? mail.mail_receiver : mail.mail_sender}
+												</a>
 											</div >
-											<div class="mailbox-date" style=" margin-left: auto; line-height:30px; font-size:12px; color: #bbb">오후 5:30</div>
+											<div class="mailbox-date" style="margin-left:auto; line-height:30px; font-size:12px; color: #bbb">
+											 	<fmt:formatDate value="${mail.mail_sender == sessionScope.loginUser.mem_id ? mail.mail_rdate : mail.mail_sdate}" pattern="yy-MM-dd HH:mm" />
+											</div>
 										</div>
 									</td>
-									<td style="height: 100%; border:none; display: flex; flex-direction: row; margin-top:-25px">
+									<td style="min-height: 55px; border:none; display: flex; flex-direction: row; margin-top:-25px">
 										<div class="mailbox-subjectc" style=" margin-left:60px; overflow: hidden; text-overflow: ellipsis;">
-											<a style="font-size:14px; color: #999">[보낸편지함]</a>
-											<a style="font-size:14px;">전자정부 풀스택 503호 1조(시스아웃) ERD 및 화면정의서 제출합니다.</a>
+											<a style="font-size:14px; color: #999">
+												${mail.mail_sender == sessionScope.loginUser.mem_id ? "[받은메일함]" : "[보낸메일함]"}
+											</a>
+											<a style="font-size:14px;">${mail.mail_name }</a>
 										</div>
-										<div class="mailbox-star" style="margin-left: auto; margin-top:10px ">
-											<img id="starImg" src="<%=request.getContextPath()%>/resources/images/imp.png" style="width:20px; cursor:pointer" onclick="starClick()"/>
+										<div class="mailbox-star" style="margin-left: auto; ">
+											<img id="starImg" src="<%=request.getContextPath()%>/resources/images/${mail.mail_important == 0 ? 'imp' : 'imp_act'}.png" style="width:20px; cursor:pointer" onclick="starClick()"/>
 										</div>
 									</td>
 								</tr>
-								<tr style="width: 100%;  display: flex; flex-direction: column;">
-									<td style="width: 100%; height: 60px;">
-										<div style="width:100%; display: flex; flex-direction: row;">
-											<div class="icheck-primary" style="weight:20%">
-												<input type="checkbox" value="" id="check2"> <label
-													for="check2"></label>
-											</div>
-											<div class="" style="width:200px; display:flex; flex-direction: row;">
-												<a style="line-height:30px; margin-left:20px;">김원희</a>
-												<a style="line-height:30px; margin-left:15px; font-size:14px; color: #999">20190101</a>
-											</div >
-											<div class="mailbox-date" style=" margin-left: auto; line-height:30px; font-size:12px; color: #bbb">오후 5:30</div>
-										</div>
-									</td>
-									<td style="height: 100%; border:none; display: flex; flex-direction: row; margin-top:-25px">
-										<div class="mailbox-subjectc" style=" margin-left:60px; overflow: hidden; text-overflow: ellipsis;">
-											<a style="font-size:14px; color: #999">[보낸편지함]</a>
-											<a style="font-size:14px;">전자정부 풀스택 503호 1조(시스아웃) ERD 및 화면정의서 제출합니다.</a>
-										</div>
-										<div class="mailbox-star" style="margin: 10px 0 0 25px; ">
-											<img class="star" src="<%=request.getContextPath()%>/resources/images/imp.png" style="width:20px; cursor:pointer; "/>
-										</div>
-									</td>
-								</tr>
-								<tr style="width: 100%;  display: flex; flex-direction: column;">
-									<td style="width: 100%; height: 60px;">
-										<div style="width:100%; display: flex; flex-direction: row;">
-											<div class="icheck-primary" style="weight:20%">
-												<input type="checkbox" value="" id="check3"> <label
-													for="check3"></label>
-											</div>
-											<div class="" style="width:200px; display:flex; flex-direction: row;">
-												<a style="line-height:30px; margin-left:20px;">김원희</a>
-												<a style="line-height:30px; margin-left:15px; font-size:14px; color: #999">20190101</a>
-											</div >
-											<div class="mailbox-date" style=" margin-left: auto; line-height:30px; font-size:12px; color: #bbb">오후 5:30</div>
-										</div>
-									</td>
-									<td style="height: 100%; border:none; display: flex; flex-direction: row; margin-top:-25px">
-										<div class="mailbox-subjectc" style=" margin-left:60px; overflow: hidden; text-overflow: ellipsis;">
-											<a style="font-size:14px; color: #999">[보낸편지함]</a>
-											<a style="font-size:14px;">전자정부 풀스택 503호 1조(시스아웃) ERD 및 화면정의서 제출합니다.</a>
-										</div>
-										<div class="mailbox-star" style="margin: 10px 0 0 25px; ">
-											<img class="star" src="<%=request.getContextPath()%>/resources/images/imp.png" style="width:20px; cursor:pointer"/>
-										</div>
-									</td>
-								</tr>
-								<tr style="width: 100%;  display: flex; flex-direction: column;">
-									<td style="width: 100%; height: 60px;">
-										<div style="width:100%; display: flex; flex-direction: row;">
-											<div class="icheck-primary" style="weight:20%">
-												<input type="checkbox" value="" id="check4"> <label
-													for="check4"></label>
-											</div>
-											<div class="" style="width:200px; display:flex; flex-direction: row;">
-												<a style="line-height:30px; margin-left:20px;">김원희</a>
-												<a style="line-height:30px; margin-left:15px; font-size:14px; color: #999">20190101</a>
-											</div >
-											<div class="mailbox-date" style=" margin-left: auto; line-height:30px; font-size:12px; color: #bbb">오후 5:30</div>
-										</div>
-									</td>
-									<td style="height: 100%; border:none; display: flex; flex-direction: row; margin-top:-25px">
-										<div class="mailbox-subjectc" style=" margin-left:60px; overflow: hidden; text-overflow: ellipsis;">
-											<a style="font-size:14px; color: #999">[보낸편지함]</a>
-											<a style="font-size:14px;">전자정부 풀스택 503호 1조(시스아웃) ERD 및 화면정의서 제출합니다.</a>
-										</div>
-										<div class="mailbox-star" style="margin: 10px 0 0 25px; ">
-											<img class="star" src="<%=request.getContextPath()%>/resources/images/imp.png" style="width:20px; cursor:pointer"/>
-										</div>
-									</td>
-								</tr>
+								</c:forEach>
+								</c:if>
 							</tbody>
 						</table>
 						<!-- /.table -->
@@ -394,7 +369,6 @@
           </div>
 		</div>
 	</div>
-</div>
 
 <script>
 	function all_click(){
@@ -467,6 +441,7 @@
 	    img.src = img.src.includes(srcOn) ? srcOff : srcOn;
 	    
 	}
+	
 </script>
 <script>
 	document.querySelectorAll(".table-hover tbody tr").forEach(row => {
@@ -484,4 +459,90 @@
 	        
 		});
 	});
+	
+	const mailR = document.querySelectorAll('.mailR');
+	mailR[0].classList.add('active');
+	mailR.forEach(mail => {
+		mail.addEventListener('click', ()=>{
+			mailR.forEach(m => m.classList.remove('active'));
+			mail.classList.add('active');
+		})
+	})
+</script>
+<script>
+    const myId = '${sessionScope.loginUser.mem_id}'; // JSTL EL 변수를 JS에 넣기
+
+    const btnAll = document.getElementById('btnAll');
+    const btnSent = document.getElementById('btnSent');
+    const btnRecv = document.getElementById('btnRecv');
+    const btnUnread = document.getElementById('btnUnread');
+    const btnStar = document.getElementById('btnStar');
+    const btnAtt = document.getElementById('btnAtt');
+
+    const rows = document.querySelectorAll(".mailTable tbody tr");
+
+    function filterMail(type) {
+      rows.forEach(row => {
+        const sender = row.getAttribute('data-sender');
+        const receiver = row.getAttribute('data-receiver');
+        const unread = row.getAttribute('data-unread');
+
+        if (type === 'all') {
+	          row.style.display = '';
+	          return;
+        }
+        if (type === 'sent') {
+	        row.style.display = sender === myId ? '' : 'none';
+	          return;
+        }
+        if (type === 'recv') {
+	        row.style.display = receiver === myId ? '' : 'none';
+	          return;
+        }
+        if (type === 'unread') {
+            row.style.display = unread === 'true' ? '' : 'none';
+              return;
+            }
+      });
+    }
+
+    // 기본: 전체 메일 보여주기
+    filterMail('all');
+
+    btnAll.addEventListener('click', () => {
+    	filterMail('all')
+    	history.replaceState(null, '', '?mail=1');
+    });
+    
+    btnSent.addEventListener('click', () => filterMail('sent'));
+    btnRecv.addEventListener('click', () => {
+    	filterMail('recv');
+    	history.replaceState(null, '', '?mail=3');
+    });
+    btnUnread.addEventListener('click', () => filterMail('unread'));
+</script>
+<script>
+  const basePath = "<%=request.getContextPath()%>/resources/images/";
+
+  // 중요 버튼
+  const btnStar = document.getElementById("btnStar");
+  const imgStar = document.getElementById("imgStar");
+
+  btnStar.addEventListener("mouseover", () => {
+    imgStar.src = basePath + "imp_hover.png";
+  });
+  btnStar.addEventListener("mouseout", () => {
+    imgStar.src = basePath + "imp.png";
+  });
+
+  // 스팸 버튼
+  const btnAtt = document.getElementById("btnAtt");
+  const imgAtt = document.getElementById("imgAtt");
+
+  btnAtt.addEventListener("mouseover", () => {
+	  imgAtt.src = basePath + "att_hover.png";
+  });
+  btnAtt.addEventListener("mouseout", () => {
+	  imgAtt.src = basePath + "att.png";
+  });
 </script>

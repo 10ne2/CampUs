@@ -37,13 +37,6 @@ public class AdminLTEController {
             model.addAttribute("errorMessage", "강의 목록 조회 중 오류가 발생했습니다.");
         }
 	}
-	
-	@GetMapping("/mail")
-	public ModelAndView mail(ModelAndView mnv) throws Exception {
-		String url="/mail";
-		mnv.setViewName(url);
-		return mnv;
-	}
 	@GetMapping("/adminmenu")
 		public void adminmenu() {}
 	@GetMapping("/empmenu")

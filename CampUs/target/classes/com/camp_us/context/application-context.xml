@@ -36,10 +36,18 @@
 		  class="com.camp_us.dao.StuLecDAOImpl"
 		  c:session-ref="sqlSession"
 		  />
+	<bean id="mailDAO"
+		  class="com.camp_us.dao.MailDAOImpl"
+		  c:session-ref="sqlSession"  
+		  />
 		  
-		  
-		  
-		        
+	
+	
+	
+	<bean id="mailService"
+		  class="com.camp_us.service.MailServiceImpl"
+		  c:mailDAO-ref="mailDAO"
+		  />	        
 	<bean id="stuLecService"
 		  class="com.camp_us.service.StuLecServiceImpl"
 		  c:stuLecDAO-ref="stuLecDAO"

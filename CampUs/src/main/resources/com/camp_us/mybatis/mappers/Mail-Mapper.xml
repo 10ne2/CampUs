@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Mail-Mapper">
+	<sql id="search">
+	  <if test="keyword != null and keyword != ''">
+	    AND (
+	      sender.name LIKE '%' || #{keyword} || '%'
+	      OR sender.student_id LIKE '%' || #{keyword} || '%'
+	      OR sender.email LIKE '%' || #{keyword} || '%'
+	      OR receiver.name LIKE '%' || #{keyword} || '%'
+	      OR receiver.student_id LIKE '%' || #{keyword} || '%'
+	      OR receiver.email LIKE '%' || #{keyword} || '%'
+	      OR m.mail_name LIKE '%' || #{keyword} || '%'
+	    )
+	  </if>
+	</sql>
+	<select id="selectSearchMailList" parameterType="pageMaker" resultType="mail">
+		select
+			m.mail_id,
+		  	m.mail_name,
+		    m.mail_sdate,
+		    m.mail_rdate,
+		    m.mail_read,
+		    m.mail_important,
+		    m.mail_desc,
+		    m.mail_sender,
+		    sender.mem_name AS sender_name,
+		    sender.mem_email AS sender_email,
+		    m.mail_receiver,
+		    receiver.mem_name AS receiver_name,
+		    receiver.mem_email AS receiver_email
+		from mail m
+		JOIN account sender ON m.mail_sender = sender.mem_id
+  		JOIN account receiver ON m.mail_receiver = receiver.mem_id
+		where (m.mail_sender = #{mem_id} OR m.mail_receiver = #{mem_id})  			  	
+		<include refid="search" />
+		order by GREATEST(m.mail_sdate, m.mail_rdate) desc
+	</select>
+	<select id="selectSearchMailListCount" parameterType="pageMaker" resultType="int">
+		select
+		count(*)
+		from mail m
+		JOIN account sender ON m.mail_sender = sender.mem_id
+  		JOIN account receiver ON m.mail_receiver = receiver.mem_id
+		where (m.mail_sender = #{mem_id} OR m.mail_receiver = #{mem_id})  			  	
+		<include refid="search" />
+	</select>
+	<select id="selectMailByMailId" parameterType="str" resultType="mail">
+		select
+			m.mail_id,
+		  	m.mail_name,
+		    m.mail_sdate,
+		    m.mail_rdate,
+		    m.mail_read,
+		    m.mail_important,
+		    m.mail_desc,
+		    m.mail_sender,
+		    sender.mem_name AS sender_name,
+		    sender.mem_email AS sender_email,
+		    m.mail_receiver,
+		    receiver.mem_name AS receiver_name,
+		    receiver.mem_email AS receiver_email
+		from mail m
+		JOIN account sender ON m.mail_sender = sender.mem_id
+  		JOIN account receiver ON m.mail_receiver = receiver.mem_id
+		WHERE mail_sender = #{mem_id} OR mail_receiver = #{mem_id}
+	</select>
+	<insert id="insertMail" parameterType="mail"> 
+		insert into 
+		mail(mail_sender, mail_name, mail_rdate, mail_receiver, mail_desc)
+  		values(#{mail_sender}, #{mail_name}, #{mail_rdate}, #{mail_receiver}, #{mail_desc})
+	</insert>
+	<delete id="deleteMail" parameterType="str" >
+		delete 
+		from mail 
+		where mail_id=#{mail_id}
+	</delete>
+
+</mapper>
+
+
+
+
+

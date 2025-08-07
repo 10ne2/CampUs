@@ -24,7 +24,7 @@
        
       <!-- Messages Dropdown Menu -->
       <li class="nav-item">
-        <a class="nav-link" style="cursor:pointer" onclick="OpenWindow('mail','글등록',1600,920);">
+        <a class="nav-link" style="cursor:pointer" onclick="OpenWindow('<%=request.getContextPath()%>/mail/list','메일',1600,920);">
           <span class="custom-icon-message"></span>
           <span class="badge badge-danger navbar-badge">3D</span>
         </a>
@@ -302,8 +302,6 @@
 <script src="<%=request.getContextPath() %>/resources/bootstrap/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->
 <script src="<%=request.getContextPath() %>/resources/bootstrap/dist/js/adminlte.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="<%=request.getContextPath() %>/resources/bootstrap/dist/js/demo.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="<%=request.getContextPath() %>/resources/bootstrap/dist/js/pages/dashboard.js"></script>
 <script src="<%=request.getContextPath() %>/resources/js/common.js"></script>
