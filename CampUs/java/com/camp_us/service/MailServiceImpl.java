@@ -26,6 +26,12 @@ public class MailServiceImpl implements MailService{
 		
 		return mailList;
 	}
+	
+	@Override
+	public MailVO detail(String memId) throws SQLException {
+		MailVO mail = mailDAO.selectMailByMailId(memId);
+		return mail;
+	}
 
 	@Override
 	public void regist(MailVO mail) throws SQLException {
@@ -33,8 +39,8 @@ public class MailServiceImpl implements MailService{
 	}
 
 	@Override
-	public void remove(String mail_id) throws SQLException {
-		mailDAO.deleteMail(mail_id);
+	public void remove(String memId) throws SQLException {
+		mailDAO.deleteMail(memId);
 	}
 	
 	

@@ -12,9 +12,9 @@ public interface MailDAO {
 
 	int selectSearchMailListCount(PageMaker pageMaker,String memId) throws SQLException;
 
-	MailVO selectMailByMailId(String mail_id) throws SQLException;
+	MailVO selectMailByMailId(String memId) throws SQLException;
 
 	void insertMail(MailVO mail) throws SQLException;
 
-	void deleteMail(String mail_id) throws SQLException;
+	void deleteMail(String memId) throws SQLException;
 }

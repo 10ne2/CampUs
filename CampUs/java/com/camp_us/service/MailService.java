@@ -11,10 +11,13 @@ public interface MailService {
 	
 	// 목록 : 검색포함.
 	List<MailVO> list(PageMaker pageMaker,String memId) throws SQLException;
+	
+	// 상세
+	MailVO detail(String memId)throws SQLException;
 		
 	// 등록
 	void regist(MailVO mail)throws SQLException;
 	
 	// 삭제
-	void remove(String mail_id)throws SQLException;
+	void remove(String memId)throws SQLException;
 }

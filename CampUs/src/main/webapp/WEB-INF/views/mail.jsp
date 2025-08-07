@@ -1,4 +1,3 @@
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -218,7 +217,8 @@
 							   <c:if test="${not empty mailList }">
 							   	<c:forEach items="${mailList }" var="mail">
 								<tr style="width: 100%;  display: flex; flex-direction: column;" data-sender="${mail.mail_sender}" data-receiver="${mail.mail_receiver}"
-									data-unread="${mail.mail_receiver == loginUser.mem_id and (mail.mail_read == '0')}">
+									data-unread="${mail.mail_receiver == loginUser.mem_id and (mail.mail_read == '0')}" data-star="${mail.mail_important}" data-att=""
+									onclick="loadDetail(${mail.mail_id})">
 									<td style="width: 100%; min-height: 60px; display: flex; flex-direction: column;">
 										<div style="width:100%; display: flex; flex-direction: row;">
 											<div class="icheck-primary" style="width:48px">
@@ -277,47 +277,35 @@
 				style="height: 810px; overflow-y: auto;">
 				<!-- /.card-header -->
 				<div class="card-body p-0" >
-					<div class="mailbox-read-info" style="padding:15px">
-						<div style="display: flex; flex-direction: row;">
-							<h5 style="margin-bottom:15px">전자정부 풀스택 503호 1조(시스아웃) ERD 및 화면정의서 제출합니다.</h5>
-							<span class="mailbox-read-time float-right" style="display:block; width: 200px; margin-top:12px; margin-left:auto; text-align:right;">2025년 7월 19일 오후 3:07</span>
-						</div>
-						<div style="display: flex; flex-direction: row;">
-							<span style="width: 80px; display:block; line-height: 28px">받는 사람</span>
-							<div style=" height: 30px; background-color: #DFFCF9; border-radius:15px; display: flex; flex-direction: row;">
-								<span style="display:block; margin-left:15px; line-height: 28px">김원희</span>
-								<span style="display:block; margin-left:15px; line-height: 28px; margin-right:15px">&lt;rla9513@naver.com&gt;</span>
+						<div class="mailbox-read-info" style="padding:15px">
+							<div style="display: flex; flex-direction: row;">
+								<h5 style="margin-bottom:15px">${md.mail_name }</h5>
+								<span class="mailbox-read-time float-right" style="display:block; width: 200px; margin-top:12px; margin-left:auto; text-align:right;">2025년 7월 19일 오후 3:07</span>
 							</div>
-							<div style="margin-left:auto;">
-								<button type="button" class="btn btn-default btn-sm"
-									data-container="body" title="Reply">
-									<i class="fas fa-reply"></i>
-								</button>
-								<button type="button" class="btn btn-default btn-sm"
-									data-container="body" title="Delete">
-									<i class="far fa-trash-alt"></i>
-								</button>
+							<div style="display: flex; flex-direction: row;">
+								<span style="width: 80px; display:block; line-height: 28px">
+									${mail.mail_sender == sessionScope.loginUser.mem_id ? "받는 사람" : "보낸 사람"}</span>
+								<div style=" height: 30px; background-color: #DFFCF9; border-radius:15px; display: flex; flex-direction: row;">
+									<span style="display:block; margin-left:15px; line-height: 28px">
+										${mail.mail_sender == sessionScope.loginUser.mem_id ? mail.receiver_name : mail.sender_name}</span>
+									<span style="display:block; margin-left:15px; line-height: 28px; margin-right:15px">
+										&lt;${mail.mail_sender == sessionScope.loginUser.mem_id ? mail.receiver_email : mail.sender_email}&gt;</span>
+								</div>
+								<div style="margin-left:auto;">
+									<button type="button" class="btn btn-default btn-sm"
+										data-container="body" title="Reply">
+										<i class="fas fa-reply"></i>
+									</button>
+									<button type="button" class="btn btn-default btn-sm"
+										data-container="body" title="Delete">
+										<i class="far fa-trash-alt"></i>
+									</button>
+								</div>
 							</div>
 						</div>
-					</div>
 					<!-- /.mailbox-controls -->
 					<div class="mailbox-read-message" style="padding:15px">
-						<p>Hello John,</p>
-
-						<p>Keffiyeh blog actually fashion axe vegan, irony biodiesel.
-							Cold-pressed hoodie chillwave put a bird on it aesthetic, bitters
-							brunch meggings vegan iPhone. Dreamcatcher vegan scenester
-							mlkshk. Ethical master cleanse Bushwick, occupy Thundercats banjo
-							cliche ennui farm-to-table mlkshk fanny pack gluten-free. Marfa
-							butcher vegan quinoa, bicycle rights disrupt tofu scenester
-							chillwave 3 wolf moon asymmetrical taxidermy pour-over. Quinoa
-							tote bag fashion axe, Godard disrupt migas church-key tofu blog
-							locavore. Thundercats cronut polaroid Neutra tousled, meh food
-							truck selfies narwhal American Apparel.</p>
-
-						<p>
-							Thanks,<br>Jane
-						</p>
+						${mail.mail_desc}
 					</div>
 					<!-- /.mailbox-read-message -->
 				</div>
@@ -329,48 +317,47 @@
                   	<span style="display: block; margin-left: 10px; line-height: 38px">1,234 KB</span>
 				</div>
 				
-				</div>
-				<!-- /.card-footer -->
 			</div>
-			<!-- /.card -->
-			<div class="col-md-10 mailWriteForm " style="margin-left:auto; display:none;" >
-	            <div class="card card-primaryc card-outline" style="height: 810px;">
-	              <div class="card-header" style="height:50px">
-	                <span class="card-title" style="font-weight:700;">메일 보내기</span>
-	                <div class="float-right">
-	                  <button type="reset" class="btn btn-default" style="height: 35px; margin-top:-5px; line-height: 5px" onclick="closeWrite()"><i class="fas fa-times"></i>창닫기</button>
-	                  <button type="submit" class="btn btn-primary" style="height: 33px; margin-top:-5px; line-height: 5px; background-color:#2EC4B6; border: 1px solid #2EC4B6"><i class="far fa-envelope"></i> Send</button>
-	                </div>
-	              </div>
-	              <!-- /.card-header -->
-	              <div class="card-body">
-	                <div class="form-group" style="display: flex; flex-direction: row;">
-	                  <span style="display:block; width:8%; line-height:32px">받는 사람</span>
-	                  <input class="form-control" placeholder="받는 사람을 입력해주세요.">
-	                </div>
-	                <div class="form-group" style="display: flex; flex-direction: row;">
-	                  <span style="display:block; width:8%; line-height:32px">제목</span>
-	                  <input class="form-control" placeholder="제목을 입력해주세요.">
-	                </div>
-	                <div class="form-group" >
-	                  <textarea class="form-control" style="height: 500px"> </textarea>
-	                </div>
-	                <div class="form-group" style="display: flex-direction: row;">
-	                  <div class="btn btn-default btn-file">
-	                    <i class="fas fa-paperclip"></i> 파일 선택
-	                    <input type="file" name="attachment">
-	                  </div>
-	                  <p class="help-block" style="margin-left:15px; margin-top:13px; line-height: 10px">Max. 32MB</p>
-	                </div>
-	              </div>
-	              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-          </div>
+				<!-- /.card-footer -->
 		</div>
+			<!-- /.card -->
+		<div class="col-md-10 mailWriteForm " style="margin-left:auto; display:none;" >
+            <div class="card card-primaryc card-outline" style="height: 810px;">
+              <div class="card-header" style="height:50px">
+                <span class="card-title" style="font-weight:700;">메일 보내기</span>
+                <div class="float-right">
+                  <button type="reset" class="btn btn-default" style="height: 35px; margin-top:-5px; line-height: 5px" onclick="closeWrite()"><i class="fas fa-times"></i>창닫기</button>
+                  <button type="submit" class="btn btn-primary" style="height: 33px; margin-top:-5px; line-height: 5px; background-color:#2EC4B6; border: 1px solid #2EC4B6"><i class="far fa-envelope"></i> Send</button>
+                </div>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <div class="form-group" style="display: flex; flex-direction: row;">
+                  <span style="display:block; width:8%; line-height:32px">받는 사람</span>
+                  <input class="form-control" placeholder="받는 사람을 입력해주세요.">
+                </div>
+                <div class="form-group" style="display: flex; flex-direction: row;">
+                  <span style="display:block; width:8%; line-height:32px">제목</span>
+                  <input class="form-control" placeholder="제목을 입력해주세요.">
+                </div>
+                <div class="form-group" >
+                  <textarea class="form-control" style="height: 500px"> </textarea>
+                </div>
+                <div class="form-group" style="display: flex-direction: row;">
+                  <div class="btn btn-default btn-file">
+                    <i class="fas fa-paperclip"></i> 파일 선택
+                    <input type="file" name="attachment">
+                  </div>
+                  <p class="help-block" style="margin-left:15px; margin-top:13px; line-height: 10px">Max. 32MB</p>
+                </div>
+              </div>
+              <!-- /.card-body -->
+           </div>
+           <!-- /.card -->
+         </div>
 	</div>
-
-<script>
+</div>
+<script>/* 체크박스 전체 선택 */
 	function all_click(){
 		const checkboxes = document.querySelectorAll('input[type="checkbox"]');
 		const btn = document.querySelector('.checkbox-toggle i');
@@ -397,16 +384,14 @@
 	}
 	
 	function mailWrite() {
-		  // 기존 화면 숨기기
+		/* 메일 작성 클릭시 화면 바뀜 */
 		  document.querySelectorAll('.mailList, .mailDetail').forEach(el => {
 		    el.style.display = 'none';
 		  });
 
-		  // 작성 화면 보이기
 		  document.querySelectorAll('.mailWriteForm').forEach(el => {
 		    el.style.display = 'block';
 
-		    // 주소에 write=true 추가
 		    const url = new URL(window.location);
 		    url.searchParams.set('write', 'true');
 		    history.pushState({}, '', url);
@@ -414,24 +399,22 @@
 		}
 	
 	function closeWrite() {
-	    // 작성 폼 숨기고
+		/* 메일 작성 창 닫기 시 화면 바뀜 */
 	    document.querySelectorAll('.mailWriteForm').forEach(el => {
 	      el.style.display = 'none';
 	    });
 
-	    // 기존 화면 다시 보이게
 	    document.querySelectorAll('.mailList, .mailDetail').forEach(el => {
 	      el.style.display = 'block';
 	    });
 
-	    // URL에서 write 파라미터 제거
 	    const url = new URL(window.location);
 	    url.searchParams.delete('write');
 	    history.pushState({}, '', url);
 	  }
 
 </script>
-<script>
+<script>/* 중요(별) 클릭 이벤트 */
 	function starClick(){
 		const img = document.querySelector('#starImg');
 		
@@ -443,7 +426,7 @@
 	}
 	
 </script>
-<script>
+<script>/* 체크박스 선택 */
 	document.querySelectorAll(".table-hover tbody tr").forEach(row => {
 		row.addEventListener("click",function(){
 			document.querySelectorAll(".table-hover tbody tr").forEach(r => {
@@ -459,7 +442,7 @@
 	        
 		});
 	});
-	
+	/* 클릭시 배경변경 */
 	const mailR = document.querySelectorAll('.mailR');
 	mailR[0].classList.add('active');
 	mailR.forEach(mail => {
@@ -469,80 +452,104 @@
 		})
 	})
 </script>
-<script>
-    const myId = '${sessionScope.loginUser.mem_id}'; // JSTL EL 변수를 JS에 넣기
-
-    const btnAll = document.getElementById('btnAll');
-    const btnSent = document.getElementById('btnSent');
-    const btnRecv = document.getElementById('btnRecv');
-    const btnUnread = document.getElementById('btnUnread');
-    const btnStar = document.getElementById('btnStar');
-    const btnAtt = document.getElementById('btnAtt');
-
-    const rows = document.querySelectorAll(".mailTable tbody tr");
-
-    function filterMail(type) {
-      rows.forEach(row => {
-        const sender = row.getAttribute('data-sender');
-        const receiver = row.getAttribute('data-receiver');
-        const unread = row.getAttribute('data-unread');
-
-        if (type === 'all') {
+<script>/* 카테고리 선택 시 목록 변경 */
+	const myId = '${sessionScope.loginUser.mem_id}';
+	
+	const btnAll = document.getElementById('btnAll');
+	const btnSent = document.getElementById('btnSent');
+	const btnRecv = document.getElementById('btnRecv');
+	const btnUnread = document.getElementById('btnUnread');
+	const btnStar = document.getElementById('btnStar');
+	const btnAtt = document.getElementById('btnAtt');
+	
+	const rows = document.querySelectorAll(".mailTable tbody tr");
+	
+	function filterMail(type) {
+	  rows.forEach(row => {
+	    const sender = row.getAttribute('data-sender');
+	    const receiver = row.getAttribute('data-receiver');
+	    const unread = row.getAttribute('data-unread');
+	    const star = row.getAttribute('data-star');
+	    const att = row.getAttribute('data-att');
+	
+	    if (type === 'all') {
 	          row.style.display = '';
 	          return;
-        }
-        if (type === 'sent') {
+	    	}
+	    if (type === 'sent') {
 	        row.style.display = sender === myId ? '' : 'none';
 	          return;
-        }
-        if (type === 'recv') {
+	   		}
+	    if (type === 'recv') {
 	        row.style.display = receiver === myId ? '' : 'none';
 	          return;
-        }
-        if (type === 'unread') {
-            row.style.display = unread === 'true' ? '' : 'none';
-              return;
-            }
-      });
-    }
-
-    // 기본: 전체 메일 보여주기
-    filterMail('all');
-
-    btnAll.addEventListener('click', () => {
-    	filterMail('all')
-    	history.replaceState(null, '', '?mail=1');
-    });
-    
-    btnSent.addEventListener('click', () => filterMail('sent'));
-    btnRecv.addEventListener('click', () => {
-    	filterMail('recv');
-    	history.replaceState(null, '', '?mail=3');
-    });
-    btnUnread.addEventListener('click', () => filterMail('unread'));
+	    	}	
+	    if (type === 'unread') {
+	        row.style.display = unread === 'true' ? '' : 'none';
+	          return;
+	        }
+	    if (type === 'star') {
+	        row.style.display = star === '1' ? '' : 'none';
+	          return;
+	        }
+	    if (type === 'att') {
+	        row.style.display = att === '1' ? '' : 'none';
+	          return;
+	        }
+	  });
+	}
+	
+	// 기본: 전체 메일 보여주기
+	filterMail('all');
+	
+	btnAll.addEventListener('click', () => {
+		filterMail('all')
+		history.replaceState(null, '', '?mail=1');
+	});
+	
+	btnSent.addEventListener('click', () => {
+		filterMail('sent')
+		history.replaceState(null, '', '?mail=2');	
+	});
+	btnRecv.addEventListener('click', () => {
+		filterMail('recv');
+		history.replaceState(null, '', '?mail=3');
+	});
+	btnUnread.addEventListener('click', () => {
+		filterMail('unread')
+		history.replaceState(null, '', '?mail=4');	
+	});
+	btnStar.addEventListener('click', () => {
+		filterMail('star')
+		history.replaceState(null, '', '?mail=5');
+	});
+	btnAtt.addEventListener('click', () => {
+		filterMail('att')
+		history.replaceState(null, '', '?mail=6');
+	});
 </script>
-<script>
-  const basePath = "<%=request.getContextPath()%>/resources/images/";
-
-  // 중요 버튼
-  const btnStar = document.getElementById("btnStar");
-  const imgStar = document.getElementById("imgStar");
-
-  btnStar.addEventListener("mouseover", () => {
-    imgStar.src = basePath + "imp_hover.png";
-  });
-  btnStar.addEventListener("mouseout", () => {
-    imgStar.src = basePath + "imp.png";
-  });
-
-  // 스팸 버튼
-  const btnAtt = document.getElementById("btnAtt");
-  const imgAtt = document.getElementById("imgAtt");
-
-  btnAtt.addEventListener("mouseover", () => {
-	  imgAtt.src = basePath + "att_hover.png";
-  });
-  btnAtt.addEventListener("mouseout", () => {
-	  imgAtt.src = basePath + "att.png";
-  });
+<script>/* 중요, 첨부 카테고리 마우스 오버 */
+	const basePath = "<%=request.getContextPath()%>/resources/images/";
+	
+	// 중요 버튼
+	const imgStar = document.getElementById("imgStar");
+	const starBtn = document.getElementById('btnStar');
+	
+	starBtn.addEventListener("mouseover", () => {
+	  imgStar.src = basePath + "imp_hover.png";
+	});
+	starBtn.addEventListener("mouseout", () => {
+	  imgStar.src = basePath + "imp.png";
+	});
+	
+	// 첨부 버튼
+	const attBtn = document.getElementById("btnAtt");
+	const imgAtt = document.getElementById("imgAtt");
+	
+	attBtn.addEventListener("mouseover", () => {
+		  imgAtt.src = basePath + "att_hover.png";
+	});
+	attBtn.addEventListener("mouseout", () => {
+		  imgAtt.src = basePath + "att.png";
+	});
 </script>

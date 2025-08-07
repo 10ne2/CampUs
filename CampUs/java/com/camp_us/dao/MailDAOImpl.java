@@ -46,8 +46,8 @@ public class MailDAOImpl implements MailDAO {
 	}
 
 	@Override
-	public MailVO selectMailByMailId(String mail_id) throws SQLException {
-		MailVO mail = session.selectOne("Mail-Mapper.selectMailByMailId",mail_id);
+	public MailVO selectMailByMailId(String memId) throws SQLException {
+		MailVO mail = session.selectOne("Mail-Mapper.selectMailByMailId",memId);
 		return mail;
 	}
 
@@ -57,8 +57,8 @@ public class MailDAOImpl implements MailDAO {
 	}
 
 	@Override
-	public void deleteMail(String mail_id) throws SQLException {
-		session.delete("Mail-Mapper.insertMail",mail_id);
+	public void deleteMail(String memId) throws SQLException {
+		session.delete("Mail-Mapper.insertMail",memId);
 	}
 	
 	

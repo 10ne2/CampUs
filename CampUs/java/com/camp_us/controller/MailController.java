@@ -27,7 +27,7 @@ public class MailController {
 		this.mailService = mailService;
 	}
 	
-	@GetMapping("/list")
+	@GetMapping("")
 	public String list(@ModelAttribute PageMaker pageMaker, Model model, HttpSession session)throws Exception{
 		
 		MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
@@ -46,5 +46,17 @@ public class MailController {
 	        
 		return "/mail";
 	}
+	
+	@GetMapping("/{mailId}")
+	public String detail(Model model, HttpSession session) throws Exception{
+		MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+		String memId = loginUser.getMem_id();
+		
+		MailVO mailDetail = mailService.detail(memId);
+		model.addAttribute("md", mailDetail);
+		
+		return "/mail";
+	}
+	
 	
 }
