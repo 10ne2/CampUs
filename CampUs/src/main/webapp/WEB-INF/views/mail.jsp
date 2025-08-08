@@ -236,7 +236,7 @@
 												<a style="line-height:30px; margin-left:15px; font-size:14px; color: #999">
 													${mail.mail_sender == sessionScope.loginUser.mem_id ? mail.mail_receiver : mail.mail_sender}
 												</a>
-											</div >
+											</div>
 											<div class="mailbox-date" style="margin-left:auto; line-height:30px; font-size:12px; color: #bbb">
 											 	<fmt:formatDate value="${mail.mail_sender == sessionScope.loginUser.mem_id ? mail.mail_rdate : mail.mail_sdate}" pattern="yy-MM-dd HH:mm" />
 											</div>
@@ -280,14 +280,17 @@
 				<div class="card-body p-0" >
 						<div class="mailbox-read-info" style="padding:15px">
 							<div style="display: flex; flex-direction: row;">
-								<h5 id="mailName" style="margin-bottom:15px"></h5>
-								<span id="mailDate" class="mailbox-read-time float-right" style="display:block; width: 200px; margin-top:12px; margin-left:auto; text-align:right;"></span>
+								<h5 id="mailName" style="margin-bottom:15px">${md.mail_name }</h5>
+								<span id="mailDate" class="mailbox-read-time float-right" style="display:block; width: 200px; margin-top:12px; margin-left:auto; text-align:right;">2025년 7월 19일 오후 3:07</span>
 							</div>
 							<div style="display: flex; flex-direction: row;">
-								<span style="width: 80px; display:block; line-height: 28px"></span>
+								<span style="width: 80px; display:block; line-height: 28px">
+									${mail.mail_sender == sessionScope.loginUser.mem_id ? "받는 사람" : "보낸 사람"}</span>
 								<div style=" height: 30px; background-color: #DFFCF9; border-radius:15px; display: flex; flex-direction: row;">
-									<span id="mailTargetName" style="display:block; margin-left:15px; line-height: 28px"></span>
-									<span id="mailTargetEmail" style="display:block; margin-left:15px; line-height: 28px; margin-right:15px"></span>
+									<span id="mailTargetName" style="display:block; margin-left:15px; line-height: 28px">
+										${mail.mail_sender == sessionScope.loginUser.mem_id ? mail.receiver_name : mail.sender_name}</span>
+									<span id="mailTargetEmail" style="display:block; margin-left:15px; line-height: 28px; margin-right:15px">
+										&lt;${mail.mail_sender == sessionScope.loginUser.mem_id ? mail.receiver_email : mail.sender_email}&gt;</span>
 								</div>
 								<div style="margin-left:auto;">
 									<button type="button" class="btn btn-default btn-sm" data-container="body" title="Reply">
