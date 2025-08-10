@@ -1,6 +1,5 @@
 package com.camp_us.command;
 
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 
 import com.camp_us.dto.MailVO;
 

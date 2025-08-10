@@ -5,12 +5,12 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page import="com.camp_us.dto.MemberVO" %>
 
-<head>
+<%-- <head>
 <!-- summernote -->
 <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/bootstrap/plugins/summernote/summernote-bs4.min.css">
 <!-- Summernote -->
 <script src="<%=request.getContextPath() %>/resources/bootstrap/plugins/summernote/summernote-bs4.min.js"></script>
-</head>
+</head> --%>
 
 <style>
 .btnw {
@@ -370,8 +370,7 @@ function search_list(page){
 }
 </script>
 
-</script>
-<script>
+<%-- <script>
 Summernote_go($("textarea#content"),"<%=request.getContextPath() %>") ;
 
 function regist_go(){
@@ -389,7 +388,7 @@ function regist_go(){
 	
 	form.submit();
 }
-</script>
+</script> --%>
 
 
 <script>/* 체크박스 전체 선택 */
@@ -583,6 +582,28 @@ document.getElementById('btnRecv').addEventListener('click', function(event) {
 	});
 	
 </script>
+
+<script>
+window.addEventListener("beforeunload", function () {
+    localStorage.setItem("lastUrl", window.location.href);
+});
+
+window.addEventListener("load", function () {
+    const savedUrl = localStorage.getItem("lastUrl");
+    const currentUrl = window.location.href;
+
+    if (savedUrl && savedUrl !== currentUrl) {
+        alert(
+            "🚨 URL 변경 감지!\n\n" +
+            "기존 URL:\n" + savedUrl + "\n\n" +
+            "현재 URL:\n" + currentUrl
+        );
+    }
+
+    localStorage.removeItem("lastUrl");
+});
+</script>
+
 <script>/* 중요, 첨부 카테고리 마우스 오버 */
 	const basePath = "<%=request.getContextPath()%>/resources/images/";
 	
