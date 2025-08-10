@@ -6,12 +6,12 @@
 	<sql id="search">
 	  <if test="keyword != null and keyword != ''">
 	    AND (
-	      sender.name LIKE '%' || #{keyword} || '%'
-	      OR sender.student_id LIKE '%' || #{keyword} || '%'
-	      OR sender.email LIKE '%' || #{keyword} || '%'
-	      OR receiver.name LIKE '%' || #{keyword} || '%'
-	      OR receiver.student_id LIKE '%' || #{keyword} || '%'
-	      OR receiver.email LIKE '%' || #{keyword} || '%'
+	      sender.mem_name LIKE '%' || #{keyword} || '%'
+	      OR receiver.mem_name LIKE '%' || #{keyword} || '%'
+	      OR m.mail_sender LIKE '%' || #{keyword} || '%'
+	      OR m.mail_receiver LIKE '%' || #{keyword} || '%'
+	      OR sender.mem_email LIKE '%' || #{keyword} || '%'
+	      OR receiver.mem_email LIKE '%' || #{keyword} || '%'
 	      OR m.mail_name LIKE '%' || #{keyword} || '%'
 	    )
 	  </if>
@@ -47,7 +47,7 @@
 		where (m.mail_sender = #{mem_id} OR m.mail_receiver = #{mem_id})  			  	
 		<include refid="search" />
 	</select>
-	<select id="selectMailByMailId" parameterType="str" resultType="mail">
+	<select id="selectMailByMailId" parameterType="int" resultType="mail">
 		select
 			m.mail_id,
 		  	m.mail_name,
@@ -65,14 +65,20 @@
 		from mail m
 		JOIN account sender ON m.mail_sender = sender.mem_id
   		JOIN account receiver ON m.mail_receiver = receiver.mem_id
-		WHERE mail_sender = #{mem_id} OR mail_receiver = #{mem_id}
+		WHERE m.mail_id = #{mail_id}
+	</select>
+	<select id="selectUnreadReceiverCount" parameterType="String" resultType="int">
+		select
+		count(*)
+		from mail
+		WHERE mail_receiver = #{mem_id} and mail_read = 0
 	</select>
 	<insert id="insertMail" parameterType="mail"> 
 		insert into 
-		mail(mail_sender, mail_name, mail_rdate, mail_receiver, mail_desc)
-  		values(#{mail_sender}, #{mail_name}, #{mail_rdate}, #{mail_receiver}, #{mail_desc})
+		mail(mail_sender, mail_receiver, mail_name, mail_rdate, mail_sdate, mail_desc)
+  		values(#{mail_sender},  #{mail_receiver}, #{mail_name}, #{mail_rdate}, #{mail_sdate}, #{mail_desc})
 	</insert>
-	<delete id="deleteMail" parameterType="str" >
+	<delete id="deleteMail" parameterType="int" >
 		delete 
 		from mail 
 		where mail_id=#{mail_id}

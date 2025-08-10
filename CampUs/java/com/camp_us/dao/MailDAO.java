@@ -11,8 +11,10 @@ public interface MailDAO {
 	List<MailVO> selectSearchMailList(PageMaker pageMaker,String memId) throws SQLException;
 
 	int selectSearchMailListCount(PageMaker pageMaker,String memId) throws SQLException;
+	
+	int selectUnreadReceiverCount(String mem_id) throws SQLException;
 
-	MailVO selectMailByMailId(String memId) throws SQLException;
+	MailVO selectMailByMailId(int mail_id) throws SQLException;
 
 	void insertMail(MailVO mail) throws SQLException;
 

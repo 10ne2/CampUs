@@ -28,9 +28,8 @@ public class MailServiceImpl implements MailService{
 	}
 	
 	@Override
-	public MailVO detail(String memId) throws SQLException {
-		MailVO mail = mailDAO.selectMailByMailId(memId);
-		return mail;
+	public MailVO detail(int mail_id) throws SQLException {
+		return mailDAO.selectMailByMailId(mail_id);
 	}
 
 	@Override
@@ -41,6 +40,12 @@ public class MailServiceImpl implements MailService{
 	@Override
 	public void remove(String memId) throws SQLException {
 		mailDAO.deleteMail(memId);
+	}
+
+	@Override
+	public int unreadCount(String mem_id) throws SQLException {
+		int unreadCount = mailDAO.selectUnreadReceiverCount(mem_id);
+		return unreadCount;
 	}
 	
 	

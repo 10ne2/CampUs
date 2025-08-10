@@ -5,6 +5,13 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page import="com.camp_us.dto.MemberVO" %>
 
+<head>
+<!-- summernote -->
+<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/bootstrap/plugins/summernote/summernote-bs4.min.css">
+<!-- Summernote -->
+<script src="<%=request.getContextPath() %>/resources/bootstrap/plugins/summernote/summernote-bs4.min.js"></script>
+</head>
+
 <style>
 .btnw {
 	padding: 10px 16px;
@@ -139,22 +146,22 @@
 				<div class="card-body p-0" style="width:250px !important">
 					<ul class="nav flex-column" style="width:250px; height: 668px;">
 						<li class="" style="height: 50px; ">
-							<button id="btnAll" type="button" class="d-flex align-items-center mailR"
+							<button id="btnAll" type="button" data-mail="1" class="d-flex align-items-center mailR"
 							style="width: 100%; height: 100%; gap: 20px; line-height: 50px; border:none; padding:15px; overflow:hidden">
 								<i class="fas fa-inbox" style=""></i>
 								<span style="display: block;">전체 메일함</span>
 							</button>
 						</li>
 						<li class="nav-item" style="height: 50px">
-							<button id="btnRecv" type="button" class="d-flex align-items-center mailR"
+							<button id="btnRecv" type="button" data-mail="2" class="d-flex align-items-center mailR"
 							style="width: 100%; height: 100%; gap: 20px; line-height: 50px; border:none; padding:15px">
 								<i class="far fa-envelope" style=""></i>
 								<span style="display: block;">받은 메일함</span>
-								<span class="badgec bg-primaryc" style="width:auto;display: block; margin-left: auto; padding: 0 5px 0 5px">${unreadCount}</span>
+								<span id="unreadCount" class="badgec bg-primaryc" style="width:auto;display: block; margin-left: auto; padding: 0 5px 0 5px">${unreadCount}</span>
 							</button>
 						</li>
 						<li class="nav-item" style="height: 50px; border-bottom: 1px solid #ddd;">
-							<button id="btnSent" type="button" class="d-flex align-items-center mailR"
+							<button id="btnSent" type="button" data-mail="3" class="d-flex align-items-center mailR"
 							style="width: 100%; height: 100%; gap: 24px; line-height: 50px; border:none; padding:15px">
 							<i class="far fa-file-alt" style="margin-left:2px"></i>
 							<span style="display: block;margin-left:-2px">보낸 메일함</span>
@@ -174,9 +181,9 @@
 					<h3 class="card-title">목록</h3>
 					<div class="card-tools">
 						<div class="input-group input-group-sm">
-							<input type="text" class="form-control" placeholder="검색어를 입력해주세요." value="${pageMaker.keyword }">
+							<input type="text" class="form-control" id="keyword" name="keyword"  placeholder="검색어를 입력해주세요." value="${pageMaker.keyword }">
 							<div class="input-group-append">
-								<div class="btn btn-primaryc" onclick="serch_list(1)">
+								<div class="btn btn-primaryc" onclick="search_list(1)">
 									<img src="<%=request.getContextPath()%>/resources/images/search.png" style="width: 15px; margin-bottom: 3px">
 								</div>
 							</div>
@@ -204,6 +211,7 @@
 						<button type="button" class="btn btn-default btn-sm">
 							<i class="fas fa-sync-alt"></i>
 						</button>
+						
 						<!-- /.float-right -->
 					</div>
 					<div class="table-responsive mailbox-messages"
@@ -217,7 +225,7 @@
 							   </c:if>
 							   <c:if test="${not empty mailList }">
 							   	<c:forEach items="${mailList }" var="mail">
-								<tr style="width: 100%;  display: flex; flex-direction: column;" data-sender="${mail.mail_sender}" data-receiver="${mail.mail_receiver}"
+								<tr style="width: 100%; display: flex; flex-direction: column;" data-sender="${mail.mail_sender}" data-receiver="${mail.mail_receiver}"
 									data-unread="${mail.mail_receiver == loginUser.mem_id and (mail.mail_read == '0')}" data-star="${mail.mail_important}" data-att=""
 									onclick="loadDetail(${mail.mail_id})">
 									<td style="width: 100%; min-height: 60px; display: flex; flex-direction: column;">
@@ -245,7 +253,7 @@
 									<td style="min-height: 55px; border:none; display: flex; flex-direction: row; margin-top:-25px">
 										<div class="mailbox-subjectc" style=" margin-left:60px; overflow: hidden; text-overflow: ellipsis;">
 											<a style="font-size:14px; color: #999">
-												${mail.mail_sender == sessionScope.loginUser.mem_id ? "[받은메일함]" : "[보낸메일함]"}
+												${mail.mail_sender == sessionScope.loginUser.mem_id ? "[보낸메일함]" : "[받은메일함]"}
 											</a>
 											<a style="font-size:14px;">${mail.mail_name }</a>
 										</div>
@@ -277,35 +285,10 @@
 			<div class="card card-primaryc card-outline"
 				style="height: 810px; overflow-y: auto;">
 				<!-- /.card-header -->
-				<div class="card-body p-0" >
-						<div class="mailbox-read-info" style="padding:15px">
-							<div style="display: flex; flex-direction: row;">
-								<h5 id="mailName" style="margin-bottom:15px">${md.mail_name }</h5>
-								<span id="mailDate" class="mailbox-read-time float-right" style="display:block; width: 200px; margin-top:12px; margin-left:auto; text-align:right;">2025년 7월 19일 오후 3:07</span>
-							</div>
-							<div style="display: flex; flex-direction: row;">
-								<span style="width: 80px; display:block; line-height: 28px">
-									${mail.mail_sender == sessionScope.loginUser.mem_id ? "받는 사람" : "보낸 사람"}</span>
-								<div style=" height: 30px; background-color: #DFFCF9; border-radius:15px; display: flex; flex-direction: row;">
-									<span id="mailTargetName" style="display:block; margin-left:15px; line-height: 28px">
-										${mail.mail_sender == sessionScope.loginUser.mem_id ? mail.receiver_name : mail.sender_name}</span>
-									<span id="mailTargetEmail" style="display:block; margin-left:15px; line-height: 28px; margin-right:15px">
-										&lt;${mail.mail_sender == sessionScope.loginUser.mem_id ? mail.receiver_email : mail.sender_email}&gt;</span>
-								</div>
-								<div style="margin-left:auto;">
-									<button type="button" class="btn btn-default btn-sm" data-container="body" title="Reply">
-										<i class="fas fa-reply"></i>
-									</button>
-									<button type="button" class="btn btn-default btn-sm" data-container="body" title="Delete">
-										<i class="far fa-trash-alt"></i>
-									</button>
-								</div>
-							</div>
-						</div>
-					<!-- /.mailbox-controls -->
-					<div class="mailbox-read-message" style="padding:15px">
-						${mail.mail_desc}
-					</div>
+				<div class="card-body p-0 mailDetailList"  >
+						
+							
+						
 					<!-- /.mailbox-read-message -->
 				</div>
 				<!-- /.card-body -->
@@ -325,37 +308,90 @@
               <div class="card-header" style="height:50px">
                 <span class="card-title" style="font-weight:700;">메일 보내기</span>
                 <div class="float-right">
-                  <button type="reset" class="btn btn-default" style="height: 35px; margin-top:-5px; line-height: 5px" onclick="closeWrite()"><i class="fas fa-times"></i>창닫기</button>
-                  <button type="submit" class="btn btn-primary" style="height: 33px; margin-top:-5px; line-height: 5px; background-color:#2EC4B6; border: 1px solid #2EC4B6"><i class="far fa-envelope"></i> Send</button>
+                  <button type="reset" class="btn btn-default" style="height: 35px; margin-top:-5px; line-height: 5px"
+                  onclick="closeWrite()"><i class="fas fa-times"></i>&nbsp;&nbsp;창닫기</button>
+                  <button type="submit" class="btn btn-primary"
+                  style="height: 33px; margin-top:-5px; line-height: 5px; background-color:#2EC4B6; border: 1px solid #2EC4B6"
+                  onclick="regist_go()"><i class="far fa-envelope"></i> &nbsp;&nbsp;보내기</button>
                 </div>
               </div>
               <!-- /.card-header -->
-              <div class="card-body">
-                <div class="form-group" style="display: flex; flex-direction: row;">
-                  <span style="display:block; width:8%; line-height:32px">받는 사람</span>
-                  <input class="form-control" placeholder="받는 사람을 입력해주세요.">
-                </div>
-                <div class="form-group" style="display: flex; flex-direction: row;">
-                  <span style="display:block; width:8%; line-height:32px">제목</span>
-                  <input class="form-control" placeholder="제목을 입력해주세요.">
-                </div>
-                <div class="form-group" >
-                  <textarea class="form-control" style="height: 500px"> </textarea>
-                </div>
-                <div class="form-group" style="display: flex-direction: row;">
-                  <div class="btn btn-default btn-file">
-                    <i class="fas fa-paperclip"></i> 파일 선택
-                    <input type="file" name="attachment">
-                  </div>
-                  <p class="help-block" style="margin-left:15px; margin-top:13px; line-height: 10px">Max. 32MB</p>
-                </div>
-              </div>
+              <form role="form" method="post" action="regist" name="registForm">
+	              <div class="card-body">
+	                <div class="form-group" style="display: flex; flex-direction: row;">
+	                  <span style="display:block; width:8%; line-height:32px">받는 사람</span>
+	                  <input class="form-control notNull" placeholder="받는 사람을 입력해주세요.">
+	                </div>
+	                <div class="form-group" style="display: flex; flex-direction: row;">
+	                  <span style="display:block; width:8%; line-height:32px">제목</span>
+	                  <input class="form-control notNull" placeholder="제목을 입력해주세요.">
+	                </div>
+	                <div class="form-group" >
+	                  <textarea name="content" id="content" class="textarea form-control notNull" style="height: 500px"> </textarea>
+	                </div>
+	                <div class="form-group" style="display: flex-direction: row;">
+	                  <div class="btn btn-default btn-file">
+	                    <i class="fas fa-paperclip"></i> 파일 선택
+	                    <input type="file" name="attachment">
+	                  </div>
+	                  <p class="help-block" style="margin-left:15px; margin-top:13px; line-height: 10px">Max. 32MB</p>
+	                </div>
+	              </div>
+              </form>
               <!-- /.card-body -->
            </div>
            <!-- /.card -->
          </div>
 	</div>
 </div>
+
+<%@ include file="/WEB-INF/views/mail/detail_js.jsp" %>
+
+<form id="jobForm" style="display:none;">	
+	<input type='text' name="page" value="1" />
+	<input type='text' name="keyword" value="15" />
+	<input type='text' name="perPageNum" value="" />
+</form>
+<script>
+function search_list(page){
+	let keyword = document.querySelector('#keyword').value;
+	let perPageNum = 15;
+	let form = document.querySelector("#jobForm");
+	
+	//alert(perPageNum+":"+searchType+":"+keyword);
+	
+	form.keyword.value = keyword;
+	form.page.value = page;
+	form.perPageNum.value = perPageNum;
+	
+	//console.log($(form).serialize());
+	form.submit();
+	
+}
+</script>
+
+</script>
+<script>
+Summernote_go($("textarea#content"),"<%=request.getContextPath() %>") ;
+
+function regist_go(){
+	//alert("click regist");
+	var form = document.registForm;
+	
+	var inputNotNull = document.querySelectorAll(".notNull");
+	for(var input of inputNotNull){
+		if(!input.value){
+			alert(input.getAttribute("title")+"은 필수입니다.");
+			input.focus();
+			return;
+		}
+	}
+	
+	form.submit();
+}
+</script>
+
+
 <script>/* 체크박스 전체 선택 */
 	function all_click(){
 		const checkboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -451,9 +487,21 @@
 		})
 	})
 </script>
+<!-- <script>
+document.getElementById('btnAll').addEventListener('click', function(event) {
+    event.preventDefault(); // 기본 이동 막기
+    const targetPath = '?mail=1'; // 이동할 경로
+    window.location.href = targetPath; 
+});
+
+document.getElementById('btnRecv').addEventListener('click', function(event) {
+    event.preventDefault(); // 기본 이동 막기
+    const targetPath = '?mail=2'; // 이동할 경로
+    window.location.href = targetPath; 
+});
+</script> -->
 <script>/* 카테고리 선택 시 목록 변경 */
 	const myId = '${sessionScope.loginUser.mem_id}';
-	
 	const btnAll = document.getElementById('btnAll');
 	const btnSent = document.getElementById('btnSent');
 	const btnRecv = document.getElementById('btnRecv');
@@ -497,23 +545,30 @@
 	        }
 	  });
 	}
-	
 	// 기본: 전체 메일 보여주기
 	filterMail('all');
 	
-	btnAll.addEventListener('click', () => {
+	btnAll.addEventListener('click', function(event) {
 		filterMail('all')
-		history.replaceState(null, '', '?mail=1');
+	    event.preventDefault(); // 기본 이동 막기
+	    const targetPath = '<%=request.getContextPath()%>/mail?mail=1'; // 이동할 경로
+	    window.location.href = targetPath; 
 	});
 	
-	btnSent.addEventListener('click', () => {
+	btnRecv.addEventListener('click', function(event) {
+		filterMail('recv')
+	    event.preventDefault(); // 기본 이동 막기
+	    const targetPath = '<%=request.getContextPath()%>/mail?mail=2'; // 이동할 경로
+	    window.location.href = targetPath; 
+	});
+	
+	btnSent.addEventListener('click', function(event) {
 		filterMail('sent')
-		history.replaceState(null, '', '?mail=2');	
+	    event.preventDefault(); // 기본 이동 막기
+	    const targetPath = '<%=request.getContextPath()%>/mail?mail=3'; // 이동할 경로
+	    window.location.href = targetPath; 
 	});
-	btnRecv.addEventListener('click', () => {
-		filterMail('recv');
-		history.replaceState(null, '', '?mail=3');
-	});
+	
 	btnUnread.addEventListener('click', () => {
 		filterMail('unread')
 		history.replaceState(null, '', '?mail=4');	
@@ -526,6 +581,7 @@
 		filterMail('att')
 		history.replaceState(null, '', '?mail=6');
 	});
+	
 </script>
 <script>/* 중요, 첨부 카테고리 마우스 오버 */
 	const basePath = "<%=request.getContextPath()%>/resources/images/";
@@ -552,3 +608,5 @@
 		  imgAtt.src = basePath + "att.png";
 	});
 </script>
+
+	

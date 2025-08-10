@@ -7,7 +7,6 @@
 
 </style>
 
-<body>
 	<div style="height: 100%;">
 		<div class="card-body" style="margin-bottom: -25px">
 			<span style="font-size: 18pt; font-weight: bold;">강의실</span>
