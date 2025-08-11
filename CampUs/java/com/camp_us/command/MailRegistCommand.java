@@ -1,21 +1,14 @@
 package com.camp_us.command;
 
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
-
 import com.camp_us.dto.MailVO;
 
 public class MailRegistCommand {
 	
-	private String receiver_name;
+	private String mail_receiver;
 	private String mail_name;
 	private String mail_desc;
+	private String mail_sender;
 	
-	public String getReceiver_name() {
-		return receiver_name;
-	}
-	public void setReceiver_name(String receiver_name) {
-		this.receiver_name = receiver_name;
-	}
 	public String getMail_name() {
 		return mail_name;
 	}
@@ -34,9 +27,22 @@ public class MailRegistCommand {
 		
 		mail.setMail_desc(mail_desc);
 		mail.setMail_name(mail_name);
-		mail.setReceiver_name(receiver_name);
+		mail.setMail_receiver(mail_receiver);
+		mail.setMail_sender(mail_sender);
 		
 		return mail;
+	}
+	public String getMail_sender() {
+		return mail_sender;
+	}
+	public void setMail_sender(String mail_sender) {
+		this.mail_sender = mail_sender;
+	}
+	public String getMail_receiver() {
+		return mail_receiver;
+	}
+	public void setMail_receiver(String mail_receiver) {
+		this.mail_receiver = mail_receiver;
 	}
 	
 }

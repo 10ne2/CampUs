@@ -57,8 +57,8 @@ public class MailDAOImpl implements MailDAO {
 	}
 
 	@Override
-	public void deleteMail(String memId) throws SQLException {
-		session.delete("Mail-Mapper.insertMail",memId);
+	public void deleteMail(int mail_id) throws SQLException {
+		session.delete("Mail-Mapper.insertMail",mail_id);
 	}
 
 	@Override

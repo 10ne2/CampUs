@@ -23,4 +23,6 @@ public interface MemberDAO {
 	String selectAuthoritiesById(String id);
 	
 	void insertLastLogin(MemberVO vo) throws Exception;
+	
+	String findMemIdByEmail(String mem_email) throws SQLException;
 }

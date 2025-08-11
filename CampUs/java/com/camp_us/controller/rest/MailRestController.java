@@ -3,7 +3,6 @@ package com.camp_us.controller.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +16,7 @@ public class MailRestController {
 	
 	@Autowired
 	private MailService mailService;
+	
 	
 	@GetMapping("/detail")
 	public ResponseEntity<MailVO> mailDetailList(int mail_id) throws Exception{

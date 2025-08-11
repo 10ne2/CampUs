@@ -75,8 +75,8 @@
 	</select>
 	<insert id="insertMail" parameterType="mail"> 
 		insert into 
-		mail(mail_sender, mail_receiver, mail_name, mail_rdate, mail_sdate, mail_desc)
-  		values(#{mail_sender},  #{mail_receiver}, #{mail_name}, #{mail_rdate}, #{mail_sdate}, #{mail_desc})
+		mail(mail_sender, mail_receiver, mail_name, mail_desc)
+  		values(#{mail_sender}, #{mail_receiver}, #{mail_name}, #{mail_desc})
 	</insert>
 	<delete id="deleteMail" parameterType="int" >
 		delete 

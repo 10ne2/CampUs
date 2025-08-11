@@ -1,15 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ page isELIgnored="false" %>
 <%@ page import="com.camp_us.dto.MemberVO" %>
 
 <head>
-<!-- summernote -->
-<link rel="stylesheet" href="<%=request.getContextPath() %>/resources/bootstrap/plugins/summernote/summernote-bs4.min.css">
+	
 <!-- Summernote -->
 <script src="<%=request.getContextPath() %>/resources/bootstrap/plugins/summernote/summernote-bs4.min.js"></script>
+
 </head>
 
 <style>
@@ -226,7 +227,7 @@
 							   <c:if test="${not empty mailList }">
 							   	<c:forEach items="${mailList }" var="mail">
 								<tr style="width: 100%; display: flex; flex-direction: column;" data-sender="${mail.mail_sender}" data-receiver="${mail.mail_receiver}"
-									data-unread="${mail.mail_receiver == loginUser.mem_id and (mail.mail_read == '0')}" data-star="${mail.mail_important}" data-att=""
+									data-unread="${mail.mail_receiver == loginUser.mem_id and (mail.mail_read == '0')}" data-mail-id="${mail.mail_id}" data-star="${mail.mail_important}" data-att=""
 									onclick="loadDetail(${mail.mail_id})">
 									<td style="width: 100%; min-height: 60px; display: flex; flex-direction: column;">
 										<div style="width:100%; display: flex; flex-direction: row;">
@@ -316,23 +317,31 @@
                 </div>
               </div>
               <!-- /.card-header -->
-              <form role="form" method="post" action="regist" name="registForm">
+              <form role="form" method="post" action="mail/regist" name="registForm">
 	              <div class="card-body">
 	                <div class="form-group" style="display: flex; flex-direction: row;">
 	                  <span style="display:block; width:8%; line-height:32px">받는 사람</span>
-	                  <input class="form-control notNull" placeholder="받는 사람을 입력해주세요.">
+	                  <input type="text" title="받는 사람" id="mail_receiver" name="mail_receiver"
+	                  	class="form-control notNull" placeholder="받는 사람을 입력해주세요.">
+	                </div>
+	                <div class="form-group" style="display: none;">
+	                  <span style="display:block; width:8%; line-height:32px">보내는 사람</span>
+	                  <input type="hidden" title="보내는 사람" id="mail_sender" name="mail_sender"
+	                  	class="form-control notNull" placeholder="받는 사람을 입력해주세요." readonly value="${sessionScope.loginUser.mem_id}">
 	                </div>
 	                <div class="form-group" style="display: flex; flex-direction: row;">
 	                  <span style="display:block; width:8%; line-height:32px">제목</span>
-	                  <input class="form-control notNull" placeholder="제목을 입력해주세요.">
+	                  <input type="text" title="제목" id="mail_name" name="mail_name" 
+	                  	class="form-control notNull" placeholder="제목을 입력해주세요.">
 	                </div>
-	                <div class="form-group" >
-	                  <textarea name="content" id="content" class="textarea form-control notNull" style="height: 500px"> </textarea>
-	                </div>
-	                <div class="form-group" style="display: flex-direction: row;">
+	                <div class="form-group">
+						<textarea class="textarea" name="content" id="content" rows="20"
+							cols="90" placeholder="1000자 내외로 작성하세요." ></textarea>
+					</div>
+	                <div class="form-group" style="display: felx; flex-direction: row;">
 	                  <div class="btn btn-default btn-file">
 	                    <i class="fas fa-paperclip"></i> 파일 선택
-	                    <input type="file" name="attachment">
+	                    <input type="file" type="file" name="attachment">
 	                  </div>
 	                  <p class="help-block" style="margin-left:15px; margin-top:13px; line-height: 10px">Max. 32MB</p>
 	                </div>
@@ -370,12 +379,11 @@ function search_list(page){
 }
 </script>
 
-</script>
 <script>
 Summernote_go($("textarea#content"),"<%=request.getContextPath() %>") ;
 
 function regist_go(){
-	//alert("click regist");
+	/* alert("click regist"); */
 	var form = document.registForm;
 	
 	var inputNotNull = document.querySelectorAll(".notNull");
@@ -449,6 +457,8 @@ function regist_go(){
 	  }
 
 </script>
+
+
 <script>/* 중요(별) 클릭 이벤트 */
 	function starClick(){
 		const img = document.querySelector('#starImg');
@@ -487,19 +497,7 @@ function regist_go(){
 		})
 	})
 </script>
-<!-- <script>
-document.getElementById('btnAll').addEventListener('click', function(event) {
-    event.preventDefault(); // 기본 이동 막기
-    const targetPath = '?mail=1'; // 이동할 경로
-    window.location.href = targetPath; 
-});
 
-document.getElementById('btnRecv').addEventListener('click', function(event) {
-    event.preventDefault(); // 기본 이동 막기
-    const targetPath = '?mail=2'; // 이동할 경로
-    window.location.href = targetPath; 
-});
-</script> -->
 <script>/* 카테고리 선택 시 목록 변경 */
 	const myId = '${sessionScope.loginUser.mem_id}';
 	const btnAll = document.getElementById('btnAll');
@@ -548,25 +546,19 @@ document.getElementById('btnRecv').addEventListener('click', function(event) {
 	// 기본: 전체 메일 보여주기
 	filterMail('all');
 	
-	btnAll.addEventListener('click', function(event) {
+	btnAll.addEventListener('click', () => {
 		filterMail('all')
-	    event.preventDefault(); // 기본 이동 막기
-	    const targetPath = '<%=request.getContextPath()%>/mail?mail=1'; // 이동할 경로
-	    window.location.href = targetPath; 
+		history.replaceState(null, '', '?mail=1');
 	});
 	
-	btnRecv.addEventListener('click', function(event) {
+	btnRecv.addEventListener('click', () => {
 		filterMail('recv')
-	    event.preventDefault(); // 기본 이동 막기
-	    const targetPath = '<%=request.getContextPath()%>/mail?mail=2'; // 이동할 경로
-	    window.location.href = targetPath; 
+		history.replaceState(null, '', '?mail=2');
 	});
 	
-	btnSent.addEventListener('click', function(event) {
+	btnSent.addEventListener('click', () => {
 		filterMail('sent')
-	    event.preventDefault(); // 기본 이동 막기
-	    const targetPath = '<%=request.getContextPath()%>/mail?mail=3'; // 이동할 경로
-	    window.location.href = targetPath; 
+		history.replaceState(null, '', '?mail=3');
 	});
 	
 	btnUnread.addEventListener('click', () => {

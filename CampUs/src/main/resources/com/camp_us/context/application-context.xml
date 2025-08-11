@@ -7,7 +7,13 @@
 	<bean id="picturePath" 
 		  class="java.lang.String"
 		  c:value="${savePath.member.picture}" 		
-	/>		
+	/>	
+	<!-- summernote.image -->
+	<bean id="summernotePath"
+	      class="java.lang.String"
+	      c:value="${savePath.summernote.image}"
+	      />
+	      	
 	<bean id="memberDAO"
 	      class="com.camp_us.dao.MemberDAOImpl"
 	      c:session-ref="sqlSession"
@@ -47,6 +53,7 @@
 	<bean id="mailService"
 		  class="com.camp_us.service.MailServiceImpl"
 		  c:mailDAO-ref="mailDAO"
+		  c:summernotePath-ref="summernotePath" 
 		  />	        
 	<bean id="stuLecService"
 		  class="com.camp_us.service.StuLecServiceImpl"

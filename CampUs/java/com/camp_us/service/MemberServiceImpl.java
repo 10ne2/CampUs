@@ -5,13 +5,14 @@ import java.sql.Time;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.camp_us.dao.MemberDAO;
 import com.camp_us.dto.MemberVO;
 
 
 
 public class MemberServiceImpl implements MemberService {
-
 
 	private MemberDAO memberDAO;
 
@@ -74,6 +75,11 @@ public class MemberServiceImpl implements MemberService {
 		if(authorities.size()>0)for(String authority:authorities) {
 			memberDAO.insertAuthorities(id,Integer.parseInt(authority));
 		}
+	}
+
+	@Override
+	public String findMemIdByEmail(String mem_email) throws SQLException {
+		return memberDAO.findMemIdByEmail(mem_email);
 	}
 
 

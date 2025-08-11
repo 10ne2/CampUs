@@ -21,5 +21,5 @@ public interface MailService {
 	void regist(MailVO mail)throws SQLException;
 	
 	// 삭제
-	void remove(String memId)throws SQLException;
+	void remove(int mail_id)throws SQLException;
 }

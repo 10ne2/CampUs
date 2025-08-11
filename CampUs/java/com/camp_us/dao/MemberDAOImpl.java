@@ -76,6 +76,12 @@ public class MemberDAOImpl implements MemberDAO{
 		return session.selectList("Member-Mapper.selectMemberList");
 	}
 
+
+	@Override
+	public String findMemIdByEmail(String mem_email) throws SQLException {
+		return session.selectOne("Member-Mapper.findMemIdByEmail",mem_email);
+	}
+
 	
 	
 }

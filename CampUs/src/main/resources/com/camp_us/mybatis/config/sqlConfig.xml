@@ -16,6 +16,7 @@
 		<typeAlias type="com.camp_us.dto.OtherDashStuVO" alias="otherdashstu"/>
 		<typeAlias type="com.camp_us.dto.StuLecVO" alias="stuLec"/>
 		<typeAlias type="com.camp_us.dto.MailVO" alias="mail"/>
+		<typeAlias type="com.camp_us.dto.MailFileVO" alias="mfile"/>
 		
 		<typeAlias type="com.camp_us.command.PageMaker" alias="pageMaker"/>
 	</typeAliases>

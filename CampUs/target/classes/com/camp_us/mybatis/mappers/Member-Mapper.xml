@@ -71,4 +71,8 @@
 		from account
 		where mem_auth=#{mem_auth}
 	</select>
+	
+	<select id="findMemIdByEmail" parameterType="str" resultType="str">
+    SELECT mem_id FROM account WHERE mem_email = #{mem_email}
+</select>
 </mapper>

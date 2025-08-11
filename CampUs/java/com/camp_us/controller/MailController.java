@@ -1,7 +1,9 @@
 package com.camp_us.controller;
 
+import java.io.File;
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,9 @@ public class MailController {
 	public MailController(MailService mailService) {
 		this.mailService = mailService;
 	}
+	
+	@Resource(name="summernotePath")
+	private String summernotePath;
 	
 	@GetMapping("")
 	public String list(@ModelAttribute PageMaker pageMaker, Model model, HttpSession session)throws Exception{
@@ -72,17 +77,29 @@ public class MailController {
 	}
 	
 	@GetMapping("/regist")
-	public void registForm() {}
+	public String registForm() {
+		String url = "/mail";
+		return url;
+	}
 	
 	@PostMapping("/regist")
 	public String regist(MailRegistCommand mailRegistCommand) throws Exception{
+		String url = "/mail/regist_success";
 		
 		MailVO mail = mailRegistCommand.toMail();
 		mail.setMail_name(HTMLInputFilter.htmlSpecialChars(mail.getMail_name()));
 		
+		File dir = new File(summernotePath);
+		File[] files = dir.listFiles();
+		if(files!=null) for(File file : files) {
+			if(mail.getMail_desc().contains(file.getName())) {
+				file.delete();
+			}
+		}
+		
 		mailService.regist(mail);
 		
-		return "redirect:/mail";
+		return url;
 	}
 	
 	

@@ -18,5 +18,5 @@ public interface MailDAO {
 
 	void insertMail(MailVO mail) throws SQLException;
 
-	void deleteMail(String memId) throws SQLException;
+	void deleteMail(int mail_id) throws SQLException;
 }

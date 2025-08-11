@@ -1,5 +1,6 @@
 package com.camp_us.service;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -11,9 +12,11 @@ import com.camp_us.dto.MailVO;
 public class MailServiceImpl implements MailService{
 	
 	private MailDAO mailDAO;
+	private String summernotePath;
 	
-	public MailServiceImpl(MailDAO mailDAO) {
+	public MailServiceImpl(MailDAO mailDAO, String summernotePath) {
 		this.mailDAO = mailDAO;
+		this.summernotePath = summernotePath;
 	}
 
 	@Override
@@ -38,8 +41,19 @@ public class MailServiceImpl implements MailService{
 	}
 
 	@Override
-	public void remove(String memId) throws SQLException {
-		mailDAO.deleteMail(memId);
+	public void remove(int mail_id) throws SQLException {
+		
+		MailVO mail = mailDAO.selectMailByMailId(mail_id);
+		
+		File dir = new File(summernotePath);
+		File[] files = dir.listFiles();
+		if(files!=null) for(File file : files) {
+			if(mail.getMail_desc().contains(file.getName())) {
+				file.delete();
+			}
+		}
+		
+		mailDAO.deleteMail(mail_id);
 	}
 
 	@Override
