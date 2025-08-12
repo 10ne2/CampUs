@@ -256,7 +256,14 @@
 											<a style="font-size:14px;">${mail.mail_name }</a>
 										</div>
 										<div class="mailbox-star" style="margin-left: auto; ">
-											<img id="starImg" src="<%=request.getContextPath()%>/resources/images/${mail.mail_important == 0 ? 'imp' : 'imp_act'}.png" style="width:20px; cursor:pointer" onclick="starClick(${mail.mail_id})"/>
+											<c:choose>
+											    <c:when test="${mail.mail_important == 0}">
+											      <img id="starImg_${mail.mail_id}" src="<%=request.getContextPath()%>/resources/images/imp.png" style="width:20px; cursor:pointer" onclick="starClick(${mail.mail_id})"/>
+											    </c:when>
+											    <c:otherwise>
+											      <img id="starImg_${mail.mail_id}" src="<%=request.getContextPath()%>/resources/images/imp_act.png" style="width:20px; cursor:pointer" onclick="starClick(${mail.mail_id})"/>
+											    </c:otherwise>
+											  </c:choose>
 										</div>
 									</td>
 								</tr>
@@ -515,15 +522,29 @@ $('.fileInput').on('change',"input[name='uploadFile']",function(event){
 
 <script>/* 중요(별) 클릭 이벤트 */
 function starClick(mail_id) {
-	console.log("Clicked mail_id:", mail_id); 
-	
+    console.log("Clicked mail_id:", mail_id);
+
+    // 아이콘 엘리먼트 가져오기
+    var starImg = document.getElementById("starImg_" + mail_id);
+
     $.post('<%=request.getContextPath()%>/mail/imp', { mail_id: mail_id })
-      .done(function() {
-          alert('중요 표시가 변경되었습니다.');
-      })
-      .fail(function() {
-          alert('변경에 실패했습니다.');
-      });
+        .done(function() {
+            alert('중요 표시가 변경되었습니다.');
+
+            // 현재 src 확인해서 토글
+            var contextPath = '<%=request.getContextPath()%>';
+            var impPath = contextPath + "/resources/images/imp.png";
+            var impActPath = contextPath + "/resources/images/imp_act.png";
+
+            if (starImg.src.endsWith("imp.png")) {
+                starImg.src = impActPath;
+            } else {
+                starImg.src = impPath;
+            }
+        })
+        .fail(function() {
+            alert('변경에 실패했습니다.');
+        });
 }
 </script>
 

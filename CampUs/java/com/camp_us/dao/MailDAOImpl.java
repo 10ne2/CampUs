@@ -71,21 +71,23 @@ public class MailDAOImpl implements MailDAO {
 		return session.selectOne("Mail-Mapper.getMail",mail_id);
 	}
 
+	
 	@Override
 	public MailVO selectMailImp(int mimp_id) throws SQLException {
 		return session.selectOne("Mail-Mapper.selectMailImp", mimp_id);
 	}
 
 	@Override
-	public void insertMailImp(MailVO mail) throws SQLException {
-		session.insert("Mail-Mapper.insertMailImp",mail);
+	public int selectMailImpSeqNext() throws SQLException {
+	    return session.selectOne("Mail-Mapper.selectMailImpSeqNext");
 	}
 
 	@Override
-	public void deleteMailImp(int mimp_id) throws SQLException {
-		session.delete("Mail-Mapper.deleteMailImp",mimp_id);
+	public void insertMailImp(MailVO mail) throws SQLException {
+	    session.insert("Mail-Mapper.insertMailImp", mail);
 	}
 
+	
 	
 	
 	

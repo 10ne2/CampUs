@@ -46,7 +46,7 @@ public class MailController {
 	private String summernotePath;
 	
 	@GetMapping("/list")
-	public String list(@ModelAttribute PageMaker pageMaker, Model model, HttpSession session, Integer  mimp_id)throws Exception{
+	public String list(@ModelAttribute PageMaker pageMaker, Model model, HttpSession session)throws Exception{
 		if(mailService == null) {
 			throw new RuntimeException("mailService가 주입되지 않았습니다!");
 		}
@@ -57,18 +57,23 @@ public class MailController {
         }
 		String memId = loginUser.getMem_id();
 		
-		System.out.println("session: " + session);
-		System.out.println("loginUser: " + loginUser);
-		System.out.println("mailService: " + mailService);
+		List<MailVO> mailList = mailService.list(pageMaker, memId);
 		
-		List<MailVO> mailList = mailService.list(pageMaker, memId, mimp_id);
+		for(MailVO mail : mailList) {
+	        MailVO imp = mailService.selectMailImp(mail.getMimp_id());  // 또는 mail의 ID를 넘기기
+	        if(imp != null) {
+	            mail.setMail_important(imp.getMail_important());
+	        } else {
+	            mail.setMail_important(0);
+	        }
+	    }
 		
 		model.addAttribute("mailList",mailList);
 		return "/mail";
 	}
 	
 	@GetMapping("/detail")
-	public String detail(int mail_id, Model model, HttpSession session, Integer  mimp_id) throws Exception{
+	public String detail(int mail_id, Model model, HttpSession session, int  mimp_id) throws Exception{
 		MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
 	    if (loginUser == null) {
 	        return "redirect:/login";
@@ -79,7 +84,7 @@ public class MailController {
 	    model.addAttribute("mail", mailDetailList);
 
 	    // 목록도 같이 넣기
-	    List<MailVO> mailList = mailService.list(new PageMaker(), memId, mimp_id);
+	    List<MailVO> mailList = mailService.list(new PageMaker(), memId);
 	    model.addAttribute("mailList", mailList);
 	    return "/mail";
 	}
@@ -148,7 +153,7 @@ public class MailController {
 	}
 	
 	@GetMapping("/remove")
-	public ModelAndView remove(@RequestParam("mail_id") String mail_ids, ModelAndView mnv, Integer mimp_id) throws Exception{
+	public ModelAndView remove(@RequestParam("mail_id") String mail_ids, ModelAndView mnv) throws Exception{
 		String url = "/mail/remove_success";
 		
 		String[] mailIdArr = mail_ids.split(",");
@@ -165,7 +170,7 @@ public class MailController {
 					}
 				}
 			}
-		mailService.remove(mail_id, mimp_id);
+		mailService.remove(mail_id);
 		}
 		
 		
@@ -175,4 +180,27 @@ public class MailController {
 		
 	}
 	
+	
+	@PostMapping("/imp")
+	@ResponseBody
+	public ResponseEntity<String> addImportant(@RequestParam int mail_id, HttpSession session) {
+	    MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+	    if (loginUser == null) {
+	        return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
+	    }
+
+	    String memId = loginUser.getMem_id();
+
+	    try {
+	        MailVO mail = new MailVO();
+	        mail.setMail_id(mail_id);
+	        mail.setMem_id(memId);
+
+	        mailService.registImportant(mail);
+	        return new ResponseEntity<>("즐겨찾기 등록 완료", HttpStatus.OK);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return new ResponseEntity<>("오류 발생", HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+	}
 }

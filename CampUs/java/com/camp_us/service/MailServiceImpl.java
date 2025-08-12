@@ -23,19 +23,21 @@ public class MailServiceImpl implements MailService{
 	}
 
 	@Override
-	public List<MailVO> list(PageMaker pageMaker,String memId, int mimp_id) throws SQLException {
-		 System.out.println("mailDAO = " + mailDAO);
-		    System.out.println("mailFileDAO = " + mailFileDAO);
-		
+	public List<MailVO> list(PageMaker pageMaker,String memId) throws SQLException {
 		List<MailVO> mailList = mailDAO.selectSearchMailList(pageMaker,memId);
 		
 		if(mailList != null) for(MailVO mail : mailList) {
 			int mail_id = mail.getMail_id();
 			
-			MailVO imp = mailDAO.selectMailImp(mimp_id);
-			mail.setMail_important(imp.getMail_important());
+			MailVO imp = mailDAO.selectMailImp(mail.getMail_id());
+
+		    if (imp != null) {
+		        mail.setMail_important(1);  // 즐겨찾기 등록됨
+		    } else {
+		        mail.setMail_important(0);  // 즐겨찾기 안됨
+		    }
 						
-			List<MailFileVO> mailFileList = mailFileDAO.selectMailFileByMailId(mail_id);
+			List<MailFileVO> mailFileList = mailFileDAO.selectMailFileByMailId(mail.getMail_id());
 			mail.setMailFileList(mailFileList);
 		}
 		
@@ -63,7 +65,6 @@ public class MailServiceImpl implements MailService{
 		int mail_id = mailDAO.selectMailSeqNext();
 		mail.setMail_id(mail_id);
 		mailDAO.insertMail(mail);
-		mailDAO.insertMailImp(mail);
 		
 		List<MailFileVO> mailFileList = mail.getMailFileList();
 		if(mailFileList != null) for(MailFileVO mailFile : mailFileList) {
@@ -74,9 +75,19 @@ public class MailServiceImpl implements MailService{
 			mailFileDAO.insertMailFile(mailFile);
 		}
 	}
+	
+	@Override
+	public void registImportant(MailVO mail) throws SQLException {
+	    // 1. mimp_id 시퀀스 받기
+	    int mimp_id = mailDAO.selectMailImpSeqNext();
+	    mail.setMimp_id(mimp_id);
+
+	    // 2. insert
+	    mailDAO.insertMailImp(mail);
+	}
 
 	@Override
-	public void remove(int mail_id,int mimp_id) throws SQLException {
+	public void remove(int mail_id) throws SQLException {
 		
 		MailVO mail = mailDAO.selectMailByMailId(mail_id);
 		
@@ -87,11 +98,11 @@ public class MailServiceImpl implements MailService{
 				file.delete();
 			}
 		}
-		
-		mailDAO.deleteMailImp(mimp_id);
 		mailFileDAO.deleteAllMailFile(mail_id);
 		mailDAO.deleteMail(mail_id);
 	}
+	
+	
 
 	@Override
 	public MailVO getMail(int mail_id) throws SQLException {
@@ -103,6 +114,18 @@ public class MailServiceImpl implements MailService{
 		return mail;
 	}
 
+	@Override
+	public MailVO selectMailImp(int mimp_id) throws SQLException {
+	    MailVO mail = mailDAO.selectMailImp(mimp_id);
+
+	    if (mail != null) {
+	        mail.setMail_important(1);  // 즐겨찾기 있음
+	    } else {
+	        mail = new MailVO();         // 새 객체 생성
+	        mail.setMail_important(0);  // 즐겨찾기 없음
+	    }
+	    return mail;
+	}
 	
 
 }

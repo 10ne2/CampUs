@@ -82,6 +82,8 @@
 		where mail_id=#{mail_id}
 	</select>
 	
+	
+	
 	<select id="selectMailImp" parameterType="int" resultType="mail">
 		select *
 		from mail_imp
@@ -92,11 +94,10 @@
 		mail_imp(mimp_id, mail_id, mem_id)
   		values(#{mimp_id}, #{mail_id}, #{mem_id})
 	</insert>
-	<delete id="deleteMailImp" parameterType="int" >
-		delete 
-		from mail_imp 
-		where mimp_id=#{mimp_id}
-	</delete>
+	<select id="selectMailImpSeqNext" resultType="int">
+		select mail_imp_seq.nextval as mimp_id from dual
+	</select>
+	
 	
 	
 

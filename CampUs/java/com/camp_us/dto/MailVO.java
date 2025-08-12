@@ -22,6 +22,7 @@ public class MailVO {
 	
 	private String loginUser;
 	private String mem_id;
+	private int mimp_id;
 	
 	private List<MailFileVO> mailFileList;
 
@@ -152,6 +153,14 @@ public class MailVO {
 
 	public void setLoginUser(String loginUser) {
 		this.loginUser = loginUser;
+	}
+
+	public int getMimp_id() {
+		return mimp_id;
+	}
+
+	public void setMimp_id(int mimp_id) {
+		this.mimp_id = mimp_id;
 	}
 
 	
