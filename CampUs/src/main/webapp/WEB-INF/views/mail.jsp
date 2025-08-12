@@ -201,15 +201,12 @@
 							<i class="far fa-square"></i>
 						</button>
 						<div class="btn-group">
-							<button type="button" class="btn btn-default btn-sm">
+							<button type="button" class="btn btn-default btn-sm" onclick="remove();">
 								<i class="far fa-trash-alt"></i>
-							</button>
-							<button type="button" class="btn btn-default btn-sm">
-								<i class="fas fa-reply"></i>
 							</button>
 						</div>
 						<!-- /.btn-group -->
-						<button type="button" class="btn btn-default btn-sm">
+						<button type="button" class="btn btn-default btn-sm" onclick="refresh()">
 							<i class="fas fa-sync-alt"></i>
 						</button>
 						
@@ -228,11 +225,11 @@
 							   	<c:forEach items="${mailList }" var="mail">
 								<tr style="width: 100%; display: flex; flex-direction: column;" data-sender="${mail.mail_sender}" data-receiver="${mail.mail_receiver}"
 									data-unread="${mail.mail_receiver == loginUser.mem_id and (mail.mail_read == '0')}" data-mail-id="${mail.mail_id}" data-star="${mail.mail_important}" data-att=""
-									onclick="loadDetail(${mail.mail_id})">
+									onclick="loadDetail(${mail.mail_id}); toggleCheckbox(this)">
 									<td style="width: 100%; min-height: 60px; display: flex; flex-direction: column;">
 										<div style="width:100%; display: flex; flex-direction: row;">
 											<div class="icheck-primary" style="width:48px">
-												<input type="checkbox" value="${mail.mail_id}" id="check_${mail.mail_id}"> <label
+												<input type="checkbox" name="mail_id" value="${mail.mail_id}" id="check_${mail.mail_id}"> <label
 													for="check_${mail.mail_id}"></label>
 											</div>
 											<div class="" style="">
@@ -259,7 +256,7 @@
 											<a style="font-size:14px;">${mail.mail_name }</a>
 										</div>
 										<div class="mailbox-star" style="margin-left: auto; ">
-											<img id="starImg" src="<%=request.getContextPath()%>/resources/images/${mail.mail_important == 0 ? 'imp' : 'imp_act'}.png" style="width:20px; cursor:pointer" onclick="starClick()"/>
+											<img id="starImg" src="<%=request.getContextPath()%>/resources/images/${mail.mail_important == 0 ? 'imp' : 'imp_act'}.png" style="width:20px; cursor:pointer" onclick="starClick(${mail.mail_id})"/>
 										</div>
 									</td>
 								</tr>
@@ -283,22 +280,8 @@
 		</div>
 		<!-- /.col -->
 		<div class="col-md-7 mailDetail" style="display:block">
-			<div class="card card-primaryc card-outline"
-				style="height: 810px; overflow-y: auto;">
-				<!-- /.card-header -->
-				<div class="card-body p-0 mailDetailList"  >
-						
-							
-						
-					<!-- /.mailbox-read-message -->
-				</div>
-				<!-- /.card-body -->
-				<div class="card-footer bg-white" style="margin-bottom: 10px; display: flex; flex-direction: row;">
-					<a href="#" download class="btn btn-default">
-					    <i class="fas fa-paperclip"></i> Attachment
-					</a>
-                  	<span style="display: block; margin-left: 10px; line-height: 38px">1,234 KB</span>
-				</div>
+			<div class="card card-primaryc card-outline mailDetailList" style="height: 810px; overflow-y: auto;">
+				
 				
 			</div>
 				<!-- /.card-footer -->
@@ -317,7 +300,7 @@
                 </div>
               </div>
               <!-- /.card-header -->
-              <form role="form" method="post" action="mail/regist" name="registForm">
+              <form role="form" method="post" action="/mail/regist" name="registForm" enctype="multipart/form-data">
 	              <div class="card-body">
 	                <div class="form-group" style="display: flex; flex-direction: row;">
 	                  <span style="display:block; width:8%; line-height:32px">받는 사람</span>
@@ -335,16 +318,21 @@
 	                  	class="form-control notNull" placeholder="제목을 입력해주세요.">
 	                </div>
 	                <div class="form-group">
-						<textarea class="textarea" name="content" id="content" rows="20"
+						<textarea class="textarea" name="mail_desc" id="mail_desc" rows="30"
 							cols="90" placeholder="1000자 내외로 작성하세요." ></textarea>
 					</div>
-	                <div class="form-group" style="display: felx; flex-direction: row;">
-	                  <div class="btn btn-default btn-file">
-	                    <i class="fas fa-paperclip"></i> 파일 선택
-	                    <input type="file" type="file" name="attachment">
-	                  </div>
-	                  <p class="help-block" style="margin-left:15px; margin-top:13px; line-height: 10px">Max. 32MB</p>
+					<div style="display: flex; flex-direction: row;">
+		                <div class="form-group" >
+		                  <div id="addFileBtn" class="btn btn-default btn-file" onclick="addFile_go();" type="file" type="file" name="attachment"
+		                  style="width:130px; height: 50px; line-height: 25px">
+		                    <i class="fas fa-paperclip"></i>
+		                    <h5 style="display:inline;line-height:40px;">&nbsp;&nbsp;파일등록</h5>
+		                  </div>
+		                </div>
+		                <div class="fileInput"></div>
 	                </div>
+	                
+	                
 	              </div>
               </form>
               <!-- /.card-body -->
@@ -380,7 +368,7 @@ function search_list(page){
 </script>
 
 <script>
-Summernote_go($("textarea#content"),"<%=request.getContextPath() %>") ;
+Summernote_go($("textarea#mail_desc"),"<%=request.getContextPath() %>") ;
 
 function regist_go(){
 	/* alert("click regist"); */
@@ -399,32 +387,98 @@ function regist_go(){
 }
 </script>
 
+<script>
+function remove(){
+	//alert("click remove btn");
+	let checked = document.querySelectorAll('input[name="mail_id"]:checked');
+	
+	if (checked.length === 0) {
+        alert("삭제할 메일을 선택하세요.");
+        return;
+    }
+	
+	let answer = confirm("정말 삭제하시겠습니다.");
+	if(!answer) return;
+	
+	let mail_id = Array.from(checked).map(cb => cb.value);
+	let params = mail_id.join(",")
+	
+	location.href="remove?mail_id="+mail_id.join(",");
+}
+</script>
+
+<script>
+function refresh() {
+    location.reload();
+}
+</script>
+
+<script>
+var dataNum=0;
+
+function addFile_go(){
+	//alert("!!!!");
+	if($('input[name="uploadFile"]').length >=3){
+		alert("파일추가는 3개까지만 가능합니다.");
+		return;
+	}
+	
+	let div=$('<div>').addClass("inputRow").attr("data-no",dataNum).css("margin","3px");
+	let input=$('<input>').attr({"type":"file","name":"uploadFile"}).css("display","inline");
+	let button = "<button onclick='remove_go("+dataNum+");' style='border:0;outline:0;' class='badge bg-red' type='button'>X</button>";
+
+	div.append(input).append(button);
+	$('.fileInput').append(div);
+	
+	dataNum++;
+}
+
+function remove_go(num){
+	$('div[data-no="'+num+'"]').remove();
+}
+
+$('.fileInput').on('change',"input[name='uploadFile']",function(event){
+	if(this.files[0].size > 1024*1024*40){
+		alert("첨부파일크기는 40MB 이하만 가능합니다.");
+		this.value="";				
+	}
+});
+
+</script>
+
 
 <script>/* 체크박스 전체 선택 */
 	function all_click(){
-		const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-		const btn = document.querySelector('.checkbox-toggle i');
-		
-		let allCheck = true;
-		
-		checkboxes.forEach(cb =>{
-			if(!cb.checked){
-				allCheck = false;
-			}
-		});
-		
-		checkboxes.forEach(cb => {
-			cb.checked = !allCheck;
-		});
-		
-		if (!allChecked) {
-	        btn.classList.remove('fa-square');
-	        btn.classList.add('fa-check-square');
+		const checkboxes = document.querySelectorAll('input[name="mail_id"]');
+		const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+		  
+		  if (allChecked) {
+		    // 모두 체크되어 있으면 해제
+		    checkboxes.forEach(cb => {
+		    	cb.checked = false;
+		    	cb.closest('tr').style.backgroundColor = '';
+		    });
+		  } else {
+		    // 하나라도 체크 안 되어 있으면 모두 선택
+		    checkboxes.forEach(cb => {
+		    	cb.checked = true;
+		    	cb.closest('tr').style.backgroundColor = '#EAF5F4'; // 선택된 행 배경색
+		    });
+		  }
+		  
+	}
+	
+	function toggleCheckbox(row) {
+	    let checkbox = row.querySelector('input[type="checkbox"]');
+	    checkbox.checked = !checkbox.checked;
+	    
+	    if(checkbox.checked){
+	    	row.style.backgroundColor = "#EAF5F4";
 	    } else {
-	        btn.classList.remove('fa-check-square');
-	        btn.classList.add('fa-square');
+	    	row.style.backgroundColor = "";
 	    }
 	}
+	
 	
 	function mailWrite() {
 		/* 메일 작성 클릭시 화면 바뀜 */
@@ -460,42 +514,17 @@ function regist_go(){
 
 
 <script>/* 중요(별) 클릭 이벤트 */
-	function starClick(){
-		const img = document.querySelector('#starImg');
-		
-		const srcOn = "<%=request.getContextPath()%>/resources/images/imp.png";
-	    const srcOff = "<%=request.getContextPath()%>/resources/images/imp_act.png";
-	    
-	    img.src = img.src.includes(srcOn) ? srcOff : srcOn;
-	    
-	}
+function starClick(mail_id) {
+	console.log("Clicked mail_id:", mail_id); 
 	
-</script>
-<script>/* 체크박스 선택 */
-	document.querySelectorAll(".table-hover tbody tr").forEach(row => {
-		row.addEventListener("click",function(){
-			document.querySelectorAll(".table-hover tbody tr").forEach(r => {
-			
-			r.classList.remove("selected");
-			const cb = r.querySelector("input[type='checkbox']");
-		      if (cb) cb.checked = false;
-			});
-			
-	        this.classList.add("selected");
-	        const checkbox = this.querySelector("input[type='checkbox']");
-	        if (checkbox) checkbox.checked = true;
-	        
-		});
-	});
-	/* 클릭시 배경변경 */
-	const mailR = document.querySelectorAll('.mailR');
-	mailR[0].classList.add('active');
-	mailR.forEach(mail => {
-		mail.addEventListener('click', ()=>{
-			mailR.forEach(m => m.classList.remove('active'));
-			mail.classList.add('active');
-		})
-	})
+    $.post('<%=request.getContextPath()%>/mail/imp', { mail_id: mail_id })
+      .done(function() {
+          alert('중요 표시가 변경되었습니다.');
+      })
+      .fail(function() {
+          alert('변경에 실패했습니다.');
+      });
+}
 </script>
 
 <script>/* 카테고리 선택 시 목록 변경 */
@@ -601,4 +630,6 @@ function regist_go(){
 	});
 </script>
 
+	
+	
 	

@@ -13,6 +13,11 @@
 	      class="java.lang.String"
 	      c:value="${savePath.summernote.image}"
 	      />
+	<!-- mail files -->
+	<bean id="mailSavedFilePath"
+	      class="java.lang.String"
+	      c:value="${savePath.mail.files}"
+	      />
 	      	
 	<bean id="memberDAO"
 	      class="com.camp_us.dao.MemberDAOImpl"
@@ -46,14 +51,18 @@
 		  class="com.camp_us.dao.MailDAOImpl"
 		  c:session-ref="sqlSession"  
 		  />
-		  
+	<bean id="mailFileDAO"
+		  class="com.camp_us.dao.MailFileDAOImpl"
+		  c:session-ref="sqlSession"
+		  />	  
 	
 	
 	
 	<bean id="mailService"
 		  class="com.camp_us.service.MailServiceImpl"
 		  c:mailDAO-ref="mailDAO"
-		  c:summernotePath-ref="summernotePath" 
+		  c:summernotePath-ref="summernotePath"
+		  c:mailFileDAO-ref="mailFileDAO"
 		  />	        
 	<bean id="stuLecService"
 		  class="com.camp_us.service.StuLecServiceImpl"

@@ -24,7 +24,7 @@
        
       <!-- Messages Dropdown Menu -->
       <li class="nav-item">
-        <a class="nav-link" style="cursor:pointer" onclick="OpenWindow('<%=request.getContextPath()%>/mail','메일',1600,920);">
+        <a class="nav-link" style="cursor:pointer" onclick="OpenWindow('<%=request.getContextPath()%>/mail/list','메일',1600,920);">
           <span class="custom-icon-message"></span>
           <span class="badge badge-danger navbar-badge">3D</span>
         </a>

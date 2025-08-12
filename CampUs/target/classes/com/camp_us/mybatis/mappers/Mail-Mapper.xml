@@ -22,8 +22,6 @@
 		  	m.mail_name,
 		    m.mail_sdate,
 		    m.mail_rdate,
-		    m.mail_read,
-		    m.mail_important,
 		    m.mail_desc,
 		    m.mail_sender,
 		    sender.mem_name AS sender_name,
@@ -53,8 +51,6 @@
 		  	m.mail_name,
 		    m.mail_sdate,
 		    m.mail_rdate,
-		    m.mail_read,
-		    m.mail_important,
 		    m.mail_desc,
 		    m.mail_sender,
 		    sender.mem_name AS sender_name,
@@ -67,22 +63,42 @@
   		JOIN account receiver ON m.mail_receiver = receiver.mem_id
 		WHERE m.mail_id = #{mail_id}
 	</select>
-	<select id="selectUnreadReceiverCount" parameterType="String" resultType="int">
-		select
-		count(*)
-		from mail
-		WHERE mail_receiver = #{mem_id} and mail_read = 0
-	</select>
 	<insert id="insertMail" parameterType="mail"> 
 		insert into 
-		mail(mail_sender, mail_receiver, mail_name, mail_desc)
-  		values(#{mail_sender}, #{mail_receiver}, #{mail_name}, #{mail_desc})
+		mail(mail_id, mail_sender, mail_receiver, mail_name, mail_desc)
+  		values(#{mail_id}, #{mail_sender}, #{mail_receiver}, #{mail_name}, #{mail_desc})
 	</insert>
 	<delete id="deleteMail" parameterType="int" >
 		delete 
 		from mail 
 		where mail_id=#{mail_id}
 	</delete>
+	<select id="selectMailSeqNext" resultType="int">
+		select mail_seq.nextval as mail_id from dual
+	</select>
+	<select id="getMail"  parameterType="int" resultType="mail">
+		select * 
+		from mail 
+		where mail_id=#{mail_id}
+	</select>
+	
+	<select id="selectMailImp" parameterType="int" resultType="mail">
+		select *
+		from mail_imp
+		where mimp_id=#{mimp_id}
+	</select>
+	<insert id="insertMailImp" parameterType="mail"> 
+		insert into 
+		mail_imp(mimp_id, mail_id, mem_id)
+  		values(#{mimp_id}, #{mail_id}, #{mem_id})
+	</insert>
+	<delete id="deleteMailImp" parameterType="int" >
+		delete 
+		from mail_imp 
+		where mimp_id=#{mimp_id}
+	</delete>
+	
+	
 
 </mapper>
 

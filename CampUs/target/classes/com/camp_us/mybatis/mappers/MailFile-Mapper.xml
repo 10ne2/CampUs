@@ -15,8 +15,8 @@
 	</select>
 	<insert id="insertMailFile" parameterType="mfile"> 
 		insert into 
-		mail(mafile_no, mafile_vol, mafile_name, mafile_type, mail_id, mafile_uploadpath)
-  		values(#{mafile_no}, #{mafile_vol}, #{mafile_name}, #{mafile_type}, #{mail_id}, #{mafile_uploadpath})
+		mail_file(mafile_no, mafile_name, mafile_type, mail_id, mafile_uploadpath)
+  		values(#{mafile_no}, #{mafile_name}, #{mafile_type}, #{mail_id}, #{mafile_uploadpath})
 	</insert>
 	<delete id="deleteMailFile">
 		delete 
@@ -28,6 +28,9 @@
 		from mail_file 
 		where mail_id = #{mail_id}
 	</delete>
+	<select id="selectMailFileSeqNext" resultType="int">
+		select mail_file_seq.nextval as mafile_no from dual
+	</select>
 
 </mapper>
 

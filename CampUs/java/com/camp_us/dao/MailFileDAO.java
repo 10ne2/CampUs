@@ -7,10 +7,11 @@ import com.camp_us.dto.MailFileVO;
 
 public interface MailFileDAO {
 	
-	MailFileVO selectMailFileByMafileNo(String mafile_no) throws SQLException;
+	MailFileVO selectMailFileByMafileNo(int mafile_no) throws SQLException;
 	List<MailFileVO> selectMailFileByMailId(int mail_id) throws SQLException;
+	int selectMailFileSeqNext() throws SQLException;
 	
 	void insertMailFile(MailFileVO mailFile) throws SQLException;
-	void deleteMailFile(String mafile_no) throws SQLException;
+	void deleteMailFile(int mafile_no) throws SQLException;
 	void deleteAllMailFile(int mail_id) throws SQLException;
 }

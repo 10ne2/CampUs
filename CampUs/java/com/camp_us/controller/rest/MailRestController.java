@@ -1,12 +1,22 @@
 package com.camp_us.controller.rest;
 
+import java.io.File;
+import java.nio.file.Paths;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriUtils;
 
+import com.camp_us.dao.MailFileDAO;
+import com.camp_us.dto.MailFileVO;
 import com.camp_us.dto.MailVO;
 import com.camp_us.service.MailService;
 
@@ -17,11 +27,15 @@ public class MailRestController {
 	@Autowired
 	private MailService mailService;
 	
+	@Autowired
+	private MailFileDAO mailFileDAO;
+	
 	
 	@GetMapping("/detail")
 	public ResponseEntity<MailVO> mailDetailList(int mail_id) throws Exception{
 		ResponseEntity<MailVO> entity = null;
 		MailVO mailDetailList = null;
+		
 		
 		try {
 			mailDetailList = mailService.detail(mail_id);
@@ -32,6 +46,22 @@ public class MailRestController {
         }
 		
 		return entity;
+	}
+
+	@GetMapping("/getFile")
+	@ResponseBody
+	public ResponseEntity<Resource> getFile(int mafile_no) throws Exception {
+						
+		MailFileVO mailFile  = mailFileDAO.selectMailFileByMafileNo(mafile_no);
+	    String filePath = mailFile.getMafile_uploadpath() + File.separator + mailFile.getMafile_name();
+		
+		
+	    Resource resource = new UrlResource(Paths.get(filePath).toUri());
+	    
+	    return ResponseEntity.ok()
+	            .header(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\"" + 
+				UriUtils.encode(mailFile.getMafile_name().split("\\$\\$")[1], "UTF-8") + "\"")
+	            .body(resource);		
 	}
 	
 }

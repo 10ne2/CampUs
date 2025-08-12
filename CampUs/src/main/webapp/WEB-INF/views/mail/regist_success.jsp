@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
     
 <script>
-alert("글등록이 되었습니다.")
+alert("메일이 보내졌습니다.")
 window.location.href = "${pageContext.request.contextPath}/mail";
 
 </script>

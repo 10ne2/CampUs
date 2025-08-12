@@ -1,5 +1,9 @@
 package com.camp_us.command;
 
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import com.camp_us.dto.MailVO;
 
 public class MailRegistCommand {
@@ -8,6 +12,7 @@ public class MailRegistCommand {
 	private String mail_name;
 	private String mail_desc;
 	private String mail_sender;
+	private List<MultipartFile> uploadFile;
 	
 	public String getMail_name() {
 		return mail_name;
@@ -43,6 +48,12 @@ public class MailRegistCommand {
 	}
 	public void setMail_receiver(String mail_receiver) {
 		this.mail_receiver = mail_receiver;
+	}
+	public List<MultipartFile> getUploadFile() {
+		return uploadFile;
+	}
+	public void setUploadFile(List<MultipartFile> uploadFile) {
+		this.uploadFile = uploadFile;
 	}
 	
 }

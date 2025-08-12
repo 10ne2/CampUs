@@ -1,14 +1,15 @@
 package com.camp_us.dto;
 
 import java.util.Date;
+import java.util.List;
 
 public class MailVO {
 	private int mail_id;
 	private String mail_name;        // 메일 제목
 	private Date mail_sdate;         // 발송 날짜
 	private Date mail_rdate;         // 수신 날짜
-	private String mail_read;        // 읽음 여부
-	private String mail_important;   // 중요 여부
+	private int mail_read;        // 읽음 여부
+	private int mail_important;   // 중요 여부
 	private String mail_desc;
 	
 	private String mail_sender;      // 보낸 사람 ID
@@ -21,6 +22,16 @@ public class MailVO {
 	
 	private String loginUser;
 	private String mem_id;
+	
+	private List<MailFileVO> mailFileList;
+
+	public List<MailFileVO> getMailFileList() {
+		return mailFileList;
+	}
+
+	public void setMailFileList(List<MailFileVO> mailFileList) {
+		this.mailFileList = mailFileList;
+	}
 
 	public String getMem_id() {
 		return mem_id;
@@ -63,19 +74,19 @@ public class MailVO {
 		this.mail_rdate = mail_rdate;
 	}
 
-	public String getMail_read() {
+	public int getMail_read() {
 		return mail_read;
 	}
 
-	public void setMail_read(String mail_read) {
+	public void setMail_read(int mail_read) {
 		this.mail_read = mail_read;
 	}
 
-	public String getMail_important() {
+	public int getMail_important() {
 		return mail_important;
 	}
 
-	public void setMail_important(String mail_important) {
+	public void setMail_important(int mail_important) {
 		this.mail_important = mail_important;
 	}
 
@@ -142,6 +153,7 @@ public class MailVO {
 	public void setLoginUser(String loginUser) {
 		this.loginUser = loginUser;
 	}
+
 	
 	
 }

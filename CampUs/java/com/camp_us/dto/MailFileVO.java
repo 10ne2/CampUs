@@ -2,17 +2,17 @@ package com.camp_us.dto;
 
 public class MailFileVO {
 
-	private String mafile_no;
+	private int mafile_no;
 	private String mafile_vol;
 	private String mafile_name;
 	private String mafile_type;
 	private int mail_id;
 	private String mafile_uploadpath;
 	
-	public String getMafile_no() {
+	public int getMafile_no() {
 		return mafile_no;
 	}
-	public void setMafile_no(String mafile_no) {
+	public void setMafile_no(int mafile_no) {
 		this.mafile_no = mafile_no;
 	}
 	public String getMafile_vol() {
@@ -44,6 +44,10 @@ public class MailFileVO {
 	}
 	public void setMafile_uploadpath(String mafile_uploadpath) {
 		this.mafile_uploadpath = mafile_uploadpath;
+	}
+	@Override
+	public String toString() {
+		return this.mafile_name;
 	}
 	
 	

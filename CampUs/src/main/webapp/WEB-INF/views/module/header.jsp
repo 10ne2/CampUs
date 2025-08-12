@@ -6,7 +6,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title><decorator:title default="Camp-Us"/></title>
+<title><decorator:title default="Camp Us"/></title>
   <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/bootstrap/plugins/jsgrid/jsgrid.min.css">
   <link rel="stylesheet" href="<%=request.getContextPath() %>/resources/bootstrap/plugins/jsgrid/jsgrid-theme.min.css">
 <!-- Google Font: Source Sans Pro -->
@@ -286,17 +286,114 @@ textarea:focus {
   width: 100vw;
   overflow-x: hidden;
 }
+.page-item.active .page-link {
+  background-color: #2ec4b6;  /* 원하는 색상 */
+  border-color: #2ec4b6;
+  color: #ffffff;
+  font-weight: bold;
+  border-radius: 8px;
+}
+
+.page-link {
+  color: #707070;
+  border-radius: 8px;
+  margin: 0 4px;
+  transition: background-color 0.3s ease;
+}
+
+.page-link:hover {
+  background-color: #22a99c;
+  text-decoration: none;
+}
+.leader-student-item.active {
+    background-color: #EAF5F4; /* 원하는 배경색 */
+    color:#212121;
+    border: 1px solid #EAF5F4;           /* 원하는 글자색 */
+}
+.member-student-item.active {
+    background-color: #EAF5F4; /* 원하는 배경색 */
+    color:#212121;
+    border: 1px solid #EAF5F4;           /* 원하는 글자색 */
+}
+.professor-item.active {
+    background-color: #EAF5F4; /* 원하는 배경색 */
+    color:#212121;
+    border: 1px solid #EAF5F4;           /* 원하는 글자색 */
+}
+.btn-warning:disabled {
+  cursor: default;  /* 기본 화살표 커서로 변경 */
+  opacity: 1;       /* 투명도 유지 */
+}
+.custom-checkbox {
+  position: relative;
+  display: flex;         /* inline-block 대신 flex */
+  align-items: center;   /* 세로 가운데 정렬 */
+  cursor: pointer;
+  padding-left: 30px;
+  user-select: none;
+  font-size: 16px;
+}
+
+.custom-checkbox input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0; 
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  left: 0;
+  top: 50%;              /* 세로 중앙 맞춤을 위해 */
+  transform: translateY(-50%);
+  height: 20px;
+  width: 20px;
+  background-color: #eee;
+  border:1px solid #202020;
+  border-radius: 4px;
+}
+
+.custom-checkbox:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+.custom-checkbox input:checked ~ .checkmark {
+  background-color: #2ec4b6;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.custom-checkbox input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* 체크 표시 스타일 (하얀색) */
+.custom-checkbox .checkmark:after {
+  left: 6px;
+  top: 2px;
+  width: 6px;
+  height: 12px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
 </style>
 <!-- jQuery -->
 <script src="<%=request.getContextPath() %>/resources/bootstrap/plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="<%=request.getContextPath() %>/resources/bootstrap/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE App -->
-<script src="<%=request.getContextPath() %>/resources/bootstrap/dist/js/adminlte.min.js"></script>
-<!-- common -->
-<script src="<%=request.getContextPath() %>/resources/js/common.js" ></script>
 
+<!-- Bootstrap -->
+<script src="<%=request.getContextPath()%>/resources/bootstrap/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Summernote -->
+<script src="<%=request.getContextPath() %>/resources/bootstrap/plugins/summernote/summernote-bs4.min.js"></script>
+<!-- 공통 -->
 <script src="<%=request.getContextPath() %>/resources/js/common.js"></script>
+
 <decorator:head />
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
