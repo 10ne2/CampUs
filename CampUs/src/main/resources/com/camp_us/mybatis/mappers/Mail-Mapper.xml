@@ -89,16 +89,6 @@
 		from mail_imp
 		where mimp_id=#{mimp_id}
 	</select>
-	<insert id="insertMailImp" parameterType="mail"> 
-		insert into 
-		mail_imp(mimp_id, mail_id, mem_id)
-  		values(#{mimp_id}, #{mail_id}, #{mem_id})
-	</insert>
-	<select id="selectMailImpSeqNext" resultType="int">
-		select mail_imp_seq.nextval as mimp_id from dual
-	</select>
-	
-	
 	
 
 </mapper>

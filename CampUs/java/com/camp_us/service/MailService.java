@@ -15,12 +15,10 @@ public interface MailService {
 		
 	// 등록
 	void regist(MailVO mail)throws SQLException;
-	void registImportant(MailVO mail) throws SQLException;
 	
 	// 삭제
 	void remove(int mail_id)throws SQLException;
 	
 	MailVO getMail(int mail_id) throws SQLException;
 	
-	MailVO selectMailImp(int mimp_id) throws SQLException;
 }

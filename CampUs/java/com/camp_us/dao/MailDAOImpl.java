@@ -71,24 +71,4 @@ public class MailDAOImpl implements MailDAO {
 		return session.selectOne("Mail-Mapper.getMail",mail_id);
 	}
 
-	
-	@Override
-	public MailVO selectMailImp(int mimp_id) throws SQLException {
-		return session.selectOne("Mail-Mapper.selectMailImp", mimp_id);
-	}
-
-	@Override
-	public int selectMailImpSeqNext() throws SQLException {
-	    return session.selectOne("Mail-Mapper.selectMailImpSeqNext");
-	}
-
-	@Override
-	public void insertMailImp(MailVO mail) throws SQLException {
-	    session.insert("Mail-Mapper.insertMailImp", mail);
-	}
-
-	
-	
-	
-	
 }

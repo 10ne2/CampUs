@@ -19,10 +19,4 @@ public interface MailDAO {
 	
 	MailVO getMail(int mail_id)throws SQLException;
 	
-	
-	MailVO selectMailImp(int mimp_id) throws SQLException;
-	
-	void insertMailImp(MailVO mail) throws SQLException;
-	int selectMailImpSeqNext() throws SQLException;
-	
 }

@@ -59,15 +59,6 @@ public class MailController {
 		
 		List<MailVO> mailList = mailService.list(pageMaker, memId);
 		
-		for(MailVO mail : mailList) {
-	        MailVO imp = mailService.selectMailImp(mail.getMimp_id());  // 또는 mail의 ID를 넘기기
-	        if(imp != null) {
-	            mail.setMail_important(imp.getMail_important());
-	        } else {
-	            mail.setMail_important(0);
-	        }
-	    }
-		
 		model.addAttribute("mailList",mailList);
 		return "/mail";
 	}

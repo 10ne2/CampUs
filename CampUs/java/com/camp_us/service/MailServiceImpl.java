@@ -29,13 +29,6 @@ public class MailServiceImpl implements MailService{
 		if(mailList != null) for(MailVO mail : mailList) {
 			int mail_id = mail.getMail_id();
 			
-			MailVO imp = mailDAO.selectMailImp(mail.getMail_id());
-
-		    if (imp != null) {
-		        mail.setMail_important(1);  // 즐겨찾기 등록됨
-		    } else {
-		        mail.setMail_important(0);  // 즐겨찾기 안됨
-		    }
 						
 			List<MailFileVO> mailFileList = mailFileDAO.selectMailFileByMailId(mail.getMail_id());
 			mail.setMailFileList(mailFileList);
@@ -76,15 +69,6 @@ public class MailServiceImpl implements MailService{
 		}
 	}
 	
-	@Override
-	public void registImportant(MailVO mail) throws SQLException {
-	    // 1. mimp_id 시퀀스 받기
-	    int mimp_id = mailDAO.selectMailImpSeqNext();
-	    mail.setMimp_id(mimp_id);
-
-	    // 2. insert
-	    mailDAO.insertMailImp(mail);
-	}
 
 	@Override
 	public void remove(int mail_id) throws SQLException {
@@ -112,19 +96,6 @@ public class MailServiceImpl implements MailService{
 		mail.setMailFileList(mailFileList);
 		
 		return mail;
-	}
-
-	@Override
-	public MailVO selectMailImp(int mimp_id) throws SQLException {
-	    MailVO mail = mailDAO.selectMailImp(mimp_id);
-
-	    if (mail != null) {
-	        mail.setMail_important(1);  // 즐겨찾기 있음
-	    } else {
-	        mail = new MailVO();         // 새 객체 생성
-	        mail.setMail_important(0);  // 즐겨찾기 없음
-	    }
-	    return mail;
 	}
 	
 
