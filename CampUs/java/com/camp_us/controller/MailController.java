@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -105,7 +104,7 @@ public class MailController {
 	
 	// 중요 메일
 		@GetMapping("/list4")
-		public String listImp(@ModelAttribute PageMaker pageMaker, Model model, HttpSession session, int mimp_id)throws Exception{
+		public String listImp(@ModelAttribute PageMaker pageMaker, Model model, HttpSession session)throws Exception{
 			if(mailService == null) {
 				throw new RuntimeException("mailService가 주입되지 않았습니다!");
 			}
@@ -116,7 +115,7 @@ public class MailController {
 	        }
 			String memId = loginUser.getMem_id();
 			
-			List<MailVO> mailList = mailService.listImp(pageMaker, memId, mimp_id);
+			List<MailVO> mailList = mailService.listImp(pageMaker, memId);
 			
 			model.addAttribute("mailList",mailList);
 			return "/mail";
@@ -169,7 +168,6 @@ public class MailController {
 				file.delete();
 			}
 		}
-		
 		// 메일 인서트
 		mailService.regist(mail);
 		

@@ -231,15 +231,24 @@
 								<tr style="width: 100%; display: flex; flex-direction: column;" data-sender="${mail.mail_sender}" data-receiver="${mail.mail_receiver}"
 									data-unread="${mail.mail_receiver == loginUser.mem_id and (mail.mail_read == '0')}" data-mail-id="${mail.mail_id}"
 									data-star="${mail.mimp_id}" data-att=""
-									onclick="loadDetail(${mail.mail_id}); toggleCheckbox(this)">
-									<td style="width: 100%; min-height: 60px; display: flex; flex-direction: column;">
+									onclick="loadDetail(${mail.mail_id}); toggleCheckbox(this); asRead(${mail.mail_id})">
+									<td style="width: 100%; min-height: 63px; display: flex; flex-direction: column;">
 										<div style="width:100%; display: flex; flex-direction: row;">
 											<div class="icheck-primary" style="width:48px">
 												<input type="checkbox" name="mail_id" value="${mail.mail_id}" id="check_${mail.mail_id}"> <label
 													for="check_${mail.mail_id}"></label>
 											</div>
 											<div class="" style="">
-												<img id="readImg" src="<%=request.getContextPath()%>/resources/images/${mail.mail_read == 0 ? 'nread' : 'read'}.png" style="width:20px; cursor:pointer"/>
+											  <c:choose>
+											    <c:when test="${mail.mread_id == 0}">
+											      <img id="readImg_${mail.mail_id}" src="<%=request.getContextPath()%>/resources/images/nread.png"
+											      style="width:20px; cursor:pointer"/>
+											    </c:when>
+											    <c:otherwise>
+											      <img id="readImg_${mail.mail_id}" src="<%=request.getContextPath()%>/resources/images/read.png"
+											      style="width:20px; cursor:pointer"/>
+											    </c:otherwise>
+											  </c:choose>
 											</div>
 											<div class="" style="width:150px; display:flex; flex-direction: row; margin-left:10px">
 												<a style="line-height:30px;">
@@ -315,7 +324,7 @@
                 </div>
               </div>
               <!-- /.card-header -->
-              <form role="form" method="post" action="/mail/regist" name="registForm" enctype="multipart/form-data">
+              <form role="form" method="post" action="<%=request.getContextPath()%>/mail/regist" name="registForm" enctype="multipart/form-data">
 	              <div class="card-body">
 	                <div class="form-group" style="display: flex; flex-direction: row;">
 	                  <span style="display:block; width:8%; line-height:32px">받는 사람</span>
@@ -367,7 +376,7 @@
 <script>
 function search_list(page){
 	let keyword = document.querySelector('#keyword').value;
-	let perPageNum = 10;
+	let perPageNum = 7;
 	let form = document.querySelector("#jobForm");
 	
 	//alert(perPageNum+":"+searchType+":"+keyword);
@@ -554,6 +563,24 @@ function starClick(mail_id) {
 	    },
 	    error: function() {
 	      alert('서버 통신 중 오류가 발생했습니다.');
+	    }
+	  });
+	}
+</script>
+
+<script>
+function asRead(mail_id) {
+	  $.ajax({
+	    url: '<%=request.getContextPath()%>/api/mail/read',
+	    method: 'post',
+	    contentType: 'application/json',
+	    data: JSON.stringify({ mail_id: mail_id }),
+	    success: function() {
+	      // 성공 시 이미지 변경
+	      $('#readImg_' + mail_id).attr('src', '<%=request.getContextPath()%>/resources/images/read.png');
+	    },
+	    error: function() {
+	      alert('읽음 처리에 실패했습니다.');
 	    }
 	  });
 	}

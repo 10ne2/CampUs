@@ -2,5 +2,5 @@
     pageEncoding="UTF-8"%>
 <script>
 	alert( "메일이 삭제되었습니다.");
-	window.location.href = "${pageContext.request.contextPath}/mail";
+	window.location.href = "${pageContext.request.contextPath}/mail/list";
 </script>

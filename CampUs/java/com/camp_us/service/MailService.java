@@ -31,5 +31,8 @@ public interface MailService {
 	List<MailVO> listReceiver(PageMaker pageMaker,String memId) throws SQLException;
 	
 	// 중요 메일 목록
-	List<MailVO> listImp(PageMaker pageMaker,String memId, int mimp_id) throws SQLException;
+	List<MailVO> listImp(PageMaker pageMaker,String memId) throws SQLException;
+
+	//조회
+	void insertMailRead(MailVO mail) throws SQLException;
 }

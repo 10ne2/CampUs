@@ -124,6 +124,15 @@ public class MailServiceImpl implements MailService{
         }
 	}
 	
+	// 조회
+	@Override
+	public void insertMailRead(MailVO mail) throws SQLException {
+		/* mread id증가 */
+	    int mread_id = mailDAO.selectMailReadSeqNext();
+	    mail.setMread_id(mread_id);
+	    mailDAO.insertMailRead(mail);
+	}
+	
 	
 	// 받은 메일
 	@Override
@@ -165,8 +174,8 @@ public class MailServiceImpl implements MailService{
 		
 	// 중요 메일
 		@Override
-		public List<MailVO> listImp(PageMaker pageMaker, String memId, int mimp_id) throws SQLException {
-			List<MailVO> mailList = mailDAO.selectSearchMailListByImp(pageMaker,memId, mimp_id);
+		public List<MailVO> listImp(PageMaker pageMaker, String memId) throws SQLException {
+			List<MailVO> mailList = mailDAO.selectSearchMailListByImp(pageMaker,memId);
 			
 			if(mailList != null) for(MailVO mail : mailList) {
 				int mail_id = mail.getMail_id();
@@ -176,7 +185,7 @@ public class MailServiceImpl implements MailService{
 				mail.setMailFileList(mailFileList);
 			}
 			
-			int totalCount = mailDAO.selectSearchMailListCountByImp(pageMaker,memId, mimp_id);
+			int totalCount = mailDAO.selectSearchMailListCountByImp(pageMaker,memId);
 			pageMaker.setTotalCount(totalCount);
 			
 			return mailList;

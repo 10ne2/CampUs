@@ -14,13 +14,10 @@ public interface MailDAO {
 	MailVO selectMailByMailId(int mail_id) throws SQLException;
 
 	void insertMail(MailVO mail) throws SQLException;
-
 	void deleteMail(int mail_id) throws SQLException;
-	
 	MailVO getMail(int mail_id)throws SQLException;
 	
 	/* 즐겨찾기 */
-	
 	void insertMailImp(MailVO mail) throws SQLException;
 	int selectMailImpSeqNext() throws SQLException;
 	void deleteMailImp(int mimp_id) throws SQLException;
@@ -35,6 +32,10 @@ public interface MailDAO {
 	int selectSearchMailListCountByReceiver(PageMaker pageMaker,String memId) throws SQLException;
 	
 	// 중요 메일
-	List<MailVO> selectSearchMailListByImp(PageMaker pageMaker,String memId, int mimp_id) throws SQLException;
-	int selectSearchMailListCountByImp(PageMaker pageMaker,String memId, int mimp_id) throws SQLException;
+	List<MailVO> selectSearchMailListByImp(PageMaker pageMaker,String memId) throws SQLException;
+	int selectSearchMailListCountByImp(PageMaker pageMaker,String memId) throws SQLException;
+	
+	// 조회
+	void insertMailRead(MailVO mail) throws SQLException;
+	int selectMailReadSeqNext() throws SQLException;
 }

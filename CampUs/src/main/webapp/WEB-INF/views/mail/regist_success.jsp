@@ -3,6 +3,6 @@
     
 <script>
 alert("메일이 보내졌습니다.")
-window.location.href = "${pageContext.request.contextPath}/mail";
+window.location.href = "${pageContext.request.contextPath}/mail/list";
 
 </script>

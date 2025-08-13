@@ -23,6 +23,7 @@ public class MailVO {
 	private String loginUser;
 	private String mem_id;
 	private int mimp_id;
+	private int mread_id;
 	
 	private List<MailFileVO> mailFileList;
 
@@ -161,6 +162,14 @@ public class MailVO {
 
 	public void setMimp_id(int mimp_id) {
 		this.mimp_id = mimp_id;
+	}
+
+	public int getMread_id() {
+		return mread_id;
+	}
+
+	public void setMread_id(int mread_id) {
+		this.mread_id = mread_id;
 	}
 
 	
