@@ -28,10 +28,12 @@
 		    sender.mem_email AS sender_email,
 		    m.mail_receiver,
 		    receiver.mem_name AS receiver_name,
-		    receiver.mem_email AS receiver_email
+		    receiver.mem_email AS receiver_email,
+		    mi.mimp_id
 		from mail m
 		JOIN account sender ON m.mail_sender = sender.mem_id
   		JOIN account receiver ON m.mail_receiver = receiver.mem_id
+  		LEFT join mail_imp mi on m.mail_id = mi.mail_id
 		where (m.mail_sender = #{mem_id} OR m.mail_receiver = #{mem_id})  			  	
 		<include refid="search" />
 		order by GREATEST(m.mail_sdate, m.mail_rdate) desc
@@ -63,6 +65,111 @@
   		JOIN account receiver ON m.mail_receiver = receiver.mem_id
 		WHERE m.mail_id = #{mail_id}
 	</select>
+	
+	
+	
+	<select id="selectSearchMailListBySender" parameterType="pageMaker" resultType="mail">
+		select
+			m.mail_id,
+		  	m.mail_name,
+		    m.mail_sdate,
+		    m.mail_rdate,
+		    m.mail_desc,
+		    m.mail_sender,
+		    sender.mem_name AS sender_name,
+		    sender.mem_email AS sender_email,
+		    m.mail_receiver,
+		    receiver.mem_name AS receiver_name,
+		    receiver.mem_email AS receiver_email,
+		    mi.mimp_id
+		from mail m
+		JOIN account sender ON m.mail_sender = sender.mem_id
+  		JOIN account receiver ON m.mail_receiver = receiver.mem_id
+  		LEFT join mail_imp mi on m.mail_id = mi.mail_id
+		where m.mail_sender = #{mem_id}  			  	
+		<include refid="search" />
+		order by GREATEST(m.mail_sdate, m.mail_rdate) desc
+	</select>
+	<select id="selectSearchMailListCountBySender" parameterType="pageMaker" resultType="int">
+		select
+		count(*)
+		from mail m
+		JOIN account sender ON m.mail_sender = sender.mem_id
+  		JOIN account receiver ON m.mail_receiver = receiver.mem_id
+		where m.mail_sender = #{mem_id} 			  	
+		<include refid="search" />
+	</select>
+	
+	
+	
+	<select id="selectSearchMailListByReceiver" parameterType="pageMaker" resultType="mail">
+		select
+			m.mail_id,
+		  	m.mail_name,
+		    m.mail_sdate,
+		    m.mail_rdate,
+		    m.mail_desc,
+		    m.mail_sender,
+		    sender.mem_name AS sender_name,
+		    sender.mem_email AS sender_email,
+		    m.mail_receiver,
+		    receiver.mem_name AS receiver_name,
+		    receiver.mem_email AS receiver_email,
+		    mi.mimp_id
+		from mail m
+		JOIN account sender ON m.mail_sender = sender.mem_id
+  		JOIN account receiver ON m.mail_receiver = receiver.mem_id
+  		LEFT join mail_imp mi on m.mail_id = mi.mail_id
+		where m.mail_receiver = #{mem_id}  			  	
+		<include refid="search" />
+		order by GREATEST(m.mail_sdate, m.mail_rdate) desc
+	</select>
+	<select id="selectSearchMailListCountByReceiver" parameterType="pageMaker" resultType="int">
+		select
+		count(*)
+		from mail m
+		JOIN account sender ON m.mail_sender = sender.mem_id
+  		JOIN account receiver ON m.mail_receiver = receiver.mem_id
+		where m.mail_receiver = #{mem_id} 			  	
+		<include refid="search" />
+	</select>
+	
+	
+	<select id="selectSearchMailListByImp" parameterType="pageMaker" resultType="mail">
+		select
+			m.mail_id,
+		  	m.mail_name,
+		    m.mail_sdate,
+		    m.mail_rdate,
+		    m.mail_desc,
+		    m.mail_sender,
+		    sender.mem_name AS sender_name,
+		    sender.mem_email AS sender_email,
+		    m.mail_receiver,
+		    receiver.mem_name AS receiver_name,
+		    receiver.mem_email AS receiver_email,
+		    mi.mimp_id
+		from mail m
+		JOIN account sender ON m.mail_sender = sender.mem_id
+  		JOIN account receiver ON m.mail_receiver = receiver.mem_id
+  		LEFT join mail_imp mi on m.mail_id = mi.mail_id
+		where (m.mail_sender = #{mem_id}  OR m.mail_receiver = #{mem_id} ) and mi.mimp_id is not null 			  	
+		<include refid="search" />
+		order by GREATEST(m.mail_sdate, m.mail_rdate) desc
+	</select>
+	<select id="selectSearchMailListCountByImp" parameterType="pageMaker" resultType="int">
+		select
+		count(*)
+		from mail m
+		JOIN account sender ON m.mail_sender = sender.mem_id
+  		JOIN account receiver ON m.mail_receiver = receiver.mem_id
+		where (m.mail_sender = #{mem_id}  OR m.mail_receiver = #{mem_id} ) and mi.mimp_id is not null 			  	
+		<include refid="search" />
+	</select>
+	
+	
+	
+	
 	<insert id="insertMail" parameterType="mail"> 
 		insert into 
 		mail(mail_id, mail_sender, mail_receiver, mail_name, mail_desc)
@@ -84,13 +191,24 @@
 	
 	
 	
-	<select id="selectMailImp" parameterType="int" resultType="mail">
-		select *
-		from mail_imp
-		where mimp_id=#{mimp_id}
+	<insert id="insertMailImp" parameterType="mail">
+		insert into 
+		mail_imp(mimp_id, mail_id, mem_id)
+  		values(#{mimp_id}, #{mail_id}, #{mem_id})
+	</insert>
+	<select id="selectMailImpSeqNext" resultType="int">
+		select mail_imp_seq.nextval as mimp_id from dual
 	</select>
-	
-
+	<select id="selectMailImpByMailAndMember" parameterType="mail" resultType="int">
+	    SELECT mimp_id
+	    FROM mail_imp
+	    WHERE mail_id = #{mail_id}
+	      AND mem_id = #{mem_id}
+	</select>
+	<delete id="deleteMailImp" parameterType="int">
+	    DELETE FROM mail_imp
+	    WHERE mimp_id = #{mimp_id}
+	</delete>
 </mapper>
 
 

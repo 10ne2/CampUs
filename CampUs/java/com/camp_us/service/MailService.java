@@ -21,4 +21,15 @@ public interface MailService {
 	
 	MailVO getMail(int mail_id) throws SQLException;
 	
+	//즐겨찾기
+	void toggleMailImportant(int mail_id, String mem_id) throws SQLException;
+	
+	// 보낸 메일 목록
+	List<MailVO> listSender(PageMaker pageMaker,String memId) throws SQLException;
+	
+	// 받은 메일 목록
+	List<MailVO> listReceiver(PageMaker pageMaker,String memId) throws SQLException;
+	
+	// 중요 메일 목록
+	List<MailVO> listImp(PageMaker pageMaker,String memId, int mimp_id) throws SQLException;
 }

@@ -3,6 +3,8 @@ package com.camp_us.controller.rest;
 import java.io.File;
 import java.nio.file.Paths;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -10,7 +12,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriUtils;
@@ -18,6 +22,7 @@ import org.springframework.web.util.UriUtils;
 import com.camp_us.dao.MailFileDAO;
 import com.camp_us.dto.MailFileVO;
 import com.camp_us.dto.MailVO;
+import com.camp_us.dto.MemberVO;
 import com.camp_us.service.MailService;
 
 @RestController
@@ -63,5 +68,23 @@ public class MailRestController {
 				UriUtils.encode(mailFile.getMafile_name().split("\\$\\$")[1], "UTF-8") + "\"")
 	            .body(resource);		
 	}
+	
+	@GetMapping("/imp")
+    public ResponseEntity<String> toggleImportant(@RequestParam Integer mail_id, HttpSession session) {
+        MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+        }
+
+        String mem_id = loginUser.getMem_id();
+
+        try {
+            mailService.toggleMailImportant(mail_id, mem_id);
+            return ResponseEntity.ok("success");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("오류 발생");
+        }
+    }
 	
 }

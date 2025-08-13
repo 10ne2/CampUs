@@ -55,10 +55,17 @@ public class MailServiceImpl implements MailService{
 	@Override
 	public void regist(MailVO mail) throws SQLException {
 		
+		/* mailID증가 */
 		int mail_id = mailDAO.selectMailSeqNext();
 		mail.setMail_id(mail_id);
 		mailDAO.insertMail(mail);
 		
+		/* 즐겨찾기 아이디 증가 
+		int mimp_id = mailDAO.selectMailImpSeqNext();
+		mail.setMimp_id(mimp_id);
+		mailDAO.insertMailImp(mail);*/
+		
+		/* 첨부파일 */
 		List<MailFileVO> mailFileList = mail.getMailFileList();
 		if(mailFileList != null) for(MailFileVO mailFile : mailFileList) {
 			int mafile_no = mailFileDAO.selectMailFileSeqNext();
@@ -68,7 +75,6 @@ public class MailServiceImpl implements MailService{
 			mailFileDAO.insertMailFile(mailFile);
 		}
 	}
-	
 
 	@Override
 	public void remove(int mail_id) throws SQLException {
@@ -97,6 +103,83 @@ public class MailServiceImpl implements MailService{
 		
 		return mail;
 	}
+
 	
+	// 즐겨찾기
+	@Override
+	public void toggleMailImportant(int mail_id, String mem_id) throws SQLException {
+		Integer mimp_id = mailDAO.selectMailImpByMailAndMember(mail_id, mem_id);
+		
+		if (mimp_id != null) {
+            // 이미 즐겨찾기 → 해제
+            mailDAO.deleteMailImp(mimp_id);
+        } else {
+            // 미등록 → 추가
+            int newMimpId = mailDAO.selectMailImpSeqNext();
+            MailVO imp = new MailVO();
+            imp.setMimp_id(newMimpId);
+            imp.setMail_id(mail_id);
+            imp.setMem_id(mem_id);
+            mailDAO.insertMailImp(imp);
+        }
+	}
+	
+	
+	// 받은 메일
+	@Override
+	public List<MailVO> listSender(PageMaker pageMaker, String memId) throws SQLException {
+		List<MailVO> mailList = mailDAO.selectSearchMailListBySender(pageMaker,memId);
+		
+		if(mailList != null) for(MailVO mail : mailList) {
+			int mail_id = mail.getMail_id();
+			
+						
+			List<MailFileVO> mailFileList = mailFileDAO.selectMailFileByMailId(mail.getMail_id());
+			mail.setMailFileList(mailFileList);
+		}
+		
+		int totalCount = mailDAO.selectSearchMailListCountBySender(pageMaker,memId);
+		pageMaker.setTotalCount(totalCount);
+		
+		return mailList;
+	}
+	
+	// 받은 메일
+		@Override
+		public List<MailVO> listReceiver(PageMaker pageMaker, String memId) throws SQLException {
+			List<MailVO> mailList = mailDAO.selectSearchMailListByReceiver(pageMaker,memId);
+			
+			if(mailList != null) for(MailVO mail : mailList) {
+				int mail_id = mail.getMail_id();
+				
+							
+				List<MailFileVO> mailFileList = mailFileDAO.selectMailFileByMailId(mail.getMail_id());
+				mail.setMailFileList(mailFileList);
+			}
+			
+			int totalCount = mailDAO.selectSearchMailListCountByReceiver(pageMaker,memId);
+			pageMaker.setTotalCount(totalCount);
+			
+			return mailList;
+		}
+		
+	// 중요 메일
+		@Override
+		public List<MailVO> listImp(PageMaker pageMaker, String memId, int mimp_id) throws SQLException {
+			List<MailVO> mailList = mailDAO.selectSearchMailListByImp(pageMaker,memId, mimp_id);
+			
+			if(mailList != null) for(MailVO mail : mailList) {
+				int mail_id = mail.getMail_id();
+				
+							
+				List<MailFileVO> mailFileList = mailFileDAO.selectMailFileByMailId(mail.getMail_id());
+				mail.setMailFileList(mailFileList);
+			}
+			
+			int totalCount = mailDAO.selectSearchMailListCountByImp(pageMaker,memId, mimp_id);
+			pageMaker.setTotalCount(totalCount);
+			
+			return mailList;
+		}
 
 }

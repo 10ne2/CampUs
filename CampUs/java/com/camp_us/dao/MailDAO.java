@@ -19,4 +19,22 @@ public interface MailDAO {
 	
 	MailVO getMail(int mail_id)throws SQLException;
 	
+	/* 즐겨찾기 */
+	
+	void insertMailImp(MailVO mail) throws SQLException;
+	int selectMailImpSeqNext() throws SQLException;
+	void deleteMailImp(int mimp_id) throws SQLException;
+	Integer selectMailImpByMailAndMember(int mail_id, String mem_id) throws SQLException;
+	
+	// 보낸 메일
+	List<MailVO> selectSearchMailListBySender(PageMaker pageMaker,String memId) throws SQLException;
+	int selectSearchMailListCountBySender(PageMaker pageMaker,String memId) throws SQLException;
+	
+	// 받은 메일
+	List<MailVO> selectSearchMailListByReceiver(PageMaker pageMaker,String memId) throws SQLException;
+	int selectSearchMailListCountByReceiver(PageMaker pageMaker,String memId) throws SQLException;
+	
+	// 중요 메일
+	List<MailVO> selectSearchMailListByImp(PageMaker pageMaker,String memId, int mimp_id) throws SQLException;
+	int selectSearchMailListCountByImp(PageMaker pageMaker,String memId, int mimp_id) throws SQLException;
 }

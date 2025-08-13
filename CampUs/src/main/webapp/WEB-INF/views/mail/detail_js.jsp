@@ -91,8 +91,7 @@ function loadDetail(mail_id){
 		success:function(responseData){
 			$('.mailDetailList').html(mailDetail(responseData));
 			$('#mail_desc').html(responseData.mail_desc);
-			history.pushState({ mailId: mail_id }, '', "<%=request.getContextPath()%>/mail/detail?mail_id="+mail_id
-	            );
+			
 		},
 		error:function(error){
 			alert("서버장애가 발생했습니다.");

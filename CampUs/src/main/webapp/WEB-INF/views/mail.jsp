@@ -131,7 +131,9 @@
 							<span style="display: block; text-align: center; font-size: 25px; color: #22A99C; font-weight: bold;">${unreadCount }</span>
 							<span style="display: block; text-align: center; font-size: 15px">안읽음</span>
 						</button>
-						<button id="btnStar" type="button" class="mailT" style="width: 100px; height: 70px; text-align: center; list-style: none; border:none; margin-top:4px">
+						<button id="btnStar" type="button" class="mailT"
+						style="width: 100px; height: 70px; text-align: center; list-style: none; border:none; margin-top:4px"
+						onclick="location.href='<%=request.getContextPath()%>/mail/list4'">
 							<img id="imgStar" src="<%=request.getContextPath()%>/resources/images/imp.png" style="width: 30px; margin: 0 0 5px -1px"></img>
 								<span style="display: block; font-size: 15px">중요</span>
 						</button>
@@ -148,14 +150,16 @@
 					<ul class="nav flex-column" style="width:250px; height: 668px;">
 						<li class="" style="height: 50px; ">
 							<button id="btnAll" type="button" data-mail="1" class="d-flex align-items-center mailR"
-							style="width: 100%; height: 100%; gap: 20px; line-height: 50px; border:none; padding:15px; overflow:hidden">
+							style="width: 100%; height: 100%; gap: 20px; line-height: 50px; border:none; padding:15px; overflow:hidden"
+							onclick="location.href='<%=request.getContextPath()%>/mail/list'">
 								<i class="fas fa-inbox" style=""></i>
 								<span style="display: block;">전체 메일함</span>
 							</button>
 						</li>
 						<li class="nav-item" style="height: 50px">
 							<button id="btnRecv" type="button" data-mail="2" class="d-flex align-items-center mailR"
-							style="width: 100%; height: 100%; gap: 20px; line-height: 50px; border:none; padding:15px">
+							style="width: 100%; height: 100%; gap: 20px; line-height: 50px; border:none; padding:15px"
+							onclick="location.href='<%=request.getContextPath()%>/mail/list3'">
 								<i class="far fa-envelope" style=""></i>
 								<span style="display: block;">받은 메일함</span>
 								<span id="unreadCount" class="badgec bg-primaryc" style="width:auto;display: block; margin-left: auto; padding: 0 5px 0 5px">${unreadCount}</span>
@@ -163,7 +167,8 @@
 						</li>
 						<li class="nav-item" style="height: 50px; border-bottom: 1px solid #ddd;">
 							<button id="btnSent" type="button" data-mail="3" class="d-flex align-items-center mailR"
-							style="width: 100%; height: 100%; gap: 24px; line-height: 50px; border:none; padding:15px">
+							style="width: 100%; height: 100%; gap: 24px; line-height: 50px; border:none; padding:15px"
+							onclick="location.href='<%=request.getContextPath()%>/mail/list2'">
 							<i class="far fa-file-alt" style="margin-left:2px"></i>
 							<span style="display: block;margin-left:-2px">보낸 메일함</span>
 							</button>
@@ -224,7 +229,8 @@
 							   <c:if test="${not empty mailList }">
 							   	<c:forEach items="${mailList }" var="mail">
 								<tr style="width: 100%; display: flex; flex-direction: column;" data-sender="${mail.mail_sender}" data-receiver="${mail.mail_receiver}"
-									data-unread="${mail.mail_receiver == loginUser.mem_id and (mail.mail_read == '0')}" data-mail-id="${mail.mail_id}" data-star="${mail.mail_important}" data-att=""
+									data-unread="${mail.mail_receiver == loginUser.mem_id and (mail.mail_read == '0')}" data-mail-id="${mail.mail_id}"
+									data-star="${mail.mimp_id}" data-att=""
 									onclick="loadDetail(${mail.mail_id}); toggleCheckbox(this)">
 									<td style="width: 100%; min-height: 60px; display: flex; flex-direction: column;">
 										<div style="width:100%; display: flex; flex-direction: row;">
@@ -257,11 +263,13 @@
 										</div>
 										<div class="mailbox-star" style="margin-left: auto; ">
 											<c:choose>
-											    <c:when test="${mail.mail_important == 0}">
-											      <img id="starImg_${mail.mail_id}" src="<%=request.getContextPath()%>/resources/images/imp.png" style="width:20px; cursor:pointer" onclick="starClick(${mail.mail_id})"/>
+											    <c:when test="${mail.mimp_id == 0}">
+											      <img id="starImg_${mail.mail_id}" src="<%=request.getContextPath()%>/resources/images/imp.png"
+											      style="width:20px; cursor:pointer" onclick="starClick(${mail.mail_id})"/>
 											    </c:when>
 											    <c:otherwise>
-											      <img id="starImg_${mail.mail_id}" src="<%=request.getContextPath()%>/resources/images/imp_act.png" style="width:20px; cursor:pointer" onclick="starClick(${mail.mail_id})"/>
+											      <img id="starImg_${mail.mail_id}" src="<%=request.getContextPath()%>/resources/images/imp_act.png"
+											      style="width:20px; cursor:pointer" onclick="starClick(${mail.mail_id})"/>
 											    </c:otherwise>
 											  </c:choose>
 										</div>
@@ -353,13 +361,13 @@
 
 <form id="jobForm" style="display:none;">	
 	<input type='text' name="page" value="1" />
-	<input type='text' name="keyword" value="15" />
+	<input type='text' name="keyword" value="" />
 	<input type='text' name="perPageNum" value="" />
 </form>
 <script>
 function search_list(page){
 	let keyword = document.querySelector('#keyword').value;
-	let perPageNum = 15;
+	let perPageNum = 10;
 	let form = document.querySelector("#jobForm");
 	
 	//alert(perPageNum+":"+searchType+":"+keyword);
@@ -522,33 +530,36 @@ $('.fileInput').on('change',"input[name='uploadFile']",function(event){
 
 <script>/* 중요(별) 클릭 이벤트 */
 function starClick(mail_id) {
-    console.log("Clicked mail_id:", mail_id);
+	  $.ajax({
+	    url: '<%=request.getContextPath()%>/api/mail/imp',
+	    method: 'get',
+	    data: { mail_id: mail_id },
+	    success: function(response) {
+	      if (response === 'success') {
+	        // 현재 이미지 요소 선택
+	        const $img = $('#starImg_' + mail_id);
 
-    // 아이콘 엘리먼트 가져오기
-    var starImg = document.getElementById("starImg_" + mail_id);
+	        // 이미지 경로 기준으로 토글 (imp.png <-> imp_act.png)
+	        const impSrc = '<%=request.getContextPath()%>/resources/images/imp.png';
+	        const impActSrc = '<%=request.getContextPath()%>/resources/images/imp_act.png';
 
-    $.post('<%=request.getContextPath()%>/mail/imp', { mail_id: mail_id })
-        .done(function() {
-            alert('중요 표시가 변경되었습니다.');
-
-            // 현재 src 확인해서 토글
-            var contextPath = '<%=request.getContextPath()%>';
-            var impPath = contextPath + "/resources/images/imp.png";
-            var impActPath = contextPath + "/resources/images/imp_act.png";
-
-            if (starImg.src.endsWith("imp.png")) {
-                starImg.src = impActPath;
-            } else {
-                starImg.src = impPath;
-            }
-        })
-        .fail(function() {
-            alert('변경에 실패했습니다.');
-        });
-}
+	        if ($img.attr('src') === impSrc) {
+	          $img.attr('src', impActSrc);
+	        } else {
+	          $img.attr('src', impSrc);
+	        }
+	      } else {
+	        alert('오류가 발생했습니다: ' + response);
+	      }
+	    },
+	    error: function() {
+	      alert('서버 통신 중 오류가 발생했습니다.');
+	    }
+	  });
+	}
 </script>
 
-<script>/* 카테고리 선택 시 목록 변경 */
+<!-- <script>/* 카테고리 선택 시 목록 변경 */
 	const myId = '${sessionScope.loginUser.mem_id}';
 	const btnAll = document.getElementById('btnAll');
 	const btnSent = document.getElementById('btnSent');
@@ -624,7 +635,7 @@ function starClick(mail_id) {
 		history.replaceState(null, '', '?mail=6');
 	});
 	
-</script>
+</script> -->
 <script>/* 중요, 첨부 카테고리 마우스 오버 */
 	const basePath = "<%=request.getContextPath()%>/resources/images/";
 	

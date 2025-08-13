@@ -9,8 +9,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.camp_us.command.MailRegistCommand;
 import com.camp_us.command.PageMaker;
+import com.camp_us.dao.MailDAO;
 import com.camp_us.dto.MailFileVO;
 import com.camp_us.dto.MailVO;
 import com.camp_us.dto.MemberVO;
@@ -36,6 +35,9 @@ public class MailController {
 	
 	@Autowired
 	private MailService mailService;
+	
+	@Autowired
+	private MailDAO mailDAO;
 	
 	@Autowired
 	public MailController(MailService mailService) {
@@ -62,6 +64,64 @@ public class MailController {
 		model.addAttribute("mailList",mailList);
 		return "/mail";
 	}
+	
+	// 보낸메일
+	@GetMapping("/list2")
+	public String listSender(@ModelAttribute PageMaker pageMaker, Model model, HttpSession session)throws Exception{
+		if(mailService == null) {
+			throw new RuntimeException("mailService가 주입되지 않았습니다!");
+		}
+		
+		MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+		if (loginUser == null) {
+            return "redirect:/login";
+        }
+		String memId = loginUser.getMem_id();
+		
+		List<MailVO> mailList = mailService.listSender(pageMaker, memId);
+		
+		model.addAttribute("mailList",mailList);
+		return "/mail";
+	}
+	
+	// 받은메일
+		@GetMapping("/list3")
+		public String listReceiver(@ModelAttribute PageMaker pageMaker, Model model, HttpSession session)throws Exception{
+			if(mailService == null) {
+				throw new RuntimeException("mailService가 주입되지 않았습니다!");
+			}
+			
+			MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+			if (loginUser == null) {
+	            return "redirect:/login";
+	        }
+			String memId = loginUser.getMem_id();
+			
+			List<MailVO> mailList = mailService.listReceiver(pageMaker, memId);
+			
+			model.addAttribute("mailList",mailList);
+			return "/mail";
+		}
+	
+	// 중요 메일
+		@GetMapping("/list4")
+		public String listImp(@ModelAttribute PageMaker pageMaker, Model model, HttpSession session, int mimp_id)throws Exception{
+			if(mailService == null) {
+				throw new RuntimeException("mailService가 주입되지 않았습니다!");
+			}
+			
+			MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+			if (loginUser == null) {
+	            return "redirect:/login";
+	        }
+			String memId = loginUser.getMem_id();
+			
+			List<MailVO> mailList = mailService.listImp(pageMaker, memId, mimp_id);
+			
+			model.addAttribute("mailList",mailList);
+			return "/mail";
+		}
+	
 	
 	@GetMapping("/detail")
 	public String detail(int mail_id, Model model, HttpSession session, int  mimp_id) throws Exception{
@@ -90,15 +150,18 @@ public class MailController {
 	public String regist(MailRegistCommand mailRegistCommand) throws Exception{
 		String url = "/mail/regist_success";
 		
+		/* 파일 */
 		List<MultipartFile> uploadFiles = mailRegistCommand.getUploadFile();
 		String uploadPath = fileUploadPath;
 		
 		List<MailFileVO> mailFiles = saveFileToMailFiles(uploadFiles, uploadPath);
 		
-		//db
+		// db 메일 생성
 		MailVO mail = mailRegistCommand.toMail();
 		mail.setMail_name(HTMLInputFilter.htmlSpecialChars(mail.getMail_name()));
 		mail.setMailFileList(mailFiles);
+		
+		// 써머노트 임시파일
 		File dir = new File(summernotePath);
 		File[] files = dir.listFiles();
 		if(files!=null) for(File file : files) {
@@ -107,10 +170,14 @@ public class MailController {
 			}
 		}
 		
+		// 메일 인서트
 		mailService.regist(mail);
+		
+		
 		
 		return url;
 	}
+	
 	
 	@javax.annotation.Resource(name="mailSavedFilePath")
 	private String fileUploadPath;
@@ -150,7 +217,6 @@ public class MailController {
 		String[] mailIdArr = mail_ids.split(",");
 		for(String mailIdStr : mailIdArr) {
 			int mail_id = Integer.parseInt(mailIdStr.trim());
-		
 			
 			List<MailFileVO> mailFileList = mailService.getMail(mail_id).getMailFileList();
 			if (mailFileList != null) {
@@ -164,34 +230,8 @@ public class MailController {
 		mailService.remove(mail_id);
 		}
 		
-		
 		mnv.setViewName(url);
 		return mnv;
-		
-		
 	}
 	
-	
-	@PostMapping("/imp")
-	@ResponseBody
-	public ResponseEntity<String> addImportant(@RequestParam int mail_id, HttpSession session) {
-	    MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
-	    if (loginUser == null) {
-	        return new ResponseEntity<>("Unauthorized", HttpStatus.UNAUTHORIZED);
-	    }
-
-	    String memId = loginUser.getMem_id();
-
-	    try {
-	        MailVO mail = new MailVO();
-	        mail.setMail_id(mail_id);
-	        mail.setMem_id(memId);
-
-	        mailService.registImportant(mail);
-	        return new ResponseEntity<>("즐겨찾기 등록 완료", HttpStatus.OK);
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        return new ResponseEntity<>("오류 발생", HttpStatus.INTERNAL_SERVER_ERROR);
-	    }
-	}
 }
