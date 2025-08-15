@@ -2,6 +2,7 @@ package com.camp_us.controller;
 
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.camp_us.command.PageMaker;
 import com.camp_us.dto.MemberVO;
 import com.camp_us.dto.MessageVO;
-import com.camp_us.service.MailService;
 import com.camp_us.service.MessageService;
 
 @Controller
@@ -210,9 +210,41 @@ public class MessageController {
 	
 	
 	//휴지통
-		@GetMapping("/waste")
-		public String wasteList() {
-			return "/message/waste";
+	@GetMapping("/waste")
+	public String wasteList(@ModelAttribute PageMaker pageMaker, HttpSession session, Model model) throws Exception {
+		MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            return "redirect:/login";
+        }
+        String mem_id = loginUser.getMem_id();
+        
+        List<MessageVO> wasteList = messageService.wasteList(pageMaker, mem_id);
+        model.addAttribute("wasteList", wasteList);
+        
+        int unreadCount = messageService.unreadCount(mem_id);
+        String displayCount = unreadCount >= 1000 ? "999+" : String.valueOf(unreadCount);
+        model.addAttribute("unreadCount",displayCount);
+		
+		return "/message/waste";
+	}
+		
+	//세부내용
+	@GetMapping("/detail")
+	public String detail(int mail_id, HttpSession session, Model model) throws Exception {
+		
+		ServletContext ctx = session.getServletContext();
+		
+		MemberVO member = (MemberVO)session.getAttribute("loginUser");
+		String key = "mail:"+member.getMem_id()+mail_id;
+		
+		if(ctx.getAttribute(key)!=null) {
+			model.addAttribute("mail",messageService.getMail(mail_id));
+		}else {
+			ctx.setAttribute(key, key);
+			model.addAttribute("mail",messageService.detail(mail_id));
 		}
+		
+		return "/message/detail";
+	}
 
 }

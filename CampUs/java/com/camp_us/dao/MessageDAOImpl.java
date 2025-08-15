@@ -27,6 +27,13 @@ private SqlSession session;
 		
 		return count;
 	}
+	// 세부내용
+	@Override
+	public MessageVO selectMailByMailId(int mail_id) throws SQLException{
+		MessageVO mailList = session.selectOne("Message-Mapper.selectMailByMailId", mail_id);
+		
+		return mailList;
+	}
 
 	
 	
@@ -262,6 +269,25 @@ private SqlSession session;
 		
 		return mailList;
 	}
+	
+	// 휴지통
+	@Override
+	public List<MessageVO> selectWasteMailList(PageMaker pageMaker, String mem_id) throws SQLException{
+		int offset = pageMaker.getStartRow()-1;
+		int limit = pageMaker.getPerPageNum();
+		RowBounds bounds = new RowBounds(offset,limit);
+		
+		List<MessageVO> mailList = session.selectList("Message-Mapper.selectWasteMailList", mem_id, bounds);
+		
+		return mailList;
+	}
+	@Override
+	public int selectWasteMailListCount(PageMaker pageMaker, String mem_id) throws SQLException{
+		int mailList = session.selectOne("Message-Mapper.selectWasteMailListCount", mem_id);
+		
+		return mailList;
+	}
+	
 	
 
 }

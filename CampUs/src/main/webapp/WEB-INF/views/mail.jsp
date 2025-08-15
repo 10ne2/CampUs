@@ -305,7 +305,55 @@
 		<!-- /.col -->
 		<div class="col-md-7 mailDetail" style="display:block">
 			<div class="card card-primaryc card-outline mailDetailList" style="height: 810px; overflow-y: auto;">
-				
+				<div class="card-body p-0">
+					<div class="mailListItem" data-mail_id="{{mail_id}}">
+						<div class="mailbox-read-info" style="padding:15px">
+							<div style="display: flex; flex-direction: row;">
+								<h5 id="mailName" style="margin-bottom:15px; line-height: 35px">{{mail_name }}</h5>
+								<span id="mailDate" class="mailbox-read-time float-right" style="display:block; width: 200px; margin-top:12px; margin-left:auto; text-align:right;">
+									{{#ifEquals mail_sender loginUser}}{{prettifyDate mail_rdate}}{{else}}{{prettifyDate mail_sdate}}{{/ifEquals}}</span>
+							</div>
+							<div style="display: flex; flex-direction: row; margin-bottom: 10px">
+								<span style="width: 80px; display:block; line-height: 28px">보낸 사람</span>
+								<div style=" height: 30px; background-color: #DFFCF9; border-radius:15px; display: flex; flex-direction: row;">
+									<span id="mailTargetName" style="display:block; margin-left:15px; line-height: 28px">
+										{{#ifEquals mail_sender loginUser}}{{receiver_name}}{{else}}{{sender_name}}{{/ifEquals}}</span>
+									<span id="mailTargetEmail" style="display:block; margin-left:15px; line-height: 28px; margin-right:15px">
+										{{#ifEquals mail_sender loginUser}}{{receiver_email}}{{else}}{{sender_email}}{{/ifEquals}}</span>
+								</div>
+								<div style="margin-left:auto;">
+									<button type="button" class="btn btn-default btn-sm" data-container="body" title="Delete" onclick="remove_detail();">
+										<i class="far fa-trash-alt"></i>
+									</button>
+								</div>
+							</div>
+							<div style="display: flex; flex-direction: row;">
+								<span style="width: 80px; display:block; line-height: 28px">받는 사람</span>
+								<div style=" height: 30px; background-color: #DFFCF9; border-radius:15px; display: flex; flex-direction: row;">
+									<span id="mailTargetName" style="display:block; margin-left:15px; line-height: 28px">
+										{{#ifEquals mail_sender loginUser}}{{sender_name}}{{else}}{{receiver_name}}{{/ifEquals}}</span>
+									<span id="mailTargetEmail" style="display:block; margin-left:15px; line-height: 28px; margin-right:15px">
+										{{#ifEquals mail_sender loginUser}}{{sender_email}}{{else}}{{receiver_email}}{{/ifEquals}}</span>
+								</div>
+							</div>
+						</div>
+						<div id="mailDesc" class="mailbox-read-message" style="padding:15px">
+							<div id="mail_desc"></div>
+						</div>
+					</div>
+				</div>
+				<div>
+					{{#each mailFileList}}
+						<div class="col-sm-4" style="cursor:pointer;" onclick="location.href='<%=request.getContextPath() %>/api/mail/getFile?mafile_no={{this.mafile_no}}';">
+				   			<div class="info-box">
+				    	 		<span class="info-box-icon bg-yellow"><i class="fa fa-copy"></i></span>
+				      			<div class="info-box-content">
+				     	 	  		<span class="info-box-number">{{splitFileName this.mafile_name 1}}</span>
+				     			</div>
+				  	 		</div>
+				   		</div>
+					{{/each}}
+				</div>
 				
 			</div>
 				<!-- /.card-footer -->

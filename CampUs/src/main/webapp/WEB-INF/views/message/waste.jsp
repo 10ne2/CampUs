@@ -51,7 +51,7 @@
 	margin-bottom: 10px
 }
 .mailbox-subjectc {
-  width: 230px;
+  width: 90px;
 }
 .card-primaryc {
   border-top: 3px solid #2EC4B6;
@@ -172,75 +172,67 @@
 				<div style="display:block;">
 					<div class="card card-outline card-primaryc" style="width: 1290px;">
 						<div class="card-header" style="display:flex; flex-direction: row;">
-							<div style="width: 100px">
+							<div style="width: 60px">
 								<h3 class="card-title" style="margin-top:5px">휴지통</h3>
 							</div>
 							<button type="button" class="btn btn-default btn-sm" onclick="delete();">
 								<span>비우기</span>
 							</button>
-							<button type="button" class="btn btn-default btn-sm" onclick="delete();">
-								<span>복구</span>
+							<button type="button" class="btn btn-default btn-sm" style="margin-left:960px" onclick="refresh()">
+								<span>복구</span>	
 							</button>
-							<button type="button" class="btn btn-default btn-sm" onclick="delete();">
+							<button type="button" class="btn btn-default btn-sm" style="margin-left:10px" onclick="delete();">
 								<span>영구삭제</span>
 							</button>
-							<button type="button" class="btn btn-default btn-sm" style="margin-left: 8px" onclick="refresh()">
-									<i class="fas fa-sync-alt"></i>
+							<button type="button" class="btn btn-default btn-sm" style="margin-left:10px" onclick="delete();">
+								<i class="fas fa-sync-alt"></i>
 							</button>
-						</div>
 						</div>
 						<!-- /.card-header -->
 						<div class="table-responsive mailbox-messages"
-							style="height: 700px; overflow-y: auto;">
+							style="height: 687px; overflow-y: auto;">
 							<table class="mailTable table table-hover">
 								<tbody>
-									<c:if test="${empty sendMailList }">
+									<c:if test="${empty wasteList }">
 										<tr>
 							   	   			<td colspan="5" class="text-center" >받은 메일이 없습니다.</td>
 							   	   		</tr>
 									</c:if>
-									<c:if test="${not empty sendMailList }">
-										<c:forEach items="${sendMailList }" var="send">
+									<c:if test="${not empty wasteList }">
+										<c:forEach items="${wasteList }" var="waste">
 											<tr >
 												<td style="width: 100%; min-height: 60.2px; display: flex; flex-direction: column; margin:-1.6px">
 													<div style="width:100%;">
 														<div style="display: flex; flex-direction: row;">
 															<div class="icheck-primary" style="width:43px; height:22px; margin-left: 5px">
-																<input type="checkbox" name="mail_id" value="${send.mail_id}" id="check_${send.mail_id}"> <label
-																	for="check_${send.mail_id}"></label>
+																<input type="checkbox" name="mail_id" value="${waste.mail_id}" id="check_${waste.mail_id}"> <label
+																	for="check_${waste.mail_id}"></label>
 															</div>
 															<div class="" style="display: flex; flex-direction: row;">
 																<div style="margin-left:10px;">
-																    <img id="readImg_" src="<%=request.getContextPath()%>/resources/images/mail_read/${send.mail_sread }.png"
-																      style="width:20px; cursor:pointer"/>
-																</div>
-															</div>
-															<div class="" style="display: flex; flex-direction: row;">
-																<div style="margin-left:10px;">
-																    <img id="readImg_" src="<%=request.getContextPath()%>/resources/images/mail_imp/${send.mail_simp }.png"
-																      style="width:20px; cursor:pointer"/>
-																</div>
-															</div>
-															<div class="" style="display: flex; flex-direction: row;">
-																<div style="margin-left:10px;">
-																    <img id="readImg_" src="<%=request.getContextPath()%>/resources/images/mail_lock/${send.mail_sread }.png"
+																    <img id="readImg_" src="<%=request.getContextPath()%>/resources/images/mail_lock/${waste.mail_sender == sessionScope.loginUser.mem_id ? waste.mail_sread : waste.mail_rread }.png"
 																      style="width:20px; cursor:pointer"/>
 																</div>
 															</div>
 															<div class="" style="width:150px; display:flex; flex-direction: row; margin-left:20px">
 																<a style="width: 60px; line-height:30px;">
-																	${send.receiver_name }
+																	${waste.mail_sender == sessionScope.loginUser.mem_id ? waste.receiver_name : waste.sender_name }
 																</a>
 																<a style="line-height:30px; font-size:14px; color: #999">
-																	${send.mail_receiver}
+																	${waste.mail_sender == sessionScope.loginUser.mem_id ? waste.mail_receiver : waste.mail_sender}
+																</a>
+															</div>
+															<div class="mailbox-subjectc" style=" overflow: hidden; text-overflow: ellipsis;">
+																<a style="font-size:14px; color: #999">
+																	${waste.mail_sender == sessionScope.loginUser.mem_id ? "[보낸메일함]" : "[받은메일함]"}
 																</a>
 															</div>
 															<div style=" border:none; display: flex; flex-direction: row">
-																<a style="width: 250px; font-size:14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 30px">
-																		${send.mail_name }</a>
+																<a style="width: 800px; font-size:14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 30px">
+																		${waste.mail_name }</a>
 															</div>
 															<div class="mailbox-date" style="margin-left:auto; line-height:30px; font-size:12px; color: #bbb">
-															 	<fmt:formatDate value="${send.mail_sdate }" pattern="yy-MM-dd HH:mm" />
+															 	<fmt:formatDate value="${waste.mail_ddate}" pattern="yy-MM-dd HH:mm" />
 														 	</div>
 														</div>
 													</div>
@@ -251,6 +243,12 @@
 								</tbody>
 							</table>
 						</div>
+						<div class="card-footer">
+						<!-- pagination.jsp -->
+							<div style="display:${not empty wasteList ? 'visible':'none' }">
+								<%@ include file="/WEB-INF/views/module/pagination.jsp" %>	
+							</div>	    			
+	    				</div>
 					</div>
 				</div>
 			</div>

@@ -10,6 +10,8 @@ public interface MessageDAO {
 	
 	//카운트
 	int selectReceiveUnreadMailCount(String mem_id) throws SQLException;
+	//세부내용
+	MessageVO selectMailByMailId(int mail_id) throws SQLException;
 	
 	//대시보드
 	List<MessageVO> selectReceiveMailByMemId(String mem_id) throws SQLException;
@@ -35,4 +37,9 @@ public interface MessageDAO {
 	int selectSearchSendImpMailListCount(PageMaker pageMaker, String mem_id) throws SQLException;
 	int selectSearchSendReadMailListCount(PageMaker pageMaker, String mem_id) throws SQLException;
 	int selectSearchSendLockMailListCount(PageMaker pageMaker, String mem_id) throws SQLException;
+	
+	//휴지통
+	List<MessageVO> selectWasteMailList(PageMaker pageMaker, String mem_id) throws SQLException;
+	int selectWasteMailListCount(PageMaker pageMaker, String mem_id) throws SQLException;
+	
 }

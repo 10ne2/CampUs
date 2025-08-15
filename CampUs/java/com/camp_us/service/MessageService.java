@@ -10,6 +10,10 @@ public interface MessageService {
 	
 	//카운트
 	int unreadCount(String mem_id) throws SQLException;
+	//세부내용
+	MessageVO detail(int mail_id) throws SQLException;
+	MessageVO getMail(int mail_id)throws SQLException;
+	
 	
 	//대시보드
 	List<MessageVO> receiveList(String mem_id) throws SQLException;
@@ -27,4 +31,7 @@ public interface MessageService {
 	List<MessageVO> sendImpList(PageMaker pageMaker, String mem_id) throws SQLException;
 	List<MessageVO> sendReadList(PageMaker pageMaker, String mem_id) throws SQLException;
 	List<MessageVO> sendLockList(PageMaker pageMaker, String mem_id) throws SQLException;
+	
+	//휴지통
+	List<MessageVO> wasteList(PageMaker pageMaker, String mem_id) throws SQLException;
 }

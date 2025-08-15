@@ -92,6 +92,22 @@
 		from mail
 		where mail_receiver = #{mem_id} and mail_waste = 0 and mail_rread = 0 			  	
 	</select>
+	<select id="selectMailByMailId" parameterType="int"  resultType="message">
+		select
+			m.mail_id,
+			m.mail_name,
+			m.mail_rdate,
+			m.mail_sdate,
+			a.mem_name as receiver_name,
+			b.mem_name as sender_name,
+			a.mem_email as receiver_email,
+			b.mem_email as sender_email,
+			m.mail_desc
+		from mail m
+		join account a on m.mail_receiver = a.mem_id
+		join account b on m.mail_sender = b.mem_id
+		where mail_id=#{mail_id}
+	</select>
 	
 	
 	
@@ -334,6 +350,14 @@
 		JOIN account b ON m.mail_sender = b.mem_id
 		where (m.mail_sender = #{mem_id}  OR m.mail_receiver = #{mem_id}) and m.mail_waste = 1
 		order by m.mail_ddate desc
+	</select>
+	<select id="selectWasteMailListCount" parameterType="pageMaker" resultType="int">
+		select
+		count(*)
+		from mail m
+		JOIN account a ON m.mail_receiver = a.mem_id
+		JOIN account b ON m.mail_sender = b.mem_id
+		where (m.mail_sender = #{mem_id}  OR m.mail_receiver = #{mem_id}) and m.mail_waste = 1
 	</select>
 	
 	

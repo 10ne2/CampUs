@@ -8,6 +8,7 @@ public class MessageVO {
 	private String mail_name;        // 메일 제목
 	private Date mail_sdate;         // 발송 날짜
 	private Date mail_rdate;         // 수신 날짜
+	private Date mail_ddate;         // 수신 날짜
 	private String mail_desc;		// 내용
 	private int mail_rimp;			// 받는 사람 중요
 	private int mail_simp;			// 보낸 사람 중요
@@ -25,6 +26,8 @@ public class MessageVO {
 	private String receiver_email;   // 받는 사람 이메일
 	
 	private String mem_id;
+	
+	private List<MailFileVO> mailFileList;
 
 	
 	
@@ -170,6 +173,22 @@ public class MessageVO {
 
 	public void setMail_simp(int mail_simp) {
 		this.mail_simp = mail_simp;
+	}
+
+	public Date getMail_ddate() {
+		return mail_ddate;
+	}
+
+	public void setMail_ddate(Date mail_ddate) {
+		this.mail_ddate = mail_ddate;
+	}
+
+	public List<MailFileVO> getMailFileList() {
+		return mailFileList;
+	}
+
+	public void setMailFileList(List<MailFileVO> mailFileList) {
+		this.mailFileList = mailFileList;
 	}
 	
 	

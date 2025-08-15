@@ -57,7 +57,9 @@
 		  />
 	<bean id="messageDAO"
 		  class="com.camp_us.dao.MessageDAOImpl"
-		  c:session-ref="sqlSession"  
+		  c:session-ref="sqlSession" 
+		  c:summernotePath-ref="summernotePath"
+		  c:mailFileDAO-ref="mailFileDAO" 
 		  />	  
 	
 	

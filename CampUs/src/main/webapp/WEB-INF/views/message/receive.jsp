@@ -216,7 +216,7 @@
 									</c:if>
 									<c:if test="${not empty receiveMailList }">
 										<c:forEach items="${receiveMailList }" var="receive">
-											<tr >
+											<tr onclick="OpenWindow('<%=request.getContextPath()%>/message/detail?mail_id=${receive.mail_id}','상세보기',1040,800);" style="cursor:pointer;">
 												<td style="width: 100%; min-height: 60.2px; display: flex; flex-direction: column; margin:-1.6px">
 													<div style="width:100%;">
 														<div style="display: flex; flex-direction: row;">
@@ -251,7 +251,7 @@
 																</a>
 															</div>
 															<div style=" border:none; display: flex; flex-direction: row">
-																<a style="width: 250px; font-size:14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 30px">
+																<a style="width: 800px; font-size:14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 30px">
 																		${receive.mail_name }</a>
 															</div>
 															<div class="mailbox-date" style="margin-left:auto; line-height:30px; font-size:12px; color: #bbb">

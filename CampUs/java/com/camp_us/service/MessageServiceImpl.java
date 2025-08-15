@@ -4,15 +4,22 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.camp_us.command.PageMaker;
+import com.camp_us.dao.MailFileDAO;
 import com.camp_us.dao.MessageDAO;
+import com.camp_us.dto.MailFileVO;
+import com.camp_us.dto.MailVO;
 import com.camp_us.dto.MessageVO;
 
 public class MessageServiceImpl implements MessageService{
 	
 	private MessageDAO messageDAO;
+	private String summernotePath;
+	private MailFileDAO mailFileDAO;
 	
-	public MessageServiceImpl(MessageDAO messageDAO) {
+	public MessageServiceImpl(MessageDAO messageDAO, String summernotePath, MailFileDAO mailFileDAO) {
 		this.messageDAO = messageDAO;
+		this.summernotePath = summernotePath;
+		this.mailFileDAO = mailFileDAO;
 	}
 	
 	//카운트
@@ -21,23 +28,73 @@ public class MessageServiceImpl implements MessageService{
 		int count = messageDAO.selectReceiveUnreadMailCount(mem_id);
 		return count;
 	}
+	
+	//세부내용
+	@Override
+	public MessageVO detail(int mail_id) throws SQLException{
+		messageDAO.selectMailByMailId(mail_id);
+		MessageVO mail = messageDAO.selectMailByMailId(mail_id);
+		
+		List<MailFileVO> mailFileList = mailFileDAO.selectMailFileByMailId(mail_id);
+		mail.setMailFileList(mailFileList);
+		
+		return mail;
+	}
+	@Override
+	public MessageVO getMail(int mail_id) throws SQLException {		
+		MessageVO mail = messageDAO.selectMailByMailId(mail_id);
+		
+		List<MailFileVO> mailFileList = mailFileDAO.selectMailFileByMailId(mail_id);
+		mail.setMailFileList(mailFileList);
+		
+		return messageDAO.selectMailByMailId(mail_id);
+	}
+	
+	
 
 	// 대시보드
 	@Override
 	public List<MessageVO> receiveList(String mem_id) throws SQLException {
 		List<MessageVO> mailList = messageDAO.selectReceiveMailByMemId(mem_id);
+		
+		if(mailList != null) for(MessageVO mail : mailList) {
+			int mail_id = mail.getMail_id();
+			
+						
+			List<MailFileVO> mailFileList = mailFileDAO.selectMailFileByMailId(mail.getMail_id());
+			mail.setMailFileList(mailFileList);
+		}
+		
 		return mailList;
 	}
 	
 	@Override
 	public List<MessageVO> sendList(String mem_id) throws SQLException {
 		List<MessageVO> mailList = messageDAO.selectSenderMailByMemId(mem_id);
+		
+		if(mailList != null) for(MessageVO mail : mailList) {
+			int mail_id = mail.getMail_id();
+			
+						
+			List<MailFileVO> mailFileList = mailFileDAO.selectMailFileByMailId(mail.getMail_id());
+			mail.setMailFileList(mailFileList);
+		}
+		
 		return mailList;
 	}
 	
 	@Override
 	public List<MessageVO> wasteList(String mem_id) throws SQLException {
 		List<MessageVO> mailList = messageDAO.selectAllWasteMail(mem_id);
+		
+		if(mailList != null) for(MessageVO mail : mailList) {
+			int mail_id = mail.getMail_id();
+			
+						
+			List<MailFileVO> mailFileList = mailFileDAO.selectMailFileByMailId(mail.getMail_id());
+			mail.setMailFileList(mailFileList);
+		}
+		
 		return mailList;
 	}
 	
@@ -46,6 +103,15 @@ public class MessageServiceImpl implements MessageService{
 	@Override
 	public List<MessageVO> receiveMailList(PageMaker pageMaker, String mem_id) throws SQLException {
 		List<MessageVO> mailList = messageDAO.selectSearchReceiveMailList(pageMaker, mem_id);
+		
+		if(mailList != null) for(MessageVO mail : mailList) {
+			int mail_id = mail.getMail_id();
+			
+						
+			List<MailFileVO> mailFileList = mailFileDAO.selectMailFileByMailId(mail.getMail_id());
+			mail.setMailFileList(mailFileList);
+		}
+		
 		
 		int totalCount = messageDAO.selectSearchReceiveMailListCount(pageMaker,mem_id);
 		pageMaker.setTotalCount(totalCount);
@@ -56,6 +122,14 @@ public class MessageServiceImpl implements MessageService{
 	public List<MessageVO> receiveImpList(PageMaker pageMaker, String mem_id) throws SQLException {
 		List<MessageVO> mailList = messageDAO.selectSearchReceiveImpMailList(pageMaker, mem_id);
 		
+		if(mailList != null) for(MessageVO mail : mailList) {
+			int mail_id = mail.getMail_id();
+			
+						
+			List<MailFileVO> mailFileList = mailFileDAO.selectMailFileByMailId(mail.getMail_id());
+			mail.setMailFileList(mailFileList);
+		}
+		
 		int totalCount = messageDAO.selectSearchReceiveImpMailListCount(pageMaker,mem_id);
 		pageMaker.setTotalCount(totalCount);
 		return mailList;
@@ -64,6 +138,14 @@ public class MessageServiceImpl implements MessageService{
 	@Override
 	public List<MessageVO> receiveReadList(PageMaker pageMaker, String mem_id) throws SQLException {
 		List<MessageVO> mailList = messageDAO.selectSearchReceiveReadMailList(pageMaker, mem_id);
+		
+		if(mailList != null) for(MessageVO mail : mailList) {
+			int mail_id = mail.getMail_id();
+			
+						
+			List<MailFileVO> mailFileList = mailFileDAO.selectMailFileByMailId(mail.getMail_id());
+			mail.setMailFileList(mailFileList);
+		}
 		
 		int totalCount = messageDAO.selectSearchReceiveReadMailListCount(pageMaker,mem_id);
 		pageMaker.setTotalCount(totalCount);
@@ -74,47 +156,108 @@ public class MessageServiceImpl implements MessageService{
 	public List<MessageVO> receiveLockList(PageMaker pageMaker, String mem_id) throws SQLException {
 		List<MessageVO> mailList = messageDAO.selectSearchReceiveLockMailList(pageMaker, mem_id);
 		
+		if(mailList != null) for(MessageVO mail : mailList) {
+			int mail_id = mail.getMail_id();
+			
+						
+			List<MailFileVO> mailFileList = mailFileDAO.selectMailFileByMailId(mail.getMail_id());
+			mail.setMailFileList(mailFileList);
+		}
+		
 		int totalCount = messageDAO.selectSearchReceiveLockMailListCount(pageMaker,mem_id);
 		pageMaker.setTotalCount(totalCount);
 		return mailList;
 	}
 	
 	// 보낸메일함
-		@Override
-		public List<MessageVO> sendMailList(PageMaker pageMaker, String mem_id) throws SQLException {
-			List<MessageVO> mailList = messageDAO.selectSearchSendMailList(pageMaker, mem_id);
+	@Override
+	public List<MessageVO> sendMailList(PageMaker pageMaker, String mem_id) throws SQLException {
+		List<MessageVO> mailList = messageDAO.selectSearchSendMailList(pageMaker, mem_id);
+		
+		if(mailList != null) for(MessageVO mail : mailList) {
+			int mail_id = mail.getMail_id();
 			
-			int totalCount = messageDAO.selectSearchSendMailListCount(pageMaker,mem_id);
-			pageMaker.setTotalCount(totalCount);
-			return mailList;
+						
+			List<MailFileVO> mailFileList = mailFileDAO.selectMailFileByMailId(mail.getMail_id());
+			mail.setMailFileList(mailFileList);
 		}
+		
+		int totalCount = messageDAO.selectSearchSendMailListCount(pageMaker,mem_id);
+		pageMaker.setTotalCount(totalCount);
+		return mailList;
+	}
 
-		@Override
-		public List<MessageVO> sendImpList(PageMaker pageMaker, String mem_id) throws SQLException {
-			List<MessageVO> mailList = messageDAO.selectSearchSendImpMailList(pageMaker, mem_id);
+	@Override
+	public List<MessageVO> sendImpList(PageMaker pageMaker, String mem_id) throws SQLException {
+		List<MessageVO> mailList = messageDAO.selectSearchSendImpMailList(pageMaker, mem_id);
+		
+		if(mailList != null) for(MessageVO mail : mailList) {
+			int mail_id = mail.getMail_id();
 			
-			int totalCount = messageDAO.selectSearchSendImpMailListCount(pageMaker,mem_id);
-			pageMaker.setTotalCount(totalCount);
-			return mailList;
+						
+			List<MailFileVO> mailFileList = mailFileDAO.selectMailFileByMailId(mail.getMail_id());
+			mail.setMailFileList(mailFileList);
 		}
 		
-		@Override
-		public List<MessageVO> sendReadList(PageMaker pageMaker, String mem_id) throws SQLException {
-			List<MessageVO> mailList = messageDAO.selectSearchSendReadMailList(pageMaker, mem_id);
+		int totalCount = messageDAO.selectSearchSendImpMailListCount(pageMaker,mem_id);
+		pageMaker.setTotalCount(totalCount);
+		return mailList;
+	}
+	
+	@Override
+	public List<MessageVO> sendReadList(PageMaker pageMaker, String mem_id) throws SQLException {
+		List<MessageVO> mailList = messageDAO.selectSearchSendReadMailList(pageMaker, mem_id);
+		
+		if(mailList != null) for(MessageVO mail : mailList) {
+			int mail_id = mail.getMail_id();
 			
-			int totalCount = messageDAO.selectSearchSendReadMailListCount(pageMaker,mem_id);
-			pageMaker.setTotalCount(totalCount);
-			return mailList;
+						
+			List<MailFileVO> mailFileList = mailFileDAO.selectMailFileByMailId(mail.getMail_id());
+			mail.setMailFileList(mailFileList);
 		}
 		
-		@Override
-		public List<MessageVO> sendLockList(PageMaker pageMaker, String mem_id) throws SQLException {
-			List<MessageVO> mailList = messageDAO.selectSearchSendLockMailList(pageMaker, mem_id);
+		int totalCount = messageDAO.selectSearchSendReadMailListCount(pageMaker,mem_id);
+		pageMaker.setTotalCount(totalCount);
+		return mailList;
+	}
+	
+	@Override
+	public List<MessageVO> sendLockList(PageMaker pageMaker, String mem_id) throws SQLException {
+		List<MessageVO> mailList = messageDAO.selectSearchSendLockMailList(pageMaker, mem_id);
+		
+		if(mailList != null) for(MessageVO mail : mailList) {
+			int mail_id = mail.getMail_id();
 			
-			int totalCount = messageDAO.selectSearchSendLockMailListCount(pageMaker,mem_id);
-			pageMaker.setTotalCount(totalCount);
-			return mailList;
+						
+			List<MailFileVO> mailFileList = mailFileDAO.selectMailFileByMailId(mail.getMail_id());
+			mail.setMailFileList(mailFileList);
 		}
+		
+		int totalCount = messageDAO.selectSearchSendLockMailListCount(pageMaker,mem_id);
+		pageMaker.setTotalCount(totalCount);
+		return mailList;
+	}
+	
+	//휴지통
+	
+	@Override
+	public List<MessageVO> wasteList(PageMaker pageMaker, String mem_id) throws SQLException {
+		List<MessageVO> mailList = messageDAO.selectWasteMailList(pageMaker, mem_id);
+		
+		if(mailList != null) for(MessageVO mail : mailList) {
+			int mail_id = mail.getMail_id();
+			
+						
+			List<MailFileVO> mailFileList = mailFileDAO.selectMailFileByMailId(mail.getMail_id());
+			mail.setMailFileList(mailFileList);
+		}
+		
+		int totalCount = messageDAO.selectWasteMailListCount(pageMaker,mem_id);
+		pageMaker.setTotalCount(totalCount);
+		return mailList;
+	}
+		
+		
 
 
 
