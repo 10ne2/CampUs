@@ -16,6 +16,8 @@
 	    )
 	  </if>
 	</sql>
+	
+	
 	<select id="selectSearchMailList" parameterType="pageMaker" resultType="mail">
 		select
 			m.mail_id,

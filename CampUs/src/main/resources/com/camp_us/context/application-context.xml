@@ -54,10 +54,19 @@
 	<bean id="mailFileDAO"
 		  class="com.camp_us.dao.MailFileDAOImpl"
 		  c:session-ref="sqlSession"
+		  />
+	<bean id="messageDAO"
+		  class="com.camp_us.dao.MessageDAOImpl"
+		  c:session-ref="sqlSession"  
 		  />	  
 	
 	
 	
+	
+	<bean id="messageService"
+		  class="com.camp_us.service.MessageServiceImpl"
+		  c:messageDAO-ref="messageDAO"
+		  />
 	<bean id="mailService"
 		  class="com.camp_us.service.MailServiceImpl"
 		  c:mailDAO-ref="mailDAO"
