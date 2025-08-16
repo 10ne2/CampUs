@@ -14,16 +14,13 @@
 			ln.lecnotice_name as title,
 			a.mem_name as professorName,
 			ln.lecnotice_date as regDate,
-			nvl2(lnv.viewed_at,'','NEW') as isNew
+			ln.view_cnt as isNew
 		from lec_notice ln
 
 		join lec_class lc on lc.lec_id = ln.lec_id
 		join professor p on lc.lec_profes = p.profes_id
 		join account a on p.mem_id = a.mem_id
 		join lecture_list ll on lc.lec_id = ll.lec_id
-		LEFT JOIN lec_notice_view lnv
-			ON ln.lecnotice_id = lnv.lecnotice_id
-			AND lnv.lecs_id = ll.lecs_id
 
 		where ll.stu_id = #{stu_id}
 		order by isNew, regDate
@@ -40,17 +37,14 @@
 		    cf.cf_name as cfTitle,
 		    a.mem_name as professorName,
 		    cf.cf_date as cfRegDate,
-		    nvl2(cfv.cf_viewed,'','NEW') as cfIsNew
+		    cf.view_cnt as cfIsNew
 		from class_file cf
 
 		join lec_class lc on lc.lec_id = cf.lec_id
 		join professor p on lc.lec_profes = p.profes_id
 		join account a on p.mem_id = a.mem_id
 		join lecture_list ll on lc.lec_id = ll.lec_id
-		LEFT JOIN class_file_view cfv 
-		       ON cf.cf_no = cfv.cf_no
-		      AND cfv.lecs_id = ll.lecs_id
-
+		
 		where ll.stu_id = #{stu_id}
 		order by cfIsNew, cfRegDate
 		)

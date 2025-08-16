@@ -148,7 +148,8 @@
 										<c:forEach var="no" items="${noticeList}">
 											<tr class="clickable jsgrid-row" data-url="homeworkDetail.do?hwId=${hw.hw_id}" style="cursor: pointer;">
 												<td class="jsgrid-cell jsgrid-align-center"
-													style="width: 10%; color: #F46060; font-weight: bold;">${no.isNew }</td>
+													style="width: 10%; color: #F46060; font-weight: bold;">
+													${no.isNew == 0 ? 'NEW' : ''}</td>
 												<td class="jsgrid-cell jsgrid-align-center"
 													style="width: 20%;">${no.subjectName}</td>
 												<td class="jsgrid-cell jsgrid-align-center"
@@ -280,7 +281,8 @@
 										<c:forEach var="fl" items="${fileList}">
 											<tr class="clickable" style="cursor: pointer;">
 												<td class="jsgrid-cell jsgrid-align-center"
-													style="width: 10%; color: #F46060; font-weight: bold;">${fl.cfIsNew }</td>
+													style="width: 10%; color: #F46060; font-weight: bold;">
+													${fl.cfIsNew == 0 ? 'NEW' : ''}</td>
 												<td class="jsgrid-cell jsgrid-align-center"
 													style="width: 20%;">${fl.subjectName }</td>
 												<td class="jsgrid-cell jsgrid-align-center"

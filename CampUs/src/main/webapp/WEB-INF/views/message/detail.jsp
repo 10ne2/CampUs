@@ -156,20 +156,19 @@
 					</div>
 				</div>
 				<div>
-					<c:forEach items="${mailFile.attachList }" var="attach">
-						<div class="col-sm-4"  style="cursor:pointer;"
-						     onclick="location.href='getFile?ano=${mailFile.ano }';" >
-							<div class="info-box">	
-								<span class="info-box-icon bg-yellow"><i class="fa fa-copy"></i></span>
-								<div class="info-box-content">														
-									<span class ="info-box-number">
-										${mailFile.fileName.split('\\$\\$')[1] }</span>
+					<c:forEach items="${mail.mailFileList }" var="mailFile">
+						<div style="width: 968px; cursor:pointer; margin-left: 15px; margin-bottom: 15px;" onclick="location.href='getFile?mafile_no=${mailFile.mafile_no}';" >
+							<div style="height: 50px; display: flex; flex-direction: row; border: 1px solid #ebebeb">	
+								<div style="width: 10px; margin-left:13px; margin-top: 11px">
+									<img src="<%=request.getContextPath()%>/resources/images/att.png" style="width:20px;">
+								</div>
+								<div style=" margin-left:20px; margin-top: 11px">														
+									<span style="display:block; ">${mailFile.mafile_name.split('\\$\\$')[1] }</span>
 								</div>
 							</div>
 						</div>
 					</c:forEach>
 				</div>
-				
 			</div>
 				<!-- /.card-footer -->
 		</div>

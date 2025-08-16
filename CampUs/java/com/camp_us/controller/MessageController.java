@@ -1,18 +1,28 @@
 package com.camp_us.controller;
 
+import java.io.File;
+import java.nio.file.Paths;
 import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.util.UriUtils;
 
 import com.camp_us.command.PageMaker;
+import com.camp_us.dao.MailFileDAO;
+import com.camp_us.dto.MailFileVO;
 import com.camp_us.dto.MemberVO;
 import com.camp_us.dto.MessageVO;
 import com.camp_us.service.MessageService;
@@ -23,6 +33,9 @@ public class MessageController {
 	
 	@Autowired
 	private MessageService messageService;
+	
+	@Autowired
+	private MailFileDAO mailFileDAO;
 	
 	@Autowired
 	public MessageController(MessageService messageService) {
@@ -218,14 +231,29 @@ public class MessageController {
 		MemberVO member = (MemberVO)session.getAttribute("loginUser");
 		String key = "mail:"+member.getMem_id()+mail_id;
 		
-		if(ctx.getAttribute(key)!=null) {
-			model.addAttribute("mail",messageService.getMail(mail_id));
-		}else {
-			ctx.setAttribute(key, key);
-			model.addAttribute("mail",messageService.detail(mail_id));
-		}
+		MessageVO detail= messageService.detail(mail_id);
+		model.addAttribute("mail", detail);
+		
+		MailFileVO mailFile = null;
+		model.addAttribute("mailFile", mailFile);
 		
 		return "/message/detail";
+	}
+	
+	@GetMapping("/getFile")
+	@ResponseBody
+	public ResponseEntity<Resource> getFile(int mafile_no) throws Exception {
+						
+		MailFileVO mailFile  = mailFileDAO.selectMailFileByMafileNo(mafile_no);
+	    String filePath = mailFile.getMafile_uploadpath() + File.separator + mailFile.getMafile_name();
+		
+		
+	    Resource resource = new UrlResource(Paths.get(filePath).toUri());
+	    
+	    return ResponseEntity.ok()
+	            .header(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\"" + 
+				UriUtils.encode(mailFile.getMafile_name().split("\\$\\$")[1], "UTF-8") + "\"")
+	            .body(resource);		
 	}
 
 }

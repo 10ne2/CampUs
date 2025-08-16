@@ -44,6 +44,8 @@ public class OtherDashStuServiceImpl implements OtherDashStuService {
 				cf.setCfRegDateStr(sdf.format(cfregDate));
 			}
 		}
+		
+		
 		return list;
 	}
 
