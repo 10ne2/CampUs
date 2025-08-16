@@ -31,11 +31,9 @@ public interface MessageDAO {
 	//보낸메일함
 	List<MessageVO> selectSearchSendMailList(PageMaker pageMaker, String mem_id) throws SQLException;
 	List<MessageVO> selectSearchSendImpMailList(PageMaker pageMaker, String mem_id) throws SQLException;
-	List<MessageVO> selectSearchSendReadMailList(PageMaker pageMaker, String mem_id) throws SQLException;
 	List<MessageVO> selectSearchSendLockMailList(PageMaker pageMaker, String mem_id) throws SQLException;
 	int selectSearchSendMailListCount(PageMaker pageMaker, String mem_id) throws SQLException;
 	int selectSearchSendImpMailListCount(PageMaker pageMaker, String mem_id) throws SQLException;
-	int selectSearchSendReadMailListCount(PageMaker pageMaker, String mem_id) throws SQLException;
 	int selectSearchSendLockMailListCount(PageMaker pageMaker, String mem_id) throws SQLException;
 	
 	//휴지통

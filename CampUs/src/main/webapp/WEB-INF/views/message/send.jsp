@@ -177,10 +177,6 @@
 							</div>
 							<div style="width: 870px; margin-top:4px">
 								<label style="margin-left: 5px; margin-bottom: -10px; font-weight: 400; color: #707070">
-									<input type="radio" name="filter" value="read" onclick="location.href='${pageContext.request.contextPath}/message/send/read'" ${selectedFilter == 'read' ? 'checked' : ''}>
-									안 읽은 메일
-								</label>
-								<label style="margin-left: 5px; margin-bottom: -10px; font-weight: 400; color: #707070">
 									<input type="radio" name="filter" value="imp" onclick="location.href='${pageContext.request.contextPath}/message/send/imp'" ${selectedFilter == 'imp' ? 'checked' : ''}>
 									중요 메일
 								</label>
@@ -223,12 +219,6 @@
 															<div class="icheck-primary" style="width:43px; height:22px; margin-left: 5px">
 																<input type="checkbox" name="mail_id" value="${send.mail_id}" id="check_${send.mail_id}"> <label
 																	for="check_${send.mail_id}"></label>
-															</div>
-															<div class="" style="display: flex; flex-direction: row;">
-																<div style="margin-left:10px;">
-																    <img id="readImg_" src="<%=request.getContextPath()%>/resources/images/mail_read/${send.mail_sread }.png"
-																      style="width:20px; cursor:pointer"/>
-																</div>
 															</div>
 															<div class="" style="display: flex; flex-direction: row;">
 																<div style="margin-left:10px;">

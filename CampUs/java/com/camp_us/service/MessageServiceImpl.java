@@ -205,23 +205,6 @@ public class MessageServiceImpl implements MessageService{
 	}
 	
 	@Override
-	public List<MessageVO> sendReadList(PageMaker pageMaker, String mem_id) throws SQLException {
-		List<MessageVO> mailList = messageDAO.selectSearchSendReadMailList(pageMaker, mem_id);
-		
-		if(mailList != null) for(MessageVO mail : mailList) {
-			int mail_id = mail.getMail_id();
-			
-						
-			List<MailFileVO> mailFileList = mailFileDAO.selectMailFileByMailId(mail.getMail_id());
-			mail.setMailFileList(mailFileList);
-		}
-		
-		int totalCount = messageDAO.selectSearchSendReadMailListCount(pageMaker,mem_id);
-		pageMaker.setTotalCount(totalCount);
-		return mailList;
-	}
-	
-	@Override
 	public List<MessageVO> sendLockList(PageMaker pageMaker, String mem_id) throws SQLException {
 		List<MessageVO> mailList = messageDAO.selectSearchSendLockMailList(pageMaker, mem_id);
 		

@@ -257,23 +257,6 @@
 		<include refid="sendSearch" />
 		order by m.mail_sdate desc
 	</select>
-	<select id="selectSearchSendReadMailList" parameterType="pageMaker" resultType="message">
-		select
-			m.mail_id,
-		  	m.mail_name,
-		    m.mail_sdate,
-		    m.mail_receiver,
-		    a.mem_name AS receiver_name,
-		    a.mem_email As receiver_email,
-		    m.mail_simp,
-		    m.mail_sread,
-		    m.mail_waste
-		from mail m
-		JOIN account a ON m.mail_receiver = a.mem_id
-		where m.mail_sender = #{mem_id}	and m.mail_waste = 0 and m.mail_sread = 0	  	
-		<include refid="sendSearch" />
-		order by m.mail_sdate desc
-	</select>
 	<select id="selectSearchSendLockMailList" parameterType="pageMaker" resultType="message">
 		select
 			m.mail_id,
@@ -305,14 +288,6 @@
 		from mail m
 		JOIN account a ON m.mail_receiver = a.mem_id
 		where mail_sender = #{mem_id} and mail_waste = 0 and mail_simp = 1		  	
-		<include refid="sendSearch" />
-	</select>
-	<select id="selectSearchSendReadMailListCount" parameterType="pageMaker" resultType="int">
-		select
-		count(*)
-		from mail m
-		JOIN account a ON m.mail_receiver = a.mem_id
-		where mail_sender = #{mem_id} and mail_waste = 0 and mail_sread = 0 			  	
 		<include refid="sendSearch" />
 	</select>
 	<select id="selectSearchSendLockMailListCount" parameterType="pageMaker" resultType="int">

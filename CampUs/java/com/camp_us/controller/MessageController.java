@@ -170,25 +170,6 @@ public class MessageController {
 		return "/message/send";
 	}
 	
-	@GetMapping("/send/read")
-	public String sendReadList(@ModelAttribute PageMaker pageMaker, HttpSession session, Model model) throws Exception{
-		MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
-        if (loginUser == null) {
-            return "redirect:/login";
-        }
-        String mem_id = loginUser.getMem_id();
-        
-        List<MessageVO> sendReadList = messageService.sendReadList(pageMaker, mem_id);
-        model.addAttribute("sendMailList", sendReadList);
-        model.addAttribute("selectedFilter", "read");
-        
-        int unreadCount = messageService.unreadCount(mem_id);
-        String displayCount = unreadCount >= 1000 ? "999+" : String.valueOf(unreadCount);
-        model.addAttribute("unreadCount",displayCount);
-        
-		return "/message/send";
-	}
-	
 	@GetMapping("/send/lock")
 	public String sendLockList(@ModelAttribute PageMaker pageMaker, HttpSession session, Model model) throws Exception{
 		MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");

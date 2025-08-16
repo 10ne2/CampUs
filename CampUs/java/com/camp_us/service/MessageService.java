@@ -29,7 +29,6 @@ public interface MessageService {
 	//보낸메일
 	List<MessageVO> sendMailList(PageMaker pageMaker, String mem_id) throws SQLException;
 	List<MessageVO> sendImpList(PageMaker pageMaker, String mem_id) throws SQLException;
-	List<MessageVO> sendReadList(PageMaker pageMaker, String mem_id) throws SQLException;
 	List<MessageVO> sendLockList(PageMaker pageMaker, String mem_id) throws SQLException;
 	
 	//휴지통

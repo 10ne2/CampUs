@@ -58,8 +58,6 @@
 	<bean id="messageDAO"
 		  class="com.camp_us.dao.MessageDAOImpl"
 		  c:session-ref="sqlSession" 
-		  c:summernotePath-ref="summernotePath"
-		  c:mailFileDAO-ref="mailFileDAO" 
 		  />	  
 	
 	
@@ -68,6 +66,8 @@
 	<bean id="messageService"
 		  class="com.camp_us.service.MessageServiceImpl"
 		  c:messageDAO-ref="messageDAO"
+		  c:summernotePath-ref="summernotePath"
+		  c:mailFileDAO-ref="mailFileDAO" 
 		  />
 	<bean id="mailService"
 		  class="com.camp_us.service.MailServiceImpl"
