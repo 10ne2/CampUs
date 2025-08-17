@@ -228,8 +228,8 @@
 															</div>
 															<div class="" style="display: flex; flex-direction: row;">
 																<div style="margin-left:10px;">
-																    <img id="lockImg_" src="<%=request.getContextPath()%>/resources/images/mail_lock/${send.mail_slock }.png"
-																      style="width:20px; cursor:pointer"/>
+																    <img id="lockImg_${send.mail_id}" src="<%=request.getContextPath()%>/resources/images/mail_lock/${send.mail_slock }.png"
+																      style="width:20px; cursor:pointer" onclick="toggleLock(${send.mail_id})"/>
 																</div>
 															</div>
 															<div class="" style="width:150px; display:flex; flex-direction: row; margin-left:20px">
@@ -335,6 +335,17 @@ function toggleImportant(mailId) {
                 ? '${pageContext.request.contextPath}/resources/images/mail_imp/1.png'
                 : '${pageContext.request.contextPath}/resources/images/mail_imp/0.png';
             $('#impImg_' + mailId).attr('src', iconSrc);
+        }
+    });
+}
+
+function toggleLock(mailId) {
+    $.post('${pageContext.request.contextPath}/message/toggleSLock', { mail_id: mailId }, function(data) {
+        if(data.success) {
+            let iconSrc = data.newStatus === 1
+                ? '${pageContext.request.contextPath}/resources/images/mail_lock/1.png'
+                : '${pageContext.request.contextPath}/resources/images/mail_lock/0.png';
+            $('#lockImg_' + mailId).attr('src', iconSrc);
         }
     });
 }

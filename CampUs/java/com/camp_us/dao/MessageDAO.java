@@ -50,6 +50,7 @@ public interface MessageDAO {
 	void updateRRead(int mail_id) throws SQLException;
 	void updateRImp(int mail_id) throws SQLException;
 	void updateSImp(int mail_id) throws SQLException;
-	void updateRLock(int mail_id, int status) throws SQLException;
+	void updateRLock(int mail_id) throws SQLException;
+	void updateSLock(int mail_id) throws SQLException;
 	
 }

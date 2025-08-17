@@ -287,11 +287,12 @@ private SqlSession session;
 	    session.update("Message-Mapper.updateSImp", mail_id);		
 	}
 	@Override
-	public void updateRLock(int mail_id, int status) throws SQLException {
-		Map<String,Object> param = new HashMap<>();
-	    param.put("mail_id", mail_id);
-	    param.put("status", status);
-	    session.update("Message-Mapper.updateRLock", param);		
+	public void updateRLock(int mail_id) throws SQLException {
+	    session.update("Message-Mapper.updateRLock", mail_id);		
+	}
+	@Override
+	public void updateSLock(int mail_id) throws SQLException {
+	    session.update("Message-Mapper.updateSLock", mail_id);		
 	}
 	
 

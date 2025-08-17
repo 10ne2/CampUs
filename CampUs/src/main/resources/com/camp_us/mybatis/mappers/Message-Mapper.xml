@@ -100,6 +100,8 @@
 			m.mail_simp,
 			m.mail_rdate,
 			m.mail_sdate,
+			m.mail_rlock,
+			m.mail_slock,
 			a.mem_name as receiver_name,
 			b.mem_name as sender_name,
 			a.mem_email as receiver_email,
@@ -373,11 +375,18 @@
 	    SET mail_simp = CASE WHEN mail_simp = 1 THEN 0 ELSE 1 END
 	    WHERE mail_id = #{mail_id}
 	</update>
-	<update id="updateRLock" parameterType="map">
+	<update id="updateRLock" parameterType="int">
 		update 
 		mail 
 		set 
-		mail_rlock = #{status}
+		mail_rlock = CASE WHEN mail_rlock = 1 THEN 0 ELSE 1 END
+		where mail_id=#{mail_id}
+	</update>
+	<update id="updateSLock" parameterType="int">
+		update 
+		mail 
+		set 
+		mail_slock = CASE WHEN mail_slock = 1 THEN 0 ELSE 1 END
 		where mail_id=#{mail_id}
 	</update>
 	

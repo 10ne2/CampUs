@@ -275,8 +275,12 @@ public class MessageServiceImpl implements MessageService{
 		messageDAO.updateSImp(mail_id);
 	}
 	@Override
-	public void updateRLock(int mail_id, int status) throws SQLException{
-		messageDAO.updateRLock(mail_id, status);
+	public void updateRLock(int mail_id) throws SQLException{
+		messageDAO.updateRLock(mail_id);
+	}
+	@Override
+	public void updateSLock(int mail_id) throws SQLException{
+		messageDAO.updateSLock(mail_id);
 	}
 
 

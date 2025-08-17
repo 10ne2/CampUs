@@ -170,6 +170,21 @@ public class MessageController {
 		return "/message/receive";
 	}
 	
+	@PostMapping("/toggleRLock")
+	@ResponseBody
+	public Map<String,Object> toggleRLock(@RequestParam("mail_id") int mail_id) throws SQLException {
+	    messageService.updateRLock(mail_id); // DB에서 바로 토글
+
+	    // DB에서 새 상태 확인 (또는 클라이언트에서 아이콘 교체 시 단순 토글)
+	    MessageVO mail = messageService.getMail(mail_id);
+	    int newStatus = mail.getMail_rlock();
+
+	    Map<String,Object> result = new HashMap<>();
+	    result.put("success", true);
+	    result.put("newStatus", newStatus);
+	    return result;
+	}
+	
 	//보낸메일
 	@GetMapping("/send")
 	public String sendList(@ModelAttribute PageMaker pageMaker, HttpSession session, Model model) throws Exception{
@@ -241,6 +256,21 @@ public class MessageController {
         model.addAttribute("unreadCount",displayCount);
         
 		return "/message/send";
+	}
+	
+	@PostMapping("/toggleSLock")
+	@ResponseBody
+	public Map<String,Object> toggleSLock(@RequestParam("mail_id") int mail_id) throws SQLException {
+	    messageService.updateSLock(mail_id); // DB에서 바로 토글
+
+	    // DB에서 새 상태 확인 (또는 클라이언트에서 아이콘 교체 시 단순 토글)
+	    MessageVO mail = messageService.getMail(mail_id);
+	    int newStatus = mail.getMail_slock();
+
+	    Map<String,Object> result = new HashMap<>();
+	    result.put("success", true);
+	    result.put("newStatus", newStatus);
+	    return result;
 	}
 	
 	
