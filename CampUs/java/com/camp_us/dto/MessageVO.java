@@ -14,6 +14,7 @@ public class MessageVO {
 	private int mail_simp;			// 보낸 사람 중요
 	private int mail_rread;			// 받는 사람 조회
 	private int mail_sread;			// 보낸 사람 조회
+	private int mail_rlock;			// 받는 사람 잠금
 	private int mail_slock;			// 보낸 사람 잠금
 	private int mail_waste;			// 휴지통
 	
@@ -189,6 +190,14 @@ public class MessageVO {
 
 	public void setMailFileList(List<MailFileVO> mailFileList) {
 		this.mailFileList = mailFileList;
+	}
+
+	public int getMail_rlock() {
+		return mail_rlock;
+	}
+
+	public void setMail_rlock(int mail_rlock) {
+		this.mail_rlock = mail_rlock;
 	}
 	
 	

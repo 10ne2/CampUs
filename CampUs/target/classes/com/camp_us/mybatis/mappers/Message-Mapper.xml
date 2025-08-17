@@ -96,6 +96,8 @@
 		select
 			m.mail_id,
 			m.mail_name,
+			m.mail_rimp,
+			m.mail_simp,
 			m.mail_rdate,
 			m.mail_sdate,
 			a.mem_name as receiver_name,
@@ -362,17 +364,20 @@
 		where mail_id=#{mail_id}
 	</update>
 	<update id="updateRImp" parameterType="int">
-		update 
-		mail 
-		set 
-		mail_rimp = 1
-		where mail_id=#{mail_id}
+		UPDATE mail
+	    SET mail_rimp = CASE WHEN mail_rimp = 1 THEN 0 ELSE 1 END
+	    WHERE mail_id = #{mail_id}
 	</update>
-	<update id="updateRLock" parameterType="int">
+	<update id="updateSImp" parameterType="int">
+		UPDATE mail
+	    SET mail_simp = CASE WHEN mail_simp = 1 THEN 0 ELSE 1 END
+	    WHERE mail_id = #{mail_id}
+	</update>
+	<update id="updateRLock" parameterType="map">
 		update 
 		mail 
 		set 
-		mail_rlock = 1
+		mail_rlock = #{status}
 		where mail_id=#{mail_id}
 	</update>
 	

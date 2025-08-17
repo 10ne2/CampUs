@@ -52,7 +52,6 @@ public class MessageServiceImpl implements MessageService{
 		return messageDAO.selectMailByMailId(mail_id);
 	}
 	
-	
 
 	// 대시보드
 	@Override
@@ -272,8 +271,12 @@ public class MessageServiceImpl implements MessageService{
 		messageDAO.updateRImp(mail_id);
 	}
 	@Override
-	public void updateRLock(int mail_id) throws SQLException{
-		messageDAO.updateRLock(mail_id);
+	public void updateSImp(int mail_id) throws SQLException{
+		messageDAO.updateSImp(mail_id);
+	}
+	@Override
+	public void updateRLock(int mail_id, int status) throws SQLException{
+		messageDAO.updateRLock(mail_id, status);
 	}
 
 

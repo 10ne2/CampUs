@@ -156,7 +156,7 @@
 							<button id="btnSent" type="button" data-mail="3" class="d-flex align-items-center mailR"
 							style="width: 100%; height: 100%; gap: 24px; line-height: 50px; border:none; padding:15px"
 							onclick="location.href='<%=request.getContextPath()%>/message/waste'">
-							<i class="far fa-file-alt" style="margin-left:2px"></i>
+							<i class="far fa-trash-alt" style="margin-left:2px"></i>
 							<span style="display: block;margin-left:-2px">휴지통</span>
 							</button>
 						</li>
@@ -377,57 +377,4 @@
 	</div>
 		<!-- /.col -->
 			<!-- /.card -->
-		<div class="col-md-10 mailWriteForm " style="margin-left:auto; display:none;" >
-            <div class="card card-primaryc card-outline" style="height: 810px;">
-              <div class="card-header" style="height:50px">
-                <span class="card-title" style="font-weight:700;">메일 보내기</span>
-                <div class="float-right">
-                  <button type="reset" class="btn btn-default" style="height: 35px; margin-top:-5px; line-height: 5px"
-                  onclick="closeWrite()"><i class="fas fa-times"></i>&nbsp;&nbsp;창닫기</button>
-                  <button type="submit" class="btn btn-primary"
-                  style="height: 33px; margin-top:-5px; line-height: 5px; background-color:#2EC4B6; border: 1px solid #2EC4B6"
-                  onclick="regist_go()"><i class="far fa-envelope"></i> &nbsp;&nbsp;보내기</button>
-                </div>
-              </div>
-              <!-- /.card-header -->
-              <form role="form" method="post" action="<%=request.getContextPath()%>/mail/regist" name="registForm" enctype="multipart/form-data">
-	              <div class="card-body">
-	                <div class="form-group" style="display: flex; flex-direction: row;">
-	                  <span style="display:block; width:8%; line-height:32px">받는 사람</span>
-	                  <input type="text" title="받는 사람" id="mail_receiver" name="mail_receiver"
-	                  	class="form-control notNull" placeholder="받는 사람을 입력해주세요.">
-	                </div>
-	                <div class="form-group" style="display: none;">
-	                  <span style="display:block; width:8%; line-height:32px">보내는 사람</span>
-	                  <input type="hidden" title="보내는 사람" id="mail_sender" name="mail_sender"
-	                  	class="form-control notNull" placeholder="받는 사람을 입력해주세요." readonly value="${sessionScope.loginUser.mem_id}">
-	                </div>
-	                <div class="form-group" style="display: flex; flex-direction: row;">
-	                  <span style="display:block; width:8%; line-height:32px">제목</span>
-	                  <input type="text" title="제목" id="mail_name" name="mail_name" 
-	                  	class="form-control notNull" placeholder="제목을 입력해주세요.">
-	                </div>
-	                <div class="form-group">
-						<textarea class="textarea" name="mail_desc" id="mail_desc" rows="30"
-							cols="90" placeholder="1000자 내외로 작성하세요." ></textarea>
-					</div>
-					<div style="display: flex; flex-direction: row;">
-		                <div class="form-group" >
-		                  <div id="addFileBtn" class="btn btn-default btn-file" onclick="addFile_go();" type="file" type="file" name="attachment"
-		                  style="width:130px; height: 50px; line-height: 25px">
-		                    <i class="fas fa-paperclip"></i>
-		                    <h5 style="display:inline;line-height:40px;">&nbsp;&nbsp;파일등록</h5>
-		                  </div>
-		                </div>
-		                <div class="fileInput"></div>
-	                </div>
-	                
-	                
-	              </div>
-              </form>
-              <!-- /.card-body -->
-           </div>
-           <!-- /.card -->
-         </div>
-	</div>
 </div>

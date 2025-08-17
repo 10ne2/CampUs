@@ -2,8 +2,11 @@ package com.camp_us.controller;
 
 import java.io.File;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.ServletContext;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -113,6 +117,21 @@ public class MessageController {
 		return "/message/receive";
 	}
 	
+	@PostMapping("/toggleRImp")
+	@ResponseBody
+	public Map<String,Object> toggleRImp(@RequestParam("mail_id") int mail_id) throws SQLException {
+	    messageService.updateRImp(mail_id); // DB에서 바로 토글
+
+	    // DB에서 새 상태 확인 (또는 클라이언트에서 아이콘 교체 시 단순 토글)
+	    MessageVO mail = messageService.getMail(mail_id);
+	    int newStatus = mail.getMail_rimp();
+
+	    Map<String,Object> result = new HashMap<>();
+	    result.put("success", true);
+	    result.put("newStatus", newStatus);
+	    return result;
+	}
+	
 	@GetMapping("/receive/read")
 	public String receiveReadList(@ModelAttribute PageMaker pageMaker, HttpSession session, Model model) throws Exception{
 		MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
@@ -188,6 +207,21 @@ public class MessageController {
         model.addAttribute("unreadCount",displayCount);
         
 		return "/message/send";
+	}
+	
+	@PostMapping("/toggleSImp")
+	@ResponseBody
+	public Map<String,Object> toggleSImp(@RequestParam("mail_id") int mail_id) throws SQLException {
+	    messageService.updateSImp(mail_id); // DB에서 바로 토글
+
+	    // DB에서 새 상태 확인 (또는 클라이언트에서 아이콘 교체 시 단순 토글)
+	    MessageVO mail = messageService.getMail(mail_id);
+	    int newStatus = mail.getMail_simp();
+
+	    Map<String,Object> result = new HashMap<>();
+	    result.put("success", true);
+	    result.put("newStatus", newStatus);
+	    return result;
 	}
 	
 	@GetMapping("/send/lock")

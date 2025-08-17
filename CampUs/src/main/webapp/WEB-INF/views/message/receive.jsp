@@ -156,7 +156,7 @@
 							<button id="btnSent" type="button" data-mail="3" class="d-flex align-items-center mailR"
 							style="width: 100%; height: 100%; gap: 24px; line-height: 50px; border:none; padding:15px"
 							onclick="location.href='<%=request.getContextPath()%>/message/waste'">
-							<i class="far fa-file-alt" style="margin-left:2px"></i>
+							<i class="far fa-trash-alt" style="margin-left:2px"></i>
 							<span style="display: block;margin-left:-2px">휴지통</span>
 							</button>
 						</li>
@@ -216,7 +216,7 @@
 									</c:if>
 									<c:if test="${not empty receiveMailList }">
 										<c:forEach items="${receiveMailList }" var="receive">
-											<tr onclick="OpenWindow('<%=request.getContextPath()%>/message/detail?mail_id=${receive.mail_id}','상세보기',1040,800);" style="cursor:pointer;">
+											<tr style="cursor:pointer;">
 												<td style="width: 100%; min-height: 60.2px; display: flex; flex-direction: column; margin:-1.6px">
 													<div style="width:100%;">
 														<div style="display: flex; flex-direction: row;">
@@ -232,13 +232,13 @@
 															</div>
 															<div class="" style="display: flex; flex-direction: row;">
 																<div style="margin-left:10px;">
-																    <img id="readImg_" src="<%=request.getContextPath()%>/resources/images/mail_imp/${receive.mail_rimp }.png"
-																      style="width:20px; cursor:pointer"/>
+																    <img id="impImg_${receive.mail_id}" src="<%=request.getContextPath()%>/resources/images/mail_imp/${receive.mail_rimp }.png"
+																      style="width:20px; cursor:pointer" onclick="toggleImportant(${receive.mail_id})"/>
 																</div>
 															</div>
 															<div class="" style="display: flex; flex-direction: row;">
 																<div style="margin-left:10px;">
-																    <img id="readImg_" src="<%=request.getContextPath()%>/resources/images/mail_lock/${receive.mail_rread }.png"
+																    <img id="lockImg_" src="<%=request.getContextPath()%>/resources/images/mail_lock/${receive.mail_rlock }.png"
 																      style="width:20px; cursor:pointer"/>
 																</div>
 															</div>
@@ -250,7 +250,8 @@
 																	${receive.mail_sender}
 																</a>
 															</div>
-															<div style=" border:none; display: flex; flex-direction: row">
+															<div onclick="OpenWindow('<%=request.getContextPath()%>/message/detail?mail_id=${receive.mail_id}','상세보기',1040,800);" 
+															style=" border:none; display: flex; flex-direction: row">
 																<a style="width: 800px; font-size:14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 30px">
 																		${receive.mail_name }</a>
 															</div>
@@ -332,5 +333,19 @@ function regist_go(){
 <script>
 function refresh() {
     location.href = "${pageContext.request.contextPath}/message/receive";
+}
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+function toggleImportant(mailId) {
+    $.post('${pageContext.request.contextPath}/message/toggleRImp', { mail_id: mailId }, function(data) {
+        if(data.success) {
+            let iconSrc = data.newStatus === 1
+                ? '${pageContext.request.contextPath}/resources/images/mail_imp/1.png'
+                : '${pageContext.request.contextPath}/resources/images/mail_imp/0.png';
+            $('#impImg_' + mailId).attr('src', iconSrc);
+        }
+    });
 }
 </script>
