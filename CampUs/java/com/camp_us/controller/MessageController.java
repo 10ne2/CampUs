@@ -2,7 +2,9 @@ package com.camp_us.controller;
 
 import java.io.File;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
@@ -16,16 +18,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UriUtils;
 
+import com.camp_us.command.MessageRegistCommand;
 import com.camp_us.command.PageMaker;
 import com.camp_us.dao.MailFileDAO;
 import com.camp_us.dto.MailFileVO;
 import com.camp_us.dto.MemberVO;
 import com.camp_us.dto.MessageVO;
 import com.camp_us.service.MessageService;
+import com.josephoconnell.html.HTMLInputFilter;
 
 @Controller
 @RequestMapping("/message")
@@ -231,6 +238,8 @@ public class MessageController {
 		MemberVO member = (MemberVO)session.getAttribute("loginUser");
 		String key = "mail:"+member.getMem_id()+mail_id;
 		
+		messageService.updateRRead(mail_id);
+		
 		MessageVO detail= messageService.detail(mail_id);
 		model.addAttribute("mail", detail);
 		
@@ -254,6 +263,65 @@ public class MessageController {
 	            .header(HttpHeaders.CONTENT_DISPOSITION,"attachment; filename=\"" + 
 				UriUtils.encode(mailFile.getMafile_name().split("\\$\\$")[1], "UTF-8") + "\"")
 	            .body(resource);		
+	}
+	
+	@GetMapping("/registForm")
+	public ModelAndView registForm(ModelAndView mnv) throws Exception {
+		String url="/message/regist";
+		mnv.setViewName(url);
+		return mnv;
+	}
+	
+	@PostMapping(value = "/regist", produces = "text/plain;charset=utf-8")
+	public ModelAndView regist(MessageRegistCommand messageRegCommand, ModelAndView mnv)throws Exception{
+		String url="/message/regist_success";
+		
+		//파일저장
+		List<MultipartFile> uploadFiles  = messageRegCommand.getUploadFile();
+		String uploadPath = fileUploadPath;
+		
+		List<MailFileVO> attaches = saveFileToAttaches(uploadFiles,uploadPath);
+		
+		//DB 
+		MessageVO message = messageRegCommand.toMessage();
+		message.setMail_name(HTMLInputFilter.htmlSpecialChars(message.getMail_name()));
+		message.setMailFileList(attaches);
+		
+		messageService.registMail(message);
+		
+		mnv.setViewName(url);
+		return mnv;
+	}
+	
+	@javax.annotation.Resource(name="messageSavedFilePath")
+	private String fileUploadPath;
+
+	private List<MailFileVO> saveFileToAttaches(List<MultipartFile> multiFiles,
+												String savePath )throws Exception{
+		if (multiFiles == null) return null;
+		
+		//저장 -> attachVO -> attachList.add
+		List<MailFileVO> mailFileList = new ArrayList<MailFileVO>();
+		for (MultipartFile multi : multiFiles) {
+			//파일명
+			String uuid = UUID.randomUUID().toString().replace("-", "");
+			String fileName = uuid+"$$"+multi.getOriginalFilename();
+			
+			//파일저장
+			File target = new File(savePath, fileName);
+			target.mkdirs();
+			multi.transferTo(target);
+			
+			MailFileVO attach = new MailFileVO();
+			attach.setMafile_uploadpath(savePath);
+			attach.setMafile_name(fileName);
+			attach.setMafile_type(fileName.substring(fileName.lastIndexOf('.') + 1).toUpperCase());
+			
+			//mailFileList 추가
+			mailFileList.add(attach);
+			
+		}
+		return mailFileList;
 	}
 
 }

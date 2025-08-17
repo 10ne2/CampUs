@@ -33,4 +33,12 @@ public interface MessageService {
 	
 	//휴지통
 	List<MessageVO> wasteList(PageMaker pageMaker, String mem_id) throws SQLException;
+	
+	//insert
+	void registMail(MessageVO message) throws SQLException;
+	
+	//updqte
+	void updateRRead(int mail_id) throws SQLException;
+	void updateRImp(int mail_id) throws SQLException;
+	void updateRLock(int mail_id) throws SQLException;
 }

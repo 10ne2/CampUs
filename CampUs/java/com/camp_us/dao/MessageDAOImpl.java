@@ -37,6 +37,7 @@ private SqlSession session;
 
 	
 	
+	
 	// 대시보드
 	@Override
 	public List<MessageVO> selectReceiveMailByMemId(String mem_id) throws SQLException {
@@ -44,14 +45,12 @@ private SqlSession session;
 		
 		return mailList;
 	}
-
 	@Override
 	public List<MessageVO> selectSenderMailByMemId(String mem_id) throws SQLException {
 		List<MessageVO> mailList = session.selectList("Message-Mapper.selectSenderMailByMemId", mem_id);
 		
 		return mailList;
 	}
-
 	@Override
 	public List<MessageVO> selectAllWasteMail(String mem_id) throws SQLException {
 		List<MessageVO> mailList = session.selectList("Message-Mapper.selectAllWasteMail", mem_id);
@@ -59,6 +58,7 @@ private SqlSession session;
 		return mailList;
 	}
 
+	
 	
 	// 받은메일함
 	@Override
@@ -75,7 +75,6 @@ private SqlSession session;
 		
 		return mailList;
 	}
-
 	@Override
 	public List<MessageVO> selectSearchReceiveImpMailList(PageMaker pageMaker, String mem_id) throws SQLException {
 		int offset = pageMaker.getStartRow()-1;
@@ -90,7 +89,6 @@ private SqlSession session;
 		
 		return mailList;
 	}
-
 	@Override
 	public List<MessageVO> selectSearchReceiveReadMailList(PageMaker pageMaker, String mem_id) throws SQLException {
 		int offset = pageMaker.getStartRow()-1;
@@ -105,7 +103,6 @@ private SqlSession session;
 		
 		return mailList;
 	}
-	
 	@Override
 	public List<MessageVO> selectSearchReceiveLockMailList(PageMaker pageMaker, String mem_id) throws SQLException {
 		int offset = pageMaker.getStartRow()-1;
@@ -120,7 +117,6 @@ private SqlSession session;
 		
 		return mailList;
 	}
-
 	@Override
 	public int selectSearchReceiveMailListCount(PageMaker pageMaker, String mem_id) throws SQLException {
 		Map<String,Object> dataMap = new HashMap<String,Object>();
@@ -131,7 +127,6 @@ private SqlSession session;
 		
 		return mailList;
 	}
-	
 	@Override
 	public int selectSearchReceiveImpMailListCount(PageMaker pageMaker, String mem_id) throws SQLException {
 		Map<String,Object> dataMap = new HashMap<String,Object>();
@@ -153,7 +148,6 @@ private SqlSession session;
 		
 		return mailList;
 	}
-	
 	@Override
 	public int selectSearchReceiveLockMailListCount(PageMaker pageMaker, String mem_id) throws SQLException {
 		Map<String,Object> dataMap = new HashMap<String,Object>();
@@ -164,6 +158,8 @@ private SqlSession session;
 		
 		return mailList;
 	}
+	
+	
 	
 	//보낸 메일
 	@Override
@@ -180,7 +176,6 @@ private SqlSession session;
 		
 		return mailList;
 	}
-
 	@Override
 	public List<MessageVO> selectSearchSendImpMailList(PageMaker pageMaker, String mem_id) throws SQLException {
 		int offset = pageMaker.getStartRow()-1;
@@ -195,7 +190,6 @@ private SqlSession session;
 		
 		return mailList;
 	}
-	
 	@Override
 	public List<MessageVO> selectSearchSendLockMailList(PageMaker pageMaker, String mem_id) throws SQLException {
 		int offset = pageMaker.getStartRow()-1;
@@ -210,7 +204,6 @@ private SqlSession session;
 		
 		return mailList;
 	}
-
 	@Override
 	public int selectSearchSendMailListCount(PageMaker pageMaker, String mem_id) throws SQLException {
 		Map<String,Object> dataMap = new HashMap<String,Object>();
@@ -221,7 +214,6 @@ private SqlSession session;
 		
 		return mailList;
 	}
-	
 	@Override
 	public int selectSearchSendImpMailListCount(PageMaker pageMaker, String mem_id) throws SQLException {
 		Map<String,Object> dataMap = new HashMap<String,Object>();
@@ -232,7 +224,6 @@ private SqlSession session;
 		
 		return mailList;
 	}
-	
 	@Override
 	public int selectSearchSendLockMailListCount(PageMaker pageMaker, String mem_id) throws SQLException {
 		Map<String,Object> dataMap = new HashMap<String,Object>();
@@ -243,6 +234,8 @@ private SqlSession session;
 		
 		return mailList;
 	}
+	
+	
 	
 	// 휴지통
 	@Override
@@ -262,6 +255,37 @@ private SqlSession session;
 		return mailList;
 	}
 	
+	
+	
+	//오토 인크리드
+	@Override
+	public int selectMailSeqNext() throws SQLException {
+		return  session.selectOne("Message-Mapper.selectMailSeqNext");
+	}
+	
+	
+	
+	// insert
+	@Override
+	public void insertMail(MessageVO message) throws SQLException{
+		session.insert("Message-Mapper.insertMail", message);
+	}
+	
+	
+	
+	//update
+	@Override
+	public void updateRRead(int mail_id) throws SQLException {
+		session.update("Message-Mapper.updateRRead",mail_id);		
+	}
+	@Override
+	public void updateRImp(int mail_id) throws SQLException {
+		session.update("Message-Mapper.updateRImp",mail_id);		
+	}
+	@Override
+	public void updateRLock(int mail_id) throws SQLException {
+		session.update("Message-Mapper.updateRLock",mail_id);		
+	}
 	
 
 }

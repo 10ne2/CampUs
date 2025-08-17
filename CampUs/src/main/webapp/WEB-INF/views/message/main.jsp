@@ -122,7 +122,7 @@
 	<div class="row" style="display:flex; flex-direction: row;">
 	<!-- 카테고리 시작 -->
 		<div class="col-md-2" style="width:250px">
-			<a class="btnw btn-primary btn-block mb-3" style="width:width:250px" onclick="mailWrite()">메일
+			<a class="btnw btn-primary btn-block mb-3" style="width:250px" onclick="location.href='<%=request.getContextPath()%>/message/registForm'">메일
 				작성</a>
 			<div class="card" style="width:250px">
 				<div class="card-body p-0" style="width:250px !important">

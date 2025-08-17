@@ -28,6 +28,8 @@ public class MessageServiceImpl implements MessageService{
 		int count = messageDAO.selectReceiveUnreadMailCount(mem_id);
 		return count;
 	}
+
+	
 	
 	//세부내용
 	@Override
@@ -67,7 +69,6 @@ public class MessageServiceImpl implements MessageService{
 		
 		return mailList;
 	}
-	
 	@Override
 	public List<MessageVO> sendList(String mem_id) throws SQLException {
 		List<MessageVO> mailList = messageDAO.selectSenderMailByMemId(mem_id);
@@ -82,7 +83,6 @@ public class MessageServiceImpl implements MessageService{
 		
 		return mailList;
 	}
-	
 	@Override
 	public List<MessageVO> wasteList(String mem_id) throws SQLException {
 		List<MessageVO> mailList = messageDAO.selectAllWasteMail(mem_id);
@@ -97,6 +97,7 @@ public class MessageServiceImpl implements MessageService{
 		
 		return mailList;
 	}
+	
 	
 	
 	// 받은메일함
@@ -117,7 +118,6 @@ public class MessageServiceImpl implements MessageService{
 		pageMaker.setTotalCount(totalCount);
 		return mailList;
 	}
-
 	@Override
 	public List<MessageVO> receiveImpList(PageMaker pageMaker, String mem_id) throws SQLException {
 		List<MessageVO> mailList = messageDAO.selectSearchReceiveImpMailList(pageMaker, mem_id);
@@ -134,7 +134,6 @@ public class MessageServiceImpl implements MessageService{
 		pageMaker.setTotalCount(totalCount);
 		return mailList;
 	}
-	
 	@Override
 	public List<MessageVO> receiveReadList(PageMaker pageMaker, String mem_id) throws SQLException {
 		List<MessageVO> mailList = messageDAO.selectSearchReceiveReadMailList(pageMaker, mem_id);
@@ -151,7 +150,6 @@ public class MessageServiceImpl implements MessageService{
 		pageMaker.setTotalCount(totalCount);
 		return mailList;
 	}
-	
 	@Override
 	public List<MessageVO> receiveLockList(PageMaker pageMaker, String mem_id) throws SQLException {
 		List<MessageVO> mailList = messageDAO.selectSearchReceiveLockMailList(pageMaker, mem_id);
@@ -168,6 +166,8 @@ public class MessageServiceImpl implements MessageService{
 		pageMaker.setTotalCount(totalCount);
 		return mailList;
 	}
+	
+	
 	
 	// 보낸메일함
 	@Override
@@ -186,7 +186,6 @@ public class MessageServiceImpl implements MessageService{
 		pageMaker.setTotalCount(totalCount);
 		return mailList;
 	}
-
 	@Override
 	public List<MessageVO> sendImpList(PageMaker pageMaker, String mem_id) throws SQLException {
 		List<MessageVO> mailList = messageDAO.selectSearchSendImpMailList(pageMaker, mem_id);
@@ -203,7 +202,6 @@ public class MessageServiceImpl implements MessageService{
 		pageMaker.setTotalCount(totalCount);
 		return mailList;
 	}
-	
 	@Override
 	public List<MessageVO> sendLockList(PageMaker pageMaker, String mem_id) throws SQLException {
 		List<MessageVO> mailList = messageDAO.selectSearchSendLockMailList(pageMaker, mem_id);
@@ -221,8 +219,9 @@ public class MessageServiceImpl implements MessageService{
 		return mailList;
 	}
 	
-	//휴지통
 	
+	
+	//휴지통
 	@Override
 	public List<MessageVO> wasteList(PageMaker pageMaker, String mem_id) throws SQLException {
 		List<MessageVO> mailList = messageDAO.selectWasteMailList(pageMaker, mem_id);
@@ -239,9 +238,43 @@ public class MessageServiceImpl implements MessageService{
 		pageMaker.setTotalCount(totalCount);
 		return mailList;
 	}
+	
+	
+	//insert
+	@Override
+	public void registMail(MessageVO message) throws SQLException{
+		
+		/* mailID증가 */
+		int mail_id = messageDAO.selectMailSeqNext();
+		message.setMail_id(mail_id);
+		messageDAO.insertMail(message);
+		
+		/* 첨부파일 */
+		List<MailFileVO> mailFileList = message.getMailFileList();
+		if(mailFileList != null) for(MailFileVO mailFile : mailFileList) {
+			int mafile_no = mailFileDAO.selectMailFileSeqNext();
+			mailFile.setMafile_no(mafile_no);
+			mailFile.setMail_id(message.getMail_id());
+			
+			mailFileDAO.insertMailFile(mailFile);
+		}
+	}
 		
 		
-
+	
+	//update
+	@Override
+	public void updateRRead(int mail_id) throws SQLException{
+		messageDAO.updateRRead(mail_id);
+	}
+	@Override
+	public void updateRImp(int mail_id) throws SQLException{
+		messageDAO.updateRImp(mail_id);
+	}
+	@Override
+	public void updateRLock(int mail_id) throws SQLException{
+		messageDAO.updateRLock(mail_id);
+	}
 
 
 }

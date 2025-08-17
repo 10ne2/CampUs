@@ -224,7 +224,9 @@ function regist_go(){
 </script>
 
 <script>
-function refresh() {
-    location.href = "${pageContext.request.contextPath}/message/send";
-}
+window.onunload = function() {
+    if (window.opener && !window.opener.closed) {
+        window.opener.location.reload();
+    }
+};
 </script>

@@ -336,6 +336,47 @@
 	</select>
 	
 	
+	
+	<select id="selectMailSeqNext" resultType="int">
+		select mail_seq.nextval as mail_id from dual
+	</select>
+	
+	
+	
+	
+	
+	<insert id="insertMail" parameterType="message">
+		insert
+		into mail (mail_id, mail_name, mail_receiver, mail_sender, mail_desc)
+		values (#{mail_id},#{mail_name}, #{mail_receiver}, #{mail_sender}, #{mail_desc})
+	</insert>
+	
+	
+	
+	
+	<update id="updateRRead" parameterType="int">
+		update 
+		mail 
+		set 
+		mail_rread = 1
+		where mail_id=#{mail_id}
+	</update>
+	<update id="updateRImp" parameterType="int">
+		update 
+		mail 
+		set 
+		mail_rimp = 1
+		where mail_id=#{mail_id}
+	</update>
+	<update id="updateRLock" parameterType="int">
+		update 
+		mail 
+		set 
+		mail_rlock = 1
+		where mail_id=#{mail_id}
+	</update>
+	
+	
 </mapper>
 
 

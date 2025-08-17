@@ -254,12 +254,6 @@
 																<a style="width: 800px; font-size:14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 30px">
 																		${receive.mail_name }</a>
 															</div>
-															<div class="" style="display: flex; flex-direction: row;">
-																<div style="margin-left:10px;">
-																    <img id="readImg_" src="<%=request.getContextPath()%>/resources/images/mail_read/${receive.mail_rread }.png"
-																      style="width:20px; cursor:pointer"/>
-																</div>
-															</div>
 															<div class="mailbox-date" style="margin-left:auto; line-height:30px; font-size:12px; color: #bbb">
 															 	<fmt:formatDate value="${receive.mail_rdate }" pattern="yy-MM-dd HH:mm" />
 														 	</div>
