@@ -89,7 +89,7 @@
 	                <div class="form-group" style="display: flex; flex-direction: row;">
 	                  <span style="display:block; width:8%; line-height:32px">받는 사람</span>
 	                  <input type="text" title="받는 사람" id="mail_receiver" name="mail_receiver"
-	                  	class="form-control notNull" placeholder="받는 사람을 입력해주세요.">
+	                  	class="form-control notNull sendMail" placeholder="받는 사람을 입력해주세요.">
 	                </div>
 	                <div class="form-group" style="display: none;">
 	                  <span style="display:block; width:8%; line-height:32px">보내는 사람</span>
@@ -99,10 +99,10 @@
 	                <div class="form-group" style="display: flex; flex-direction: row;">
 	                  <span style="display:block; width:8%; line-height:32px">제목</span>
 	                  <input type="text" title="제목" id="mail_name" name="mail_name" 
-	                  	class="form-control notNull" placeholder="제목을 입력해주세요.">
+	                  	class="form-control notNull sendMail" placeholder="제목을 입력해주세요.">
 	                </div>
 	                <div class="form-group">
-						<textarea class="textarea" name="mail_desc" id="mail_desc" rows="30"
+						<textarea class="textarea sendMail" name="mail_desc" id="mail_desc" rows="30"
 							cols="90" placeholder="1000자 내외로 작성하세요." ></textarea>
 					</div>
 					<div style="display: flex; flex-direction: row;">
@@ -200,4 +200,31 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   });
 </script>
-</body>
+
+<script>
+let isFormDirty = false;
+
+// 입력값이 바뀌면 true
+document.querySelectorAll(".sendMail").forEach(el => {
+    el.addEventListener("input", () => {
+        isFormDirty = true;
+    });
+});
+
+// 페이지 떠나기 직전에 confirm
+window.addEventListener("beforeunload", function (e) {
+    if (isFormDirty) {
+        // 표준 브라우저 동작
+        e.preventDefault(); 
+        e.returnValue = "작성중인 내용이 사라집니다. 페이지를 떠나시겠습니까?";
+        return "작성중인 내용이 사라집니다. 페이지를 떠나시겠습니까?";
+    }
+});
+</script>
+
+<script>
+function closeWrite(){
+    history.back();
+}
+</script>
+

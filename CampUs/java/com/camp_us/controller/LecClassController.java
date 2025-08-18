@@ -25,7 +25,7 @@ import com.camp_us.service.OtherDashStuService;
 import com.camp_us.service.UnsubmitHomeworkService;
 
 @Controller
-@RequestMapping("/lecture")
+@RequestMapping("/lectureStu")
 public class LecClassController {
     
     @Autowired

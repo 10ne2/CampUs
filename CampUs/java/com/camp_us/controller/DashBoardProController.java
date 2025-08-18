@@ -16,8 +16,8 @@ import com.camp_us.service.ComingLecService;
 import com.camp_us.service.UnsubmitHomeworkService;
 
 @Controller
-@RequestMapping("student/dashboard")
-public class DashBoardStuController {
+@RequestMapping("/lecturePro")
+public class DashBoardProController {
 	
 	@Autowired
 	private UnsubmitHomeworkService unsubmitHomeworkService;
@@ -41,7 +41,7 @@ public class DashBoardStuController {
 		
 		
 		
-		return "dashboardstu/main";
+		return "dashboardpro/main";
 	}
 	
 }

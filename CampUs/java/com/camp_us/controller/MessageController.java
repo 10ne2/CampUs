@@ -349,9 +349,16 @@ public class MessageController {
 	}
 	
 	@GetMapping("/registForm")
-	public ModelAndView registForm(ModelAndView mnv) throws Exception {
+	public ModelAndView registForm(ModelAndView mnv, HttpSession session) throws Exception {
 		String url="/message/regist";
-		mnv.setViewName(url);
+		MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
+	    String mem_id = loginUser.getMem_id();
+
+	    int unreadCount = messageService.unreadCount(mem_id);
+	    String displayCount = unreadCount >= 1000 ? "999+" : String.valueOf(unreadCount);
+
+	    mnv.addObject("unreadCount", displayCount);
+	    mnv.setViewName(url);
 		return mnv;
 	}
 	
@@ -369,10 +376,10 @@ public class MessageController {
 		MessageVO message = messageRegCommand.toMessage();
 		message.setMail_name(HTMLInputFilter.htmlSpecialChars(message.getMail_name()));
 		message.setMailFileList(attaches);
-		
 		messageService.registMail(message);
 		
-		mnv.setViewName(url);
+	    mnv.setViewName(url);
+		
 		return mnv;
 	}
 	
