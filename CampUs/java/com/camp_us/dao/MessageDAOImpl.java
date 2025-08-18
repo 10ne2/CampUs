@@ -294,6 +294,26 @@ private SqlSession session;
 	public void updateSLock(int mail_id) throws SQLException {
 	    session.update("Message-Mapper.updateSLock", mail_id);		
 	}
+	@Override
+	public void updateWaste(int mail_id) throws SQLException {
+	    session.update("Message-Mapper.updateWaste", mail_id);		
+	}
+	@Override
+	public void updateWasteBack(int mail_id) throws SQLException {
+	    session.update("Message-Mapper.updateWasteBack", mail_id);		
+	}
+	
+	
+	
+	//delete
+	@Override
+	public void deleteMail(int mail_id) throws SQLException {
+	    session.delete("Message-Mapper.deleteMail", mail_id);		
+	}
+	@Override
+	public void deleteAllWaste() throws SQLException {
+	    session.delete("Message-Mapper.deleteAllWaste");		
+	}
 	
 
 }

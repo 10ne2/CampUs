@@ -313,6 +313,25 @@ public class MessageController {
 		return "/message/detail";
 	}
 	
+	@GetMapping("/detailwaste")
+	public String detailWaste(int mail_id, HttpSession session, Model model) throws Exception {
+		
+		ServletContext ctx = session.getServletContext();
+		
+		MemberVO member = (MemberVO)session.getAttribute("loginUser");
+		String key = "mail:"+member.getMem_id()+mail_id;
+		
+		messageService.updateRRead(mail_id);
+		
+		MessageVO detail= messageService.detail(mail_id);
+		model.addAttribute("mail", detail);
+		
+		MailFileVO mailFile = null;
+		model.addAttribute("mailFile", mailFile);
+		
+		return "/message/detail_waste";
+	}
+	
 	@GetMapping("/getFile")
 	@ResponseBody
 	public ResponseEntity<Resource> getFile(int mafile_no) throws Exception {
@@ -387,5 +406,126 @@ public class MessageController {
 		}
 		return mailFileList;
 	}
-
+	
+	@GetMapping("/movewaste")
+	public ModelAndView remove(@RequestParam("mail_id") String mail_ids, ModelAndView mnv)throws Exception{
+		String url="/message/waste_success";
+		
+		if(mail_ids != null && !mail_ids.trim().isEmpty()) {
+	        String[] mailIdArr = mail_ids.split(",");
+	        for(String mailIdStr : mailIdArr) {
+	            mailIdStr = mailIdStr.trim();
+	            if(!mailIdStr.isEmpty()) { // 공백 체크
+	                int mail_id = Integer.parseInt(mailIdStr);
+	                messageService.updateWaste(mail_id);
+	            }
+	        }
+	    }
+		
+		mnv.setViewName(url);
+		return mnv;
+	}
+	
+	@GetMapping("/movewaste/detail")
+	public ModelAndView removeDetail(@RequestParam("mail_id") String mail_ids, ModelAndView mnv)throws Exception{
+		String url="/message/waste_detail_success";
+		
+		if(mail_ids != null && !mail_ids.trim().isEmpty()) {
+	        String[] mailIdArr = mail_ids.split(",");
+	        for(String mailIdStr : mailIdArr) {
+	            mailIdStr = mailIdStr.trim();
+	            if(!mailIdStr.isEmpty()) { // 공백 체크
+	                int mail_id = Integer.parseInt(mailIdStr);
+	                messageService.updateWaste(mail_id);
+	            }
+	        }
+	    }
+		
+		mnv.setViewName(url);
+		return mnv;
+	}
+	
+	@GetMapping("/backwaste")
+	public ModelAndView back(@RequestParam("mail_id") String mail_ids, ModelAndView mnv)throws Exception{
+		String url="/message/back_success";
+		
+		if(mail_ids != null && !mail_ids.trim().isEmpty()) {
+	        String[] mailIdArr = mail_ids.split(",");
+	        for(String mailIdStr : mailIdArr) {
+	            mailIdStr = mailIdStr.trim();
+	            if(!mailIdStr.isEmpty()) { // 공백 체크
+	                int mail_id = Integer.parseInt(mailIdStr);
+	                messageService.updateWasteBack(mail_id);
+	            }
+	        }
+	    }
+		
+		mnv.setViewName(url);
+		return mnv;
+	}
+	
+	@GetMapping("/backwaste/detail")
+	public ModelAndView backDetail(@RequestParam("mail_id") String mail_ids, ModelAndView mnv)throws Exception{
+		String url="/message/back_detail_success";
+		
+		if(mail_ids != null && !mail_ids.trim().isEmpty()) {
+	        String[] mailIdArr = mail_ids.split(",");
+	        for(String mailIdStr : mailIdArr) {
+	            mailIdStr = mailIdStr.trim();
+	            if(!mailIdStr.isEmpty()) { // 공백 체크
+	                int mail_id = Integer.parseInt(mailIdStr);
+	                messageService.updateWasteBack(mail_id);
+	            }
+	        }
+	    }
+		
+		mnv.setViewName(url);
+		return mnv;
+	}
+	
+	@GetMapping("/delete")
+	public ModelAndView delete(@RequestParam("mail_id") String mail_ids, ModelAndView mnv)throws Exception{
+		String url="/message/remove_success";		
+		
+		if(mail_ids != null && !mail_ids.trim().isEmpty()) {
+	        String[] mailIdArr = mail_ids.split(",");
+	        for(String mailIdStr : mailIdArr) {
+	            mailIdStr = mailIdStr.trim();
+	            if(!mailIdStr.isEmpty()) { // 공백 체크
+	                int mail_id = Integer.parseInt(mailIdStr);
+	                messageService.delete(mail_id);
+	            }
+	        }
+	    }
+		
+		mnv.setViewName(url);
+		return mnv;
+	}
+	
+	@GetMapping("/delete/detail")
+	public ModelAndView deleteDetail(@RequestParam("mail_id") String mail_ids, ModelAndView mnv)throws Exception{
+		String url="/message/remove_detail_success";		
+		
+		if(mail_ids != null && !mail_ids.trim().isEmpty()) {
+	        String[] mailIdArr = mail_ids.split(",");
+	        for(String mailIdStr : mailIdArr) {
+	            mailIdStr = mailIdStr.trim();
+	            if(!mailIdStr.isEmpty()) { // 공백 체크
+	                int mail_id = Integer.parseInt(mailIdStr);
+	                messageService.delete(mail_id);
+	            }
+	        }
+	    }
+		
+		mnv.setViewName(url);
+		return mnv;
+	}
+	
+	@GetMapping("/allWaste")
+	public ModelAndView clearWaste(ModelAndView mnv) throws Exception {
+	    messageService.deleteAll();
+	    mnv.setViewName("/message/clear_success");
+	    return mnv;
+	}
+	
 }

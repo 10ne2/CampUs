@@ -116,63 +116,20 @@
 <div style="height: 900px; padding: 15px;">
 	<div>
 		<span
-			style="display: block; font-size: 20pt; font-weight: bold; margin-bottom: 18px; margin-left: 5px">
+			style="display: block; width:50px; font-size: 20pt; font-weight: bold; margin-bottom: 18px; margin-left: 5px;cursor:pointer"
+			onclick="location.href='<%=request.getContextPath()%>/message/main'" >
 			메일</span>
 	</div>
 	<div class="row" style="display:flex; flex-direction: row;">
 	<!-- 카테고리 시작 -->
-		<div class="col-md-2" style="width:250px">
-			<a class="btnw btn-primary btn-block mb-3" style="width:width:250px" onclick="mailWrite()">메일
-				작성</a>
-			<div class="card" style="width:250px">
-				<div class="card-body p-0" style="width:250px !important">
-					<ul class="nav flex-column" style="width:250px; height: 745px;">
-						<li class="" style="height: 50px; ">
-							<button id="btnAll" type="button" data-mail="1" class="d-flex align-items-center mailR"
-							style="width: 100%; height: 100%; gap: 20px; line-height: 50px; border:none; padding:15px; overflow:hidden"
-							onclick="location.href='<%=request.getContextPath()%>/message/main'">
-								<i class="fas fa-inbox" style=""></i>
-								<span style="display: block;">전체 메일</span>
-							</button>
-						</li>
-						<li class="nav-item" style="height: 50px">
-							<button id="btnRecv" type="button" data-mail="2" class="d-flex align-items-center mailR"
-							style="width: 100%; height: 100%; gap: 20px; line-height: 50px; border:none; padding:15px"
-							onclick="location.href='<%=request.getContextPath()%>/message/receive">
-								<i class="far fa-envelope" style=""></i>
-								<span style="display: block;">받은 메일함</span>
-								<span id="unreadCount" class="badgec bg-primaryc" style="width:auto;display: block; margin-left: auto; padding: 0 5px 0 5px">${unreadCount}</span>
-							</button>
-						</li>
-						<li class="nav-item" style="height: 50px; border-bottom: 1px solid #ddd;">
-							<button id="btnSent" type="button" data-mail="3" class="d-flex align-items-center mailR"
-							style="width: 100%; height: 100%; gap: 24px; line-height: 50px; border:none; padding:15px"
-							onclick="location.href='<%=request.getContextPath()%>/message/send'">
-							<i class="far fa-file-alt" style="margin-left:2px"></i>
-							<span style="display: block;margin-left:-2px">보낸 메일함</span>
-							</button>
-						</li>
-						<li class="nav-item" style="height: 50px; border-bottom: 1px solid #ddd;">
-							<button id="btnSent" type="button" data-mail="3" class="d-flex align-items-center mailR"
-							style="width: 100%; height: 100%; gap: 24px; line-height: 50px; border:none; padding:15px"
-							onclick="location.href='<%=request.getContextPath()%>/message/waste'">
-							<i class="far fa-trash-alt" style="margin-left:2px"></i>
-							<span style="display: block;margin-left:-2px">휴지통</span>
-							</button>
-						</li>
-					</ul>
-				</div>
-				<!-- /.card-body -->
-			</div>
-			<!-- /.card -->
-		</div>
+		<%@ include file="/WEB-INF/views/message/category.jsp" %>
 	<!-- 카테고리 끝 -->
 		<div class="col-md-10">
 			<div style=" display:flex; flex-direction: row; margin-left:8px">
 				<div style="display:block;">
 					<div class="card card-outline card-primaryc" style="width: 1290px;">
 						<div class="card-header" style="display:flex; flex-direction: row;">
-							<div style="width: 100px">
+							<div style="width: 100px; cursor:pointer" onclick="location.href='<%=request.getContextPath()%>/message/receive'">
 								<h3 class="card-title" style="margin-top:5px">받은 메일함</h3>
 							</div>
 							<div style="width: 870px; margin-top:4px">
@@ -189,10 +146,14 @@
 									잠긴 메일
 								</label>
 							</div>
-							<button type="button" class="btn btn-default btn-sm" onclick="remove();">
+							<button type="button"
+								class="btn btn-default btn-sm checkbox-toggle" onclick="all_click()">
+								<i class="far fa-square"></i>
+							</button>
+							<button type="button" class="btn btn-default btn-sm" style="margin-left: 8px" onclick="removeMail()">
 								<i class="far fa-trash-alt"></i>
 							</button>
-							<button type="button" class="btn btn-default btn-sm" style="margin-left: 8px" onclick="refresh()">
+							<button type="button" class="btn btn-default btn-sm" style="margin-left: 8px; margin-right: 8px" onclick="refresh()">
 									<i class="fas fa-sync-alt"></i>
 							</button>
 							<div class="input-group input-group-sm" style="width: 200px; margin-left:auto;">
@@ -220,26 +181,26 @@
 												<td style="width: 100%; min-height: 60.2px; display: flex; flex-direction: column; margin:-1.6px">
 													<div style="width:100%;">
 														<div style="display: flex; flex-direction: row;">
-															<div class="icheck-primary" style="width:43px; height:22px; margin-left: 5px">
+															<div class="" style="display: flex; flex-direction: row;">
+																<div style="margin-left: 5px;">
+																    <img id="lockImg_${receive.mail_id}" src="<%=request.getContextPath()%>/resources/images/lock/${receive.mail_rlock }.png"
+																      style="width:20px; cursor:pointer" onclick="toggleLock(${receive.mail_id})"/>
+																</div>
+															</div>
+															<div class="icheck-primary" style="width:43px; height:22px; margin-left: 20px">
 																<input type="checkbox" name="mail_id" value="${receive.mail_id}" id="check_${receive.mail_id}"> <label
 																	for="check_${receive.mail_id}"></label>
 															</div>
 															<div class="" style="display: flex; flex-direction: row;">
 																<div style="margin-left:10px;">
-																    <img id="readImg_" src="<%=request.getContextPath()%>/resources/images/mail_read/${receive.mail_rread }.png"
+																    <img id="readImg_" src="<%=request.getContextPath()%>/resources/images/read/${receive.mail_rread }.png"
 																      style="width:20px; cursor:pointer"/>
 																</div>
 															</div>
 															<div class="" style="display: flex; flex-direction: row;">
 																<div style="margin-left:10px;">
-																    <img id="impImg_${receive.mail_id}" src="<%=request.getContextPath()%>/resources/images/mail_imp/${receive.mail_rimp }.png"
+																    <img id="impImg_${receive.mail_id}" src="<%=request.getContextPath()%>/resources/images/important/${receive.mail_rimp }.png"
 																      style="width:20px; cursor:pointer" onclick="toggleImportant(${receive.mail_id})"/>
-																</div>
-															</div>
-															<div class="" style="display: flex; flex-direction: row;">
-																<div style="margin-left:10px;">
-																    <img id="lockImg_${receive.mail_id}" src="<%=request.getContextPath()%>/resources/images/mail_lock/${receive.mail_rlock }.png"
-																      style="width:20px; cursor:pointer" onclick="toggleLock(${receive.mail_id})"/>
 																</div>
 															</div>
 															<div class="" style="width:150px; display:flex; flex-direction: row; margin-left:20px">
@@ -252,10 +213,10 @@
 															</div>
 															<div onclick="OpenWindow('<%=request.getContextPath()%>/message/detail?mail_id=${receive.mail_id}','상세보기',1040,800);" 
 															style=" border:none; display: flex; flex-direction: row">
-																<a style="width: 800px; font-size:14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 30px">
+																<a style="width: 850px; font-size:14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 30px">
 																		${receive.mail_name }</a>
 															</div>
-															<div class="mailbox-date" style="margin-left:auto; line-height:30px; font-size:12px; color: #bbb">
+															<div class="mailbox-date" style=" line-height:30px; font-size:12px; color: #bbb">
 															 	<fmt:formatDate value="${receive.mail_rdate }" pattern="yy-MM-dd HH:mm" />
 														 	</div>
 														</div>
@@ -342,21 +303,65 @@ function toggleImportant(mailId) {
     $.post('${pageContext.request.contextPath}/message/toggleRImp', { mail_id: mailId }, function(data) {
         if(data.success) {
             let iconSrc = data.newStatus === 1
-                ? '${pageContext.request.contextPath}/resources/images/mail_imp/1.png'
-                : '${pageContext.request.contextPath}/resources/images/mail_imp/0.png';
+                ? '${pageContext.request.contextPath}/resources/images/important/1.png'
+                : '${pageContext.request.contextPath}/resources/images/important/0.png';
             $('#impImg_' + mailId).attr('src', iconSrc);
+            window.location.reload();
         }
     });
+    
 }
 
 function toggleLock(mailId) {
     $.post('${pageContext.request.contextPath}/message/toggleRLock', { mail_id: mailId }, function(data) {
         if(data.success) {
             let iconSrc = data.newStatus === 1
-                ? '${pageContext.request.contextPath}/resources/images/mail_lock/1.png'
-                : '${pageContext.request.contextPath}/resources/images/mail_lock/0.png';
+                ? '${pageContext.request.contextPath}/resources/images/lock/1.png'
+                : '${pageContext.request.contextPath}/resources/images/lock/0.png';
             $('#lockImg_' + mailId).attr('src', iconSrc);
+            window.location.reload();
         }
     });
+}
+</script>
+
+<script>
+function removeMail(){
+	let checked = document.querySelectorAll('input[name="mail_id"]:checked');
+	
+	if (checked.length === 0) {
+        alert("삭제할 메일을 선택하세요.");
+        return;
+    }
+	
+	let answer = confirm("정말 삭제하시겠습니다.");
+	if(!answer) return;
+	
+	let mail_id = Array.from(checked).map(cb => cb.value);
+	let params = mail_id.join(",")
+	
+	location.href = "movewaste?mail_id=" + params;
+}
+</script>
+
+<script>
+function all_click(){
+	const checkboxes = document.querySelectorAll('input[name="mail_id"]');
+	const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+	  
+	  if (allChecked) {
+	    // 모두 체크되어 있으면 해제
+	    checkboxes.forEach(cb => {
+	    	cb.checked = false;
+	    	cb.closest('tr').style.backgroundColor = '';
+	    });
+	  } else {
+	    // 하나라도 체크 안 되어 있으면 모두 선택
+	    checkboxes.forEach(cb => {
+	    	cb.checked = true;
+	    	cb.closest('tr').style.backgroundColor = '#EAF5F4'; // 선택된 행 배경색
+	    });
+	  }
+	  
 }
 </script>

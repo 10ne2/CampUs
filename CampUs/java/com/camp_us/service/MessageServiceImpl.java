@@ -1,5 +1,6 @@
 package com.camp_us.service;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -7,7 +8,6 @@ import com.camp_us.command.PageMaker;
 import com.camp_us.dao.MailFileDAO;
 import com.camp_us.dao.MessageDAO;
 import com.camp_us.dto.MailFileVO;
-import com.camp_us.dto.MailVO;
 import com.camp_us.dto.MessageVO;
 
 public class MessageServiceImpl implements MessageService{
@@ -282,6 +282,34 @@ public class MessageServiceImpl implements MessageService{
 	public void updateSLock(int mail_id) throws SQLException{
 		messageDAO.updateSLock(mail_id);
 	}
-
-
+	@Override
+	public void updateWaste(int mail_id) throws SQLException{
+		messageDAO.updateWaste(mail_id);
+	}
+	@Override
+	public void updateWasteBack(int mail_id) throws SQLException{
+		messageDAO.updateWasteBack(mail_id);
+	}
+	
+	
+	//delete
+	@Override
+	public void delete(int mail_id) throws SQLException{
+		
+		MessageVO mail = messageDAO.selectMailByMailId(mail_id);
+		
+		File dir = new File(summernotePath);
+		File[] files = dir.listFiles();
+		if(files!=null) for(File file : files) {
+			if(mail.getMail_desc().contains(file.getName())) {
+				file.delete();
+			}
+		}
+		
+		messageDAO.deleteMail(mail_id);
+	}
+	@Override
+	public void deleteAll() throws SQLException{
+		messageDAO.deleteAllWaste();
+	}
 }

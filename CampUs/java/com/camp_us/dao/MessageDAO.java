@@ -52,5 +52,11 @@ public interface MessageDAO {
 	void updateSImp(int mail_id) throws SQLException;
 	void updateRLock(int mail_id) throws SQLException;
 	void updateSLock(int mail_id) throws SQLException;
+	void updateWaste(int mail_id) throws SQLException;
+	void updateWasteBack(int mail_id) throws SQLException;
+	
+	//delete
+	void deleteMail(int mail_id) throws SQLException;
+	void deleteAllWaste() throws SQLException;
 	
 }

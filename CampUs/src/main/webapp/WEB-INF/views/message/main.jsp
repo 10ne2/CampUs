@@ -116,56 +116,13 @@
 <div style="height: 900px; padding: 15px;">
 	<div>
 		<span
-			style="display: block; font-size: 20pt; font-weight: bold; margin-bottom: 18px; margin-left: 5px">
+			style="display: block; width:50px; font-size: 20pt; font-weight: bold; margin-bottom: 18px; margin-left: 5px;cursor:pointer"
+			onclick="location.href='<%=request.getContextPath()%>/message/main'" >
 			메일</span>
 	</div>
 	<div class="row" style="display:flex; flex-direction: row;">
 	<!-- 카테고리 시작 -->
-		<div class="col-md-2" style="width:250px">
-			<a class="btnw btn-primary btn-block mb-3" style="width:250px" onclick="location.href='<%=request.getContextPath()%>/message/registForm'">메일
-				작성</a>
-			<div class="card" style="width:250px">
-				<div class="card-body p-0" style="width:250px !important">
-					<ul class="nav flex-column" style="width:250px; height: 745px;">
-						<li class="" style="height: 50px; ">
-							<button id="btnAll" type="button" data-mail="1" class="d-flex align-items-center mailR"
-							style="width: 100%; height: 100%; gap: 20px; line-height: 50px; border:none; padding:15px; overflow:hidden"
-							onclick="location.href='<%=request.getContextPath()%>/message/main'">
-								<i class="fas fa-inbox" style=""></i>
-								<span style="display: block;">전체 메일</span>
-							</button>
-						</li>
-						<li class="nav-item" style="height: 50px">
-							<button id="btnRecv" type="button" data-mail="2" class="d-flex align-items-center mailR"
-							style="width: 100%; height: 100%; gap: 20px; line-height: 50px; border:none; padding:15px"
-							onclick="location.href='<%=request.getContextPath()%>/message/receive'">
-								<i class="far fa-envelope" style=""></i>
-								<span style="display: block;">받은 메일함</span>
-								<span id="unreadCount" class="badgec bg-primaryc" style="width:auto;display: block; margin-left: auto; padding: 0 5px 0 5px">${unreadCount}</span>
-							</button>
-						</li>
-						<li class="nav-item" style="height: 50px; border-bottom: 1px solid #ddd;">
-							<button id="btnSent" type="button" data-mail="3" class="d-flex align-items-center mailR"
-							style="width: 100%; height: 100%; gap: 24px; line-height: 50px; border:none; padding:15px"
-							onclick="location.href='<%=request.getContextPath()%>/message/send'">
-							<i class="far fa-file-alt" style="margin-left:2px"></i>
-							<span style="display: block;margin-left:-2px">보낸 메일함</span>
-							</button>
-						</li>
-						<li class="nav-item" style="height: 50px; border-bottom: 1px solid #ddd;">
-							<button id="btnSent" type="button" data-mail="3" class="d-flex align-items-center mailR"
-							style="width: 100%; height: 100%; gap: 24px; line-height: 50px; border:none; padding:15px"
-							onclick="location.href='<%=request.getContextPath()%>/message/waste'">
-							<i class="far fa-trash-alt" style="margin-left:2px"></i>
-							<span style="display: block;margin-left:-2px">휴지통</span>
-							</button>
-						</li>
-					</ul>
-				</div>
-				<!-- /.card-body -->
-			</div>
-			<!-- /.card -->
-		</div>
+		<%@ include file="/WEB-INF/views/message/category.jsp" %>
 	<!-- 카테고리 끝 -->
 		<!-- /.col -->
 	<div class="col-md-10">
@@ -180,8 +137,10 @@
 							<button type="button" class="btn btn-default btn-sm" onclick="refresh()">
 									<i class="fas fa-sync-alt"></i>
 							</button>
-							<button type="button" class="btn btn-default btn-sm" onclick="refresh()">
-									<i class="fas fa-sync-alt"></i>
+							<button type="button" class="btn btn-default btn-sm" style=""
+									onclick="location.href='<%=request.getContextPath()%>/message/receive'">
+									<img id="readImg_" src="<%=request.getContextPath()%>/resources/images/go.png"
+															      style="width:16px; cursor:pointer; margin-top:-2px"/>
 							</button>
 						</div>
 					</div>
@@ -203,7 +162,7 @@
 													<div style="display: flex; flex-direction: row;">
 														<div class="" style="display: flex; flex-direction: row;">
 															<div style="margin-left:10px;">
-															    <img id="readImg_" src="<%=request.getContextPath()%>/resources/images/mail_read/${receive.mail_rread }.png"
+															    <img id="readImg_" src="<%=request.getContextPath()%>/resources/images/read/${receive.mail_rread }.png"
 															      style="width:20px; cursor:pointer"/>
 															</div>
 														</div>
@@ -247,8 +206,10 @@
 								<button type="button" class="btn btn-default btn-sm" onclick="refresh()">
 										<i class="fas fa-sync-alt"></i>
 								</button>
-								<button type="button" class="btn btn-default btn-sm" onclick="refresh()">
-										<i class="fas fa-sync-alt"></i>
+								<button type="button" class="btn btn-default btn-sm" style=""
+									onclick="location.href='<%=request.getContextPath()%>/message/send'">
+									<img id="readImg_" src="<%=request.getContextPath()%>/resources/images/go.png"
+															      style="width:16px; cursor:pointer; margin-top:-2px"/>
 								</button>
 							</div>
 						</div>
@@ -268,12 +229,6 @@
 												<td style="width: 100%; min-height: 48px; display: flex; flex-direction: column; margin:-1.6px">
 													<div style="width:100%;">
 														<div style="display: flex; flex-direction: row;">
-															<div class="" style="display: flex; flex-direction: row;">
-																<div style="margin-left:10px;">
-																    <img id="readImg_" src="<%=request.getContextPath()%>/resources/images/mail_read/${send.mail_sread }.png"
-																      style="width:20px; cursor:pointer"/>
-																</div>
-															</div>
 															<div class="" style="width:150px; display:flex; flex-direction: row; margin-left:20px">
 																<a style="width: 60px; line-height:30px;">
 																	${send.receiver_name }
@@ -315,8 +270,10 @@
 							<button type="button" class="btn btn-default btn-sm" onclick="refresh()">
 									<i class="fas fa-sync-alt"></i>
 							</button>
-							<button type="button" class="btn btn-default btn-sm" onclick="refresh()">
-									<i class="fas fa-sync-alt"></i>
+							<button type="button" class="btn btn-default btn-sm" style=""
+									onclick="location.href='<%=request.getContextPath()%>/message/waste'">
+									<img id="readImg_" src="<%=request.getContextPath()%>/resources/images/go.png"
+															      style="width:16px; cursor:pointer; margin-top:-2px"/>
 							</button>
 						</div>
 					</div>
@@ -339,7 +296,7 @@
 															<div class="" style="display: flex; flex-direction: row;">
 																<div style="margin-left:10px;">
 																    <img id="readImg_"
-																    src="<%=request.getContextPath()%>/resources/images/mail_read/${waste.mail_sender == sessionScope.loginUser.mem_id ? waste.mail_rread : waste.mail_sread}.png"
+																    src="<%=request.getContextPath()%>/resources/images/read/${waste.mail_sender == sessionScope.loginUser.mem_id ? waste.mail_rread : waste.mail_sread}.png"
 																      style="width:20px; cursor:pointer"/>
 																</div>
 															</div>
