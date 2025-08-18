@@ -71,7 +71,7 @@
 								<tbody>
 									<c:if test="${empty sendMailList }">
 										<tr>
-							   	   			<td colspan="5" class="text-center" >받은 메일이 없습니다.</td>
+							   	   			<div colspan="5" style="font-size: 30px; font-weight: bold; color: #e0e0e0; line-height: 300px" class="text-center" >받은 메일이 없습니다.</div>
 							   	   		</tr>
 									</c:if>
 									<c:if test="${not empty sendMailList }">
