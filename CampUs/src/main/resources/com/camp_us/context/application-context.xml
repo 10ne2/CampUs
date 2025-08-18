@@ -14,10 +14,15 @@
 	      c:value="${savePath.summernote.image}"
 	      />
 	<!-- mail files -->
+	<bean id="messageSavedFilePath"
+	      class="java.lang.String"
+	      c:value="${savePath.message.files}"
+	      />
+	<!-- mail files -->
 	<bean id="mailSavedFilePath"
 	      class="java.lang.String"
 	      c:value="${savePath.mail.files}"
-	      />
+	      />      
 	      	
 	<bean id="memberDAO"
 	      class="com.camp_us.dao.MemberDAOImpl"

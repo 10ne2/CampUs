@@ -13,159 +13,19 @@
 
 </head>
 
-<style>
-.btnw {
-	padding: 10px 16px;
-	border: none;
-	background-color: #2EC4B6;
-	color: white;
-	border-radius: 4px;
-	font-size: 18px;
-	text-align: center;
-	cursor: pointer;
-	font-weight: 600;
-}
-
-.btnw:hover {
-	background-color: #22A99C;
-}
-
-.badgec {
-	width: 30px;
-	height: 23px;
-	font-size: 12px;
-	font-weight: 700;
-	line-height: 22px;
-	text-align: center;
-	vertical-align: baseline;
-	border-radius: 0.375rem;
-}
-
-.bg-primaryc {
-	background-color: #2EC4B6; /* Bootstrap 기본 파란색 */
-	color: #fff;
-}
-
-.cardc {
-	word-wrap: break-word;
-	margin-bottom: 10px
-}
-.mailbox-subjectc {
-  width: 230px;
-}
-.card-primaryc {
-  border-top: 3px solid #2EC4B6;
-}
-.btn-primaryc {
-  color: #fff;
-  background-color: #2EC4B6;
-  border-color: #2EC4B6;
-}
-
-.btn-primaryc:hover {
-  color: #fff;
-  background-color: #22A99C;
-  border-color: #22A99C;
-}
-
-.btn-primaryc:focus, .btn-primary.focus {
-  box-shadow: 0 0 0 0.2rem rgba(0,123,255,.5);
-}
-
-.btn-primaryc.disabled, .btn-primaryc:disabled {
-  background-color: #2EC4B6;
-  border-color: #2EC4B6;
-  opacity: 0.65;
-}
-.table-hover tbody tr:hover {
-  background-color: #EAF5F4 !important; /* 민트색 배경 예시 */
-  cursor: pointer; /* 커서 손가락으로 */
-}
-.selected  {
-  background-color: #EAF5F4 !important; /* 민트색 배경 예시 */
-}
-.mailR{
-	background-color: transparent;
-	
-}
-.mailR:hover{
-	background-color: #EAF5F4;
-	overflow: hidden;
-	font-weight: bold;
-}
-.mailR.active{
-	background-color: #EAF5F4;
-	font-weight: bold;
-}
-.mailT{
-	background-color: transparent;
-}
-.mailT:hover span{
-	font-weight:bold;
-	overflow: hidden;
-	color: #22A99C;
-}
-.mailT.active{
-	font-weight:bold;
-	overflow: hidden;
-	color: #22A99C;
-}
-</style>
+<%@ include file="/WEB-INF/views/message/css.jsp" %>
 
 
 <div style="height: 900px; padding: 15px;">
 	<div>
 		<span
-			style="display: block; font-size: 20pt; font-weight: bold; margin-bottom: 18px; margin-left: 5px">
+			style="display: block; width:50px; font-size: 20pt; font-weight: bold; margin-bottom: 18px; margin-left: 5px;cursor:pointer"
+			onclick="location.href='<%=request.getContextPath()%>/message/main'" >
 			메일</span>
 	</div>
 	<div class="row" style="display:flex; flex-direction: row;">
 	<!-- 카테고리 시작 -->
-		<div class="col-md-2" style="width:250px">
-			<a class="btnw btn-primary btn-block mb-3" style="width:width:250px" onclick="mailWrite()">메일
-				작성</a>
-			<div class="card" style="width:250px">
-				<div class="card-body p-0" style="width:250px !important">
-					<ul class="nav flex-column" style="width:250px; height: 745px;">
-						<li class="" style="height: 50px; ">
-							<button id="btnAll" type="button" data-mail="1" class="d-flex align-items-center mailR"
-							style="width: 100%; height: 100%; gap: 20px; line-height: 50px; border:none; padding:15px; overflow:hidden"
-							onclick="location.href='<%=request.getContextPath()%>/message/main'">
-								<i class="fas fa-inbox" style=""></i>
-								<span style="display: block;">전체 메일</span>
-							</button>
-						</li>
-						<li class="nav-item" style="height: 50px">
-							<button id="btnRecv" type="button" data-mail="2" class="d-flex align-items-center mailR"
-							style="width: 100%; height: 100%; gap: 20px; line-height: 50px; border:none; padding:15px"
-							onclick="location.href='<%=request.getContextPath()%>/message/receive'">
-								<i class="far fa-envelope" style=""></i>
-								<span style="display: block;">받은 메일함</span>
-								<span id="unreadCount" class="badgec bg-primaryc" style="width:auto;display: block; margin-left: auto; padding: 0 5px 0 5px">${unreadCount}</span>
-							</button>
-						</li>
-						<li class="nav-item" style="height: 50px; border-bottom: 1px solid #ddd;">
-							<button id="btnSent" type="button" data-mail="3" class="d-flex align-items-center mailR"
-							style="width: 100%; height: 100%; gap: 24px; line-height: 50px; border:none; padding:15px"
-							onclick="location.href='<%=request.getContextPath()%>/message/send'">
-							<i class="far fa-file-alt" style="margin-left:2px"></i>
-							<span style="display: block;margin-left:-2px">보낸 메일함</span>
-							</button>
-						</li>
-						<li class="nav-item" style="height: 50px; border-bottom: 1px solid #ddd;">
-							<button id="btnSent" type="button" data-mail="3" class="d-flex align-items-center mailR"
-							style="width: 100%; height: 100%; gap: 24px; line-height: 50px; border:none; padding:15px"
-							onclick="location.href='<%=request.getContextPath()%>/message/waste'">
-							<i class="far fa-file-alt" style="margin-left:2px"></i>
-							<span style="display: block;margin-left:-2px">휴지통</span>
-							</button>
-						</li>
-					</ul>
-				</div>
-				<!-- /.card-body -->
-			</div>
-			<!-- /.card -->
-		</div>
+		<%@ include file="/WEB-INF/views/message/category.jsp" %>
 	<!-- 카테고리 끝 -->
 		<!-- /.col -->
 	<div class="col-md-10">
@@ -177,11 +37,10 @@
 							<h3 class="card-title" style="margin-top:5px">받은 메일함</h3>
 						</div>
 						<div style="margin-left:auto">
-							<button type="button" class="btn btn-default btn-sm" onclick="refresh()">
-									<i class="fas fa-sync-alt"></i>
-							</button>
-							<button type="button" class="btn btn-default btn-sm" onclick="refresh()">
-									<i class="fas fa-sync-alt"></i>
+							<button type="button" class="btn btn-default btn-sm" style=""
+									onclick="location.href='<%=request.getContextPath()%>/message/receive'">
+									<img id="readImg_" src="<%=request.getContextPath()%>/resources/images/go.png"
+															      style="width:16px; cursor:pointer; margin-top:-2px"/>
 							</button>
 						</div>
 					</div>
@@ -203,7 +62,7 @@
 													<div style="display: flex; flex-direction: row;">
 														<div class="" style="display: flex; flex-direction: row;">
 															<div style="margin-left:10px;">
-															    <img id="readImg_" src="<%=request.getContextPath()%>/resources/images/mail_read/${receive.mail_rread }.png"
+															    <img id="readImg_" src="<%=request.getContextPath()%>/resources/images/read/${receive.mail_rread }.png"
 															      style="width:20px; cursor:pointer"/>
 															</div>
 														</div>
@@ -244,11 +103,10 @@
 								<h3 class="card-title"  style="margin-top:5px">보낸 메일함</h3>
 							</div>
 							<div style="margin-left:auto">
-								<button type="button" class="btn btn-default btn-sm" onclick="refresh()">
-										<i class="fas fa-sync-alt"></i>
-								</button>
-								<button type="button" class="btn btn-default btn-sm" onclick="refresh()">
-										<i class="fas fa-sync-alt"></i>
+								<button type="button" class="btn btn-default btn-sm" style=""
+									onclick="location.href='<%=request.getContextPath()%>/message/send'">
+									<img id="readImg_" src="<%=request.getContextPath()%>/resources/images/go.png"
+															      style="width:16px; cursor:pointer; margin-top:-2px"/>
 								</button>
 							</div>
 						</div>
@@ -268,13 +126,7 @@
 												<td style="width: 100%; min-height: 48px; display: flex; flex-direction: column; margin:-1.6px">
 													<div style="width:100%;">
 														<div style="display: flex; flex-direction: row;">
-															<div class="" style="display: flex; flex-direction: row;">
-																<div style="margin-left:10px;">
-																    <img id="readImg_" src="<%=request.getContextPath()%>/resources/images/mail_read/${send.mail_sread }.png"
-																      style="width:20px; cursor:pointer"/>
-																</div>
-															</div>
-															<div class="" style="width:150px; display:flex; flex-direction: row; margin-left:20px">
+															<div class="" style="width:150px; display:flex; flex-direction: row; margin-left:10px">
 																<a style="width: 60px; line-height:30px;">
 																	${send.receiver_name }
 																</a>
@@ -312,11 +164,10 @@
 							<h3 class="card-title" style="margin-top:5px">휴지통</h3>
 						</div>
 						<div style="margin-left:auto">
-							<button type="button" class="btn btn-default btn-sm" onclick="refresh()">
-									<i class="fas fa-sync-alt"></i>
-							</button>
-							<button type="button" class="btn btn-default btn-sm" onclick="refresh()">
-									<i class="fas fa-sync-alt"></i>
+							<button type="button" class="btn btn-default btn-sm" style=""
+									onclick="location.href='<%=request.getContextPath()%>/message/waste'">
+									<img id="readImg_" src="<%=request.getContextPath()%>/resources/images/go.png"
+															      style="width:16px; cursor:pointer; margin-top:-2px"/>
 							</button>
 						</div>
 					</div>
@@ -339,7 +190,7 @@
 															<div class="" style="display: flex; flex-direction: row;">
 																<div style="margin-left:10px;">
 																    <img id="readImg_"
-																    src="<%=request.getContextPath()%>/resources/images/mail_read/${waste.mail_sender == sessionScope.loginUser.mem_id ? waste.mail_rread : waste.mail_sread}.png"
+																    src="<%=request.getContextPath()%>/resources/images/read/${waste.mail_sender == sessionScope.loginUser.mem_id ? waste.mail_rread : waste.mail_sread}.png"
 																      style="width:20px; cursor:pointer"/>
 																</div>
 															</div>
@@ -377,57 +228,4 @@
 	</div>
 		<!-- /.col -->
 			<!-- /.card -->
-		<div class="col-md-10 mailWriteForm " style="margin-left:auto; display:none;" >
-            <div class="card card-primaryc card-outline" style="height: 810px;">
-              <div class="card-header" style="height:50px">
-                <span class="card-title" style="font-weight:700;">메일 보내기</span>
-                <div class="float-right">
-                  <button type="reset" class="btn btn-default" style="height: 35px; margin-top:-5px; line-height: 5px"
-                  onclick="closeWrite()"><i class="fas fa-times"></i>&nbsp;&nbsp;창닫기</button>
-                  <button type="submit" class="btn btn-primary"
-                  style="height: 33px; margin-top:-5px; line-height: 5px; background-color:#2EC4B6; border: 1px solid #2EC4B6"
-                  onclick="regist_go()"><i class="far fa-envelope"></i> &nbsp;&nbsp;보내기</button>
-                </div>
-              </div>
-              <!-- /.card-header -->
-              <form role="form" method="post" action="<%=request.getContextPath()%>/mail/regist" name="registForm" enctype="multipart/form-data">
-	              <div class="card-body">
-	                <div class="form-group" style="display: flex; flex-direction: row;">
-	                  <span style="display:block; width:8%; line-height:32px">받는 사람</span>
-	                  <input type="text" title="받는 사람" id="mail_receiver" name="mail_receiver"
-	                  	class="form-control notNull" placeholder="받는 사람을 입력해주세요.">
-	                </div>
-	                <div class="form-group" style="display: none;">
-	                  <span style="display:block; width:8%; line-height:32px">보내는 사람</span>
-	                  <input type="hidden" title="보내는 사람" id="mail_sender" name="mail_sender"
-	                  	class="form-control notNull" placeholder="받는 사람을 입력해주세요." readonly value="${sessionScope.loginUser.mem_id}">
-	                </div>
-	                <div class="form-group" style="display: flex; flex-direction: row;">
-	                  <span style="display:block; width:8%; line-height:32px">제목</span>
-	                  <input type="text" title="제목" id="mail_name" name="mail_name" 
-	                  	class="form-control notNull" placeholder="제목을 입력해주세요.">
-	                </div>
-	                <div class="form-group">
-						<textarea class="textarea" name="mail_desc" id="mail_desc" rows="30"
-							cols="90" placeholder="1000자 내외로 작성하세요." ></textarea>
-					</div>
-					<div style="display: flex; flex-direction: row;">
-		                <div class="form-group" >
-		                  <div id="addFileBtn" class="btn btn-default btn-file" onclick="addFile_go();" type="file" type="file" name="attachment"
-		                  style="width:130px; height: 50px; line-height: 25px">
-		                    <i class="fas fa-paperclip"></i>
-		                    <h5 style="display:inline;line-height:40px;">&nbsp;&nbsp;파일등록</h5>
-		                  </div>
-		                </div>
-		                <div class="fileInput"></div>
-	                </div>
-	                
-	                
-	              </div>
-              </form>
-              <!-- /.card-body -->
-           </div>
-           <!-- /.card -->
-         </div>
-	</div>
 </div>

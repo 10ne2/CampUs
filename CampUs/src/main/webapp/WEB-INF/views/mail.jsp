@@ -359,7 +359,7 @@
 				<!-- /.card-footer -->
 		</div>
 			<!-- /.card -->
-		<div class="col-md-10 mailWriteForm " style="margin-left:auto; display:none;" >
+		<div class="col-md-10" style="margin-left:auto; display:none;" >
             <div class="card card-primaryc card-outline" style="height: 810px;">
               <div class="card-header" style="height:50px">
                 <span class="card-title" style="font-weight:700;">메일 보내기</span>

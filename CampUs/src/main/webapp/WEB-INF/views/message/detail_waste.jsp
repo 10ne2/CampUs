@@ -123,7 +123,7 @@
 							<div style="display: flex; flex-direction: row;">
 								<h5 id="mailName" style="width: 850px; margin-bottom:15px; line-height: 35px">${mail.mail_name}</h5>
 								<span id="mailDate" class="mailbox-read-time float-right" style="display:block; width: 90px; margin-left:20px; margin-top:12px; text-align:right;">
-									<fmt:formatDate value="${waste.mail_sender == sessionScope.loginUser.mem_id ? mail.mail_rdate : mail.mail_sdate }" pattern="yy-MM-dd HH:mm" />
+									<fmt:formatDate value="${mail.mail_ddate }" pattern="yy-MM-dd HH:mm" />
 								</span>
 							</div>
 							<div style="display: flex; flex-direction: row; margin-bottom: 10px">
@@ -134,9 +134,12 @@
 									<span id="mailTargetEmail" style="display:block; margin-left:15px; line-height: 28px; margin-right:15px">
 										${mail.mail_sender == sessionScope.loginUser.mem_id ? mail.receiver_email : mail.sender_email}</span>
 								</div>
-								<div style="margin-left:auto;">
-									<button type="button" class="btn btn-default btn-sm" data-container="body" title="Delete" onclick="removeMail(${mail.mail_id})">
-										<i class="far fa-trash-alt"></i>
+								<div style="margin-left:auto; display: flex; flex-direction: row;">
+									<button type="button" class="btn btn-default btn-sm" data-container="body" title="Delete" onclick="backMail(${mail.mail_id})">
+										<span>복구</span>
+									</button>
+									<button style="margin-left:10px" type="button" class="btn btn-default btn-sm" data-container="body" title="Delete" onclick="remove(${mail.mail_id});">
+										<span>영구삭제</span>
 									</button>
 								</div>
 							</div>
@@ -232,10 +235,17 @@ window.onunload = function() {
 </script>
 
 <script>
-function removeMail(mail_id){
-	if (!confirm("정말 삭제하시겠습니까?")) return;
+function remove(mail_id){
+	if (!confirm("복구가 불가능합니다. 정말 삭제하시겠습니까?")) return;
+	
+	location.href = "delete/detail?mail_id=" + mail_id;
+}
+</script>
 
-    // 페이지 이동 (보낸메일함이면 휴지통 이동)
-    location.href = "movewaste/detail?mail_id=" + mail_id;
+<script>
+function backMail(mail_id){
+	if (!confirm("복구하시겠습니까?")) return;
+	
+	location.href = "backwaste/detail?mail_id=" + mail_id;
 }
 </script>

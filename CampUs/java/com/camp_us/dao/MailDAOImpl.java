@@ -34,7 +34,6 @@ public class MailDAOImpl implements MailDAO {
 		
 		return mailList;
 	}
-
 	@Override
 	public int selectSearchMailListCount(PageMaker pageMaker,String memId) throws SQLException {
 		Map<String,Object> dataMap = new HashMap<String,Object>();
@@ -44,28 +43,23 @@ public class MailDAOImpl implements MailDAO {
 		int count = session.selectOne("Mail-Mapper.selectSearchMailListCount",dataMap);
 		return count;
 	}
-
 	@Override
 	public MailVO selectMailByMailId(int mail_id) throws SQLException {
 		MailVO mail = session.selectOne("Mail-Mapper.selectMailByMailId",mail_id);
 		return mail;
 	}
-
 	@Override
 	public void insertMail(MailVO mail) throws SQLException {
 		session.insert("Mail-Mapper.insertMail",mail);
 	}
-
 	@Override
 	public void deleteMail(int mail_id) throws SQLException {
 		session.delete("Mail-Mapper.deleteMail",mail_id);
 	}
-
 	@Override
 	public int selectMailSeqNext() throws SQLException {
 		return  session.selectOne("Mail-Mapper.selectMailSeqNext");
 	}
-
 	@Override
 	public MailVO getMail(int mail_id) throws SQLException {
 		return session.selectOne("Mail-Mapper.getMail",mail_id);
@@ -77,17 +71,14 @@ public class MailDAOImpl implements MailDAO {
 	public void insertMailImp(MailVO mail) throws SQLException {
 		session.insert("Mail-Mapper.insertMailImp", mail);
 	}
-	
 	@Override
 	public int selectMailImpSeqNext() throws SQLException {
 		return  session.selectOne("Mail-Mapper.selectMailImpSeqNext");
 	}
-
 	@Override
 	public void deleteMailImp(int mimp_id) throws SQLException {
 		session.delete("Mail-Mapper.deleteMailImp",mimp_id);
 	}
-
 	@Override
 	public Integer selectMailImpByMailAndMember(int mail_id, String mem_id) throws SQLException {
 		Map<String,Object> dataMap = new HashMap<String,Object>();
@@ -113,7 +104,6 @@ public class MailDAOImpl implements MailDAO {
 		
 		return mailList;
 	}
-
 	@Override
 	public int selectSearchMailListCountBySender(PageMaker pageMaker, String memId) throws SQLException {
 		Map<String,Object> dataMap = new HashMap<String,Object>();
@@ -140,7 +130,6 @@ public class MailDAOImpl implements MailDAO {
 		
 		return mailList;
 	}
-
 	@Override
 	public int selectSearchMailListCountByReceiver(PageMaker pageMaker, String memId) throws SQLException {
 		Map<String,Object> dataMap = new HashMap<String,Object>();
@@ -167,7 +156,6 @@ public class MailDAOImpl implements MailDAO {
 		
 		return mailList;
 	}
-
 	@Override
 	public int selectSearchMailListCountByImp(PageMaker pageMaker, String memId) throws SQLException {
 		Map<String,Object> dataMap = new HashMap<String,Object>();
@@ -183,9 +171,10 @@ public class MailDAOImpl implements MailDAO {
 	public void insertMailRead(MailVO mail) throws SQLException {
 		session.insert("Mail-Mapper.insertMailRead", mail);
 	}
-	
 	@Override
 	public int selectMailReadSeqNext() throws SQLException {
 		return  session.selectOne("Mail-Mapper.selectMailReadSeqNext");
 	}
+	
+	//insert
 }

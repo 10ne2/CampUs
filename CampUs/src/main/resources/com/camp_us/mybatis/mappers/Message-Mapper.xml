@@ -34,7 +34,7 @@
 		        a.mem_name as sender_name
 		    from mail m
 		    join account a on m.mail_sender = a.mem_id
-		    where mail_receiver = #{mem_id}
+		    where mail_receiver = #{mem_id} and m.mail_waste = 0
 		    order by m.mail_rdate desc
 		)
 		where rownum <= 8]]>
@@ -52,7 +52,7 @@
 				a.mem_name as receiver_name
 			from mail m
 			join account a on m.mail_receiver = a.mem_id
-			where mail_sender = #{mem_id}
+			where mail_sender = #{mem_id} and m.mail_waste = 0
 			order by m.mail_sdate desc
 		)
 		where rownum <= 8]]>
@@ -78,7 +78,7 @@
 			where (m.mail_sender = #{mem_id}  OR m.mail_receiver = #{mem_id} ) and m.mail_waste = 1
 			order by GREATEST(m.mail_sdate, m.mail_rdate) desc
 		)
-		where rownum <= 8]]>
+		where rownum <= 5]]>
 	</select>
 	
 	
@@ -96,8 +96,13 @@
 		select
 			m.mail_id,
 			m.mail_name,
+			m.mail_rimp,
+			m.mail_simp,
 			m.mail_rdate,
 			m.mail_sdate,
+			m.mail_ddate,
+			m.mail_rlock,
+			m.mail_slock,
 			a.mem_name as receiver_name,
 			b.mem_name as sender_name,
 			a.mem_email as receiver_email,
@@ -125,6 +130,7 @@
 		    a.mem_email As sender_email,
 		    m.mail_rimp,
 		    m.mail_rread,
+		    m.mail_rlock,
 		    m.mail_waste
 		from mail m
 		JOIN account a ON m.mail_sender = a.mem_id
@@ -142,6 +148,7 @@
 		    a.mem_email As sender_email,
 		    m.mail_rimp,
 		    m.mail_rread,
+		    m.mail_rlock,
 		    m.mail_waste
 		from mail m
 		JOIN account a ON m.mail_sender = a.mem_id
@@ -159,6 +166,7 @@
 		    a.mem_email As sender_email,
 		    m.mail_rimp,
 		    m.mail_rread,
+		    m.mail_rlock,
 		    m.mail_waste
 		from mail m
 		JOIN account a ON m.mail_sender = a.mem_id
@@ -176,6 +184,7 @@
 		    a.mem_email As sender_email,
 		    m.mail_rimp,
 		    m.mail_rread,
+		    m.mail_rlock,
 		    m.mail_waste
 		from mail m
 		JOIN account a ON m.mail_sender = a.mem_id
@@ -233,6 +242,7 @@
 		    a.mem_email As receiver_email,
 		    m.mail_simp,
 		    m.mail_sread,
+		    m.mail_slock,
 		    m.mail_waste
 		from mail m
 		JOIN account a ON m.mail_receiver = a.mem_id
@@ -250,6 +260,7 @@
 		    a.mem_email As receiver_email,
 		    m.mail_simp,
 		    m.mail_sread,
+		    m.mail_slock,
 		    m.mail_waste
 		from mail m
 		JOIN account a ON m.mail_receiver = a.mem_id
@@ -267,6 +278,7 @@
 		    a.mem_email As receiver_email,
 		    m.mail_simp,
 		    m.mail_sread,
+		    m.mail_slock,
 		    m.mail_waste
 		from mail m
 		JOIN account a ON m.mail_receiver = a.mem_id
@@ -312,6 +324,8 @@
 		    m.mail_rdate,
 		    m.mail_receiver,
 		    m.mail_sender,
+		    m.mail_rread,
+		    m.mail_sread,
 		    a.mem_name AS receiver_name,
 		    b.mem_name AS sender_name,
 		    a.mem_email As receiver_email,
@@ -335,6 +349,84 @@
 		where (m.mail_sender = #{mem_id}  OR m.mail_receiver = #{mem_id}) and m.mail_waste = 1
 	</select>
 	
+	
+	
+	<select id="selectMailSeqNext" resultType="int">
+		select mail_seq.nextval as mail_id from dual
+	</select>
+	
+	
+	
+	
+	
+	<insert id="insertMail" parameterType="message">
+		insert
+		into mail (mail_id, mail_name, mail_receiver, mail_sender, mail_desc)
+		values (#{mail_id},#{mail_name}, #{mail_receiver}, #{mail_sender}, #{mail_desc})
+	</insert>
+	
+	
+	
+	
+	<update id="updateRRead" parameterType="int">
+		update 
+		mail 
+		set 
+		mail_rread = 1
+		where mail_id=#{mail_id}
+	</update>
+	<update id="updateRImp" parameterType="int">
+		UPDATE mail
+	    SET mail_rimp = CASE WHEN mail_rimp = 1 THEN 0 ELSE 1 END
+	    WHERE mail_id = #{mail_id}
+	</update>
+	<update id="updateSImp" parameterType="int">
+		UPDATE mail
+	    SET mail_simp = CASE WHEN mail_simp = 1 THEN 0 ELSE 1 END
+	    WHERE mail_id = #{mail_id}
+	</update>
+	<update id="updateRLock" parameterType="int">
+		update 
+		mail 
+		set 
+		mail_rlock = CASE WHEN mail_rlock = 1 THEN 0 ELSE 1 END
+		where mail_id=#{mail_id}
+	</update>
+	<update id="updateSLock" parameterType="int">
+		update 
+		mail 
+		set 
+		mail_slock = CASE WHEN mail_slock = 1 THEN 0 ELSE 1 END
+		where mail_id=#{mail_id}
+	</update>
+	<update id="updateWaste" parameterType="int">
+		update 
+		mail 
+		set 
+		mail_waste = 1, mail_ddate = SYSDATE, mail_rimp = 0, mail_simp = 0
+		where mail_id=#{mail_id}
+			AND NVL(mail_rlock,0) != 1   <!-- rlock이 1이면 제외 -->
+      		AND NVL(mail_slock,0) != 1
+	</update>
+	<update id="updateWasteBack" parameterType="int">
+		update 
+		mail 
+		set 
+		mail_waste = 0, mail_ddate = null
+		where mail_id=#{mail_id}
+	</update>
+	
+	
+	
+	<delete id="deleteMail" parameterType="int">
+		delete
+		from mail
+		where mail_id = #{mail_id}
+	</delete>
+	<delete id="deleteAllWaste">
+	    delete from mail
+	    where mail_waste = 1
+	</delete>
 	
 </mapper>
 
