@@ -78,7 +78,7 @@
 			where (m.mail_sender = #{mem_id}  OR m.mail_receiver = #{mem_id} ) and m.mail_waste = 1
 			order by GREATEST(m.mail_sdate, m.mail_rdate) desc
 		)
-		where rownum <= 8]]>
+		where rownum <= 5]]>
 	</select>
 	
 	
@@ -403,7 +403,7 @@
 		update 
 		mail 
 		set 
-		mail_waste = 1, mail_ddate = SYSDATE
+		mail_waste = 1, mail_ddate = SYSDATE, mail_rimp = 0, mail_simp = 0
 		where mail_id=#{mail_id}
 			AND NVL(mail_rlock,0) != 1   <!-- rlock이 1이면 제외 -->
       		AND NVL(mail_slock,0) != 1

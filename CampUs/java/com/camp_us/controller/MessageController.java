@@ -98,7 +98,7 @@ public class MessageController {
 		return "/message/receive";
 	}
 	
-	@GetMapping("/receive/imp")
+	@GetMapping("/receiveImp")
 	public String receiveImpList(@ModelAttribute PageMaker pageMaker, HttpSession session, Model model) throws Exception{
 		MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
         if (loginUser == null) {
@@ -132,7 +132,7 @@ public class MessageController {
 	    return result;
 	}
 	
-	@GetMapping("/receive/read")
+	@GetMapping("/receiveRead")
 	public String receiveReadList(@ModelAttribute PageMaker pageMaker, HttpSession session, Model model) throws Exception{
 		MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
         if (loginUser == null) {
@@ -151,7 +151,7 @@ public class MessageController {
 		return "/message/receive";
 	}
 	
-	@GetMapping("/receive/lock")
+	@GetMapping("/receiveLock")
 	public String receiveLockList(@ModelAttribute PageMaker pageMaker, HttpSession session, Model model) throws Exception{
 		MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
         if (loginUser == null) {
@@ -205,7 +205,7 @@ public class MessageController {
 		return "/message/send";
 	}
 	
-	@GetMapping("/send/imp")
+	@GetMapping("/sendImp")
 	public String sendImpList(@ModelAttribute PageMaker pageMaker, HttpSession session, Model model) throws Exception{
 		MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
         if (loginUser == null) {
@@ -239,7 +239,7 @@ public class MessageController {
 	    return result;
 	}
 	
-	@GetMapping("/send/lock")
+	@GetMapping("/sendLock")
 	public String sendLockList(@ModelAttribute PageMaker pageMaker, HttpSession session, Model model) throws Exception{
 		MemberVO loginUser = (MemberVO) session.getAttribute("loginUser");
         if (loginUser == null) {

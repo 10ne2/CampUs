@@ -13,104 +13,7 @@
 
 </head>
 
-<style>
-.btnw {
-	padding: 10px 16px;
-	border: none;
-	background-color: #2EC4B6;
-	color: white;
-	border-radius: 4px;
-	font-size: 18px;
-	text-align: center;
-	cursor: pointer;
-	font-weight: 600;
-}
-
-.btnw:hover {
-	background-color: #22A99C;
-}
-
-.badgec {
-	width: 30px;
-	height: 23px;
-	font-size: 12px;
-	font-weight: 700;
-	line-height: 22px;
-	text-align: center;
-	vertical-align: baseline;
-	border-radius: 0.375rem;
-}
-
-.bg-primaryc {
-	background-color: #2EC4B6; /* Bootstrap 기본 파란색 */
-	color: #fff;
-}
-
-.cardc {
-	word-wrap: break-word;
-	margin-bottom: 10px
-}
-.mailbox-subjectc {
-  width: 230px;
-}
-.card-primaryc {
-  border-top: 3px solid #2EC4B6;
-}
-.btn-primaryc {
-  color: #fff;
-  background-color: #2EC4B6;
-  border-color: #2EC4B6;
-}
-
-.btn-primaryc:hover {
-  color: #fff;
-  background-color: #22A99C;
-  border-color: #22A99C;
-}
-
-.btn-primaryc:focus, .btn-primary.focus {
-  box-shadow: 0 0 0 0.2rem rgba(0,123,255,.5);
-}
-
-.btn-primaryc.disabled, .btn-primaryc:disabled {
-  background-color: #2EC4B6;
-  border-color: #2EC4B6;
-  opacity: 0.65;
-}
-.table-hover tbody tr:hover {
-  background-color: #EAF5F4 !important; /* 민트색 배경 예시 */
-  cursor: pointer; /* 커서 손가락으로 */
-}
-.selected  {
-  background-color: #EAF5F4 !important; /* 민트색 배경 예시 */
-}
-.mailR{
-	background-color: transparent;
-	
-}
-.mailR:hover{
-	background-color: #EAF5F4;
-	overflow: hidden;
-	font-weight: bold;
-}
-.mailR.active{
-	background-color: #EAF5F4;
-	font-weight: bold;
-}
-.mailT{
-	background-color: transparent;
-}
-.mailT:hover span{
-	font-weight:bold;
-	overflow: hidden;
-	color: #22A99C;
-}
-.mailT.active{
-	font-weight:bold;
-	overflow: hidden;
-	color: #22A99C;
-}
-</style>
+<%@ include file="/WEB-INF/views/message/css.jsp" %>
 
 
 <div style="height: 900px; padding: 15px;">
@@ -121,7 +24,51 @@
 	</div>
 	<div class="row" style="display:flex; flex-direction: row;">
 	<!-- 카테고리 시작 -->
-		<%@ include file="/WEB-INF/views/message/category.jsp" %>
+		<div class="col-md-2" style="width:250px">
+			<a class="btnw btn-primary btn-block mb-3" style="width:width:250px" onclick="location.href='<%=request.getContextPath()%>/message/registForm'">메일
+				작성</a>
+			<div class="card" style="width:250px">
+				<div class="card-body p-0" style="width:250px !important">
+					<ul class="nav flex-column" style="width:250px; height: 745px;">
+						<li class="mailR <%= request.getRequestURI().contains("/message/main") ? "active" : "" %>" style="height: 50px; ">
+							<button id="btnAll" type="button" data-mail="1" class="d-flex align-items-center mailR"
+							style="width: 100%; height: 100%; gap: 20px; line-height: 50px; border:none; padding:15px; overflow:hidden"
+							onclick="location.href='<%=request.getContextPath()%>/message/main'">
+								<i class="fas fa-inbox" style=""></i>
+								<span style="display: block;">전체 메일</span>
+							</button>
+						</li>
+						<li class="mailR <%= request.getRequestURI().contains("/message/receive") ? "active" : "" %>" style="height: 50px">
+							<button id="btnRecv" type="button" data-mail="2" class="d-flex align-items-center mailR"
+							style="width: 100%; height: 100%; gap: 20px; line-height: 50px; border:none; padding:15px"
+							onclick="location.href='<%=request.getContextPath()%>/message/receive'">
+								<i class="far fa-envelope" style=""></i>
+								<span style="display: block;">받은 메일함</span>
+								<span id="unreadCount" class="badgec bg-primaryc" style="width:auto;display: block; margin-left: auto; padding: 0 5px 0 5px">${unreadCount}</span>
+							</button>
+						</li>
+						<li class="mailR <%= request.getRequestURI().contains("/message/send") ? "active" : "" %>" style="height: 50px; border-bottom: 1px solid #ddd;">
+							<button id="btnSent" type="button" data-mail="3" class="d-flex align-items-center mailR"
+							style="width: 100%; height: 100%; gap: 24px; line-height: 50px; border:none; padding:15px"
+							onclick="location.href='<%=request.getContextPath()%>/message/send'">
+							<i class="far fa-file-alt" style="margin-left:2px"></i>
+							<span style="display: block;margin-left:-2px">보낸 메일함</span>
+							</button>
+						</li>
+						<li class="mailR <%= request.getRequestURI().contains("/message/waste") ? "active" : "" %>" style="height: 50px; border-bottom: 1px solid #ddd;">
+							<button id="btnSent" type="button" data-mail="3" class="d-flex align-items-center mailR"
+							style="width: 100%; height: 100%; gap: 24px; line-height: 50px; border:none; padding:15px"
+							onclick="location.href='<%=request.getContextPath()%>/message/waste'">
+							<i class="far fa-trash-alt" style="margin-left:2px"></i>
+							<span style="display: block;margin-left:-2px">휴지통</span>
+							</button>
+						</li>
+					</ul>
+				</div>
+				<!-- /.card-body -->
+			</div>
+			<!-- /.card -->
+		</div>
 	<!-- 카테고리 끝 -->
 			<!-- /.card -->
 		<div class="col-md-10 " style="margin-left:auto;" >
@@ -233,5 +180,24 @@ function regist_go(){
 	$("form[role='form']").submit();
 	
 }
+</script>
+
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+    const buttons = document.querySelectorAll(".mailR");
+    const currentPath = "<%= request.getRequestURI() %>"; // 현재 요청 URI
+
+    buttons.forEach(btn => {
+      // onclick 속성에서 이동할 URL 뽑기
+      const match = btn.getAttribute("onclick").match(/'(.*?)'/);
+      if (match) {
+        const btnPath = match[1];
+        // 현재 URI가 버튼의 path를 포함하면 활성화
+        if (currentPath.includes(btnPath)) {
+          btn.classList.add("active");
+        }
+      }
+    });
+  });
 </script>
 </body>

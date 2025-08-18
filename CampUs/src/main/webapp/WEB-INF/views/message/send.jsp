@@ -13,104 +13,7 @@
 
 </head>
 
-<style>
-.btnw {
-	padding: 10px 16px;
-	border: none;
-	background-color: #2EC4B6;
-	color: white;
-	border-radius: 4px;
-	font-size: 18px;
-	text-align: center;
-	cursor: pointer;
-	font-weight: 600;
-}
-
-.btnw:hover {
-	background-color: #22A99C;
-}
-
-.badgec {
-	width: 30px;
-	height: 23px;
-	font-size: 12px;
-	font-weight: 700;
-	line-height: 22px;
-	text-align: center;
-	vertical-align: baseline;
-	border-radius: 0.375rem;
-}
-
-.bg-primaryc {
-	background-color: #2EC4B6; /* Bootstrap 기본 파란색 */
-	color: #fff;
-}
-
-.cardc {
-	word-wrap: break-word;
-	margin-bottom: 10px
-}
-.mailbox-subjectc {
-  width: 230px;
-}
-.card-primaryc {
-  border-top: 3px solid #2EC4B6;
-}
-.btn-primaryc {
-  color: #fff;
-  background-color: #2EC4B6;
-  border-color: #2EC4B6;
-}
-
-.btn-primaryc:hover {
-  color: #fff;
-  background-color: #22A99C;
-  border-color: #22A99C;
-}
-
-.btn-primaryc:focus, .btn-primary.focus {
-  box-shadow: 0 0 0 0.2rem rgba(0,123,255,.5);
-}
-
-.btn-primaryc.disabled, .btn-primaryc:disabled {
-  background-color: #2EC4B6;
-  border-color: #2EC4B6;
-  opacity: 0.65;
-}
-.table-hover tbody tr:hover {
-  background-color: #EAF5F4 !important; /* 민트색 배경 예시 */
-  cursor: pointer; /* 커서 손가락으로 */
-}
-.selected  {
-  background-color: #EAF5F4 !important; /* 민트색 배경 예시 */
-}
-.mailR{
-	background-color: transparent;
-	
-}
-.mailR:hover{
-	background-color: #EAF5F4;
-	overflow: hidden;
-	font-weight: bold;
-}
-.mailR.active{
-	background-color: #EAF5F4;
-	font-weight: bold;
-}
-.mailT{
-	background-color: transparent;
-}
-.mailT:hover span{
-	font-weight:bold;
-	overflow: hidden;
-	color: #22A99C;
-}
-.mailT.active{
-	font-weight:bold;
-	overflow: hidden;
-	color: #22A99C;
-}
-</style>
+<%@ include file="/WEB-INF/views/message/css.jsp" %>
 
 
 <div style="height: 900px; padding: 15px;">
@@ -134,11 +37,11 @@
 							</div>
 							<div style="width: 870px; margin-top:4px">
 								<label style="margin-left: 5px; margin-bottom: -10px; font-weight: 400; color: #707070">
-									<input type="radio" name="filter" value="imp" onclick="location.href='${pageContext.request.contextPath}/message/send/imp'" ${selectedFilter == 'imp' ? 'checked' : ''}>
+									<input type="radio" name="filter" value="imp" onclick="location.href='${pageContext.request.contextPath}/message/sendImp'" ${selectedFilter == 'imp' ? 'checked' : ''}>
 									중요 메일
 								</label>
 								<label style="margin-left: 5px; margin-bottom: -10px; font-weight: 400; color: #707070">
-									<input type="radio" name="filter" value="lock" onclick="location.href='${pageContext.request.contextPath}/message/send/lock'" ${selectedFilter == 'lock' ? 'checked' : ''}>
+									<input type="radio" name="filter" value="lock" onclick="location.href='${pageContext.request.contextPath}/message/sendLock'" ${selectedFilter == 'lock' ? 'checked' : ''}>
 									잠긴 메일
 								</label>
 							</div>
@@ -201,10 +104,18 @@
 																	${send.mail_receiver}
 																</a>
 															</div>
-															<div onclick="OpenWindow('<%=request.getContextPath()%>/message/detail?mail_id=${send.mail_id}','상세보기',1040,800);"
-																style=" border:none; display: flex; flex-direction: row">
-																<a style="width: 800px; font-size:14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 30px">
-																		${send.mail_name }</a>
+															<div style="width: 850px; display: flex; flex-direction: row;" onclick="OpenWindow('<%=request.getContextPath()%>/message/detail?mail_id=${send.mail_id}','상세보기',1040,800);">
+																<div style=" border:none; display: flex; flex-direction: row">
+																	<a style="max-width: 800px; font-size:14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 30px">
+																			${send.mail_name }</a>
+																</div>
+																<div class="" style="display: flex; flex-direction: row;">
+																	<div style="margin-left:10px;">
+																	    <c:if test="${not empty send.mailFileList}">
+															                <img src="<%=request.getContextPath()%>/resources/images/att.png" style="width:15px;margin-top:4px;" alt="첨부파일 있음" />
+															            </c:if>
+																	</div>
+																</div>
 															</div>
 															<div class="mailbox-date" style="margin-left:auto; line-height:30px; font-size:12px; color: #bbb">
 															 	<fmt:formatDate value="${send.mail_sdate }" pattern="yy-MM-dd HH:mm" />
@@ -323,7 +234,7 @@ function removeMail(){
         return;
     }
 	
-	let answer = confirm("정말 삭제하시겠습니다.");
+	let answer = confirm("정말 삭제하시겠습니까?");
 	if(!answer) return;
 	
 	let mail_id = Array.from(checked).map(cb => cb.value);
@@ -353,4 +264,19 @@ function all_click(){
 	  }
 	  
 }
+</script>
+
+<script>
+const checkboxes = document.querySelectorAll('input[name="mail_id"]');
+
+checkboxes.forEach(cb => {
+    cb.addEventListener('change', function() {
+        const row = this.closest('tr');
+        if (this.checked) {
+            row.classList.add('selected');   // 체크 시 배경 변경
+        } else {
+            row.classList.remove('selected'); // 체크 해제 시 원래대로
+        }
+    });
+});
 </script>
