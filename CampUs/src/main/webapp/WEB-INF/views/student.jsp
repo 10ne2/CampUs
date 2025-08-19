@@ -82,7 +82,7 @@
 </li>
    <sec:authorize access='hasAnyRole("ROLE_1")'>
           <li class="nav-item" >            
-            <a href="#" class="nav-link" onclick='Iframe("<%=request.getContextPath()%>/lectureStu/main"); return false;'>
+            <a href="#" class="nav-link" data-url="<%=request.getContextPath() %>/lecturePro/main">
               <i class="nav-icon fas gang-img-icon"></i>
               <p class="fas" >&nbsp;
                 강의실
@@ -155,7 +155,8 @@
           </sec:authorize>
           <sec:authorize access='hasAnyRole("ROLE_2")'>
           <li class="nav-item" >            
-            <a href="#" class="nav-link" onclick='Iframe("<%=request.getContextPath()%>/lecturePro/main"); return false;'>
+            <a href="#" class="nav-link" 
+            data-url='<%=request.getContextPath()%>/lecturePro/main'>
               <i class="nav-icon fas gang-img-icon"></i>
               <p class="fas" >&nbsp;
                 강의실
@@ -403,16 +404,16 @@ $(".person-info").css({
 });
 
 document.querySelectorAll('.nav-item > a').forEach(link => {
-	  link.addEventListener('click', function (e) {
-	    e.preventDefault();
-	    const url = this.closest('.nav-item').getAttribute('data-url');
-	    if (url) {
-	      location.hash = url;               // 주소창 해시(#) 변경
-	      document.getElementById('mainFrame').src = url;  // iframe src 변경
-	    }
-	  });
-	});
-window.addEventListener('DOMContentLoaded', () => {
+    link.addEventListener('click', function (e) {
+      //e.preventDefault();
+      const url = this.getAttribute('data-url');
+      if (url) {
+        location.hash = url;               // 주소창 해시(#) 변경
+        document.getElementById('mainFrame').src = url;  // iframe src 변경
+      }
+    });
+  });
+ window.addEventListener('DOMContentLoaded', () => {
 	  const hash = location.hash.substring(1); // # 뗀 나머지
 	  if (hash) {
 	    document.getElementById('mainFrame').src = hash;
@@ -420,7 +421,7 @@ window.addEventListener('DOMContentLoaded', () => {
 	    // 기본 페이지 지정 (원하는 초기 URL)
 	    document.getElementById('mainFrame').src = '<%=request.getContextPath()%>/lecture/main';
 	  }
-	});
+	}); 
 function goSyllabus() {
 	  if (!selectedLecId) {
 	    alert("전공을 먼저 선택하세요.");
